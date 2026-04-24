@@ -28,7 +28,7 @@ const toggle = route
   .params(TodoParams)
   .handle(async (c) => {
     const updated = await c.ctx.store.toggle(c.params.id)
-    if (!updated) return notFound({ id: c.params.id })
+    if (!updated) return notFound({ code: "not_found" })
     return ok(updated)
   })
 
@@ -37,7 +37,7 @@ const remove = route
   .params(TodoParams)
   .handle(async (c) => {
     const removed = await c.ctx.store.remove(c.params.id)
-    if (!removed) return conflict({ id: c.params.id, reason: "not_found_or_already_removed" })
+    if (!removed) return conflict({ code: "not_found_or_already_removed" })
     return ok({ removed: c.params.id })
   })
 

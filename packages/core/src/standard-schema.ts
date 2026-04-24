@@ -17,16 +17,34 @@ export interface StandardSchemaV1Props<Input, Output> {
   readonly validate: (
     value: unknown,
   ) => StandardSchemaV1Result<Output> | Promise<StandardSchemaV1Result<Output>>
-  readonly types?: { readonly input: Input; readonly output: Output }
+  readonly types?: StandardSchemaV1Types<Input, Output> | undefined
+}
+
+export interface StandardSchemaV1Types<Input, Output> {
+  readonly input: Input
+  readonly output: Output
 }
 
 export type StandardSchemaV1Result<Output> =
-  | { readonly value: Output; readonly issues?: undefined }
-  | { readonly value?: undefined; readonly issues: readonly StandardSchemaV1Issue[] }
+  | StandardSchemaV1SuccessResult<Output>
+  | StandardSchemaV1FailureResult
+
+export interface StandardSchemaV1SuccessResult<Output> {
+  readonly value: Output
+  readonly issues?: undefined
+}
+
+export interface StandardSchemaV1FailureResult {
+  readonly issues: readonly StandardSchemaV1Issue[]
+}
 
 export interface StandardSchemaV1Issue {
   readonly message: string
-  readonly path?: readonly (string | number | symbol)[] | undefined
+  readonly path?: readonly (PropertyKey | StandardSchemaV1PathSegment)[] | undefined
+}
+
+export interface StandardSchemaV1PathSegment {
+  readonly key: PropertyKey
 }
 
 /**
@@ -43,7 +61,7 @@ export async function parseStandard<I, O>(
     throw new SchemaValidationError(result.issues)
   }
 
-  return result.value as O
+  return (result as StandardSchemaV1SuccessResult<O>).value
 }
 
 export class SchemaValidationError extends Error {

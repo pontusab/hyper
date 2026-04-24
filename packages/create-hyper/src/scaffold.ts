@@ -89,7 +89,10 @@ const baseTsconfig = `{
 const gitignore = "node_modules\ndist\n.env\n.hyper\n"
 const envExample = "PORT=3000\n"
 
-function minimalTemplate(opts: ScaffoldOptions): readonly ScaffoldFile[] {
+function minimalTemplate(
+  opts: ScaffoldOptions,
+  extraDeps: Record<string, string> = {},
+): readonly ScaffoldFile[] {
   const app = `/**
  * Minimal Hyper app.
  */
@@ -101,7 +104,7 @@ export default new Hyper()
   .listen(Number(process.env.PORT ?? 3000))
 `
   return [
-    { path: "package.json", contents: pkg(opts.name) },
+    { path: "package.json", contents: pkg(opts.name, extraDeps) },
     { path: "tsconfig.json", contents: baseTsconfig },
     { path: ".gitignore", contents: gitignore },
     { path: ".env.example", contents: envExample },
@@ -114,20 +117,17 @@ export default new Hyper()
 }
 
 function todoTemplate(opts: ScaffoldOptions): readonly ScaffoldFile[] {
-  const files = [...minimalTemplate(opts)]
-  const todo = `import type { StandardSchemaV1 } from "@hyper/core"
-import { Hyper, conflict, notFound, ok } from "@hyper/core"
+  const files = [...minimalTemplate(opts, { zod: "^4.0.0" })]
+  const todo = `import { Hyper, conflict, notFound, ok } from "@hyper/core"
+import { z } from "zod"
 
 interface Todo { id: string; title: string; done: boolean }
 const store = new Map<string, Todo>()
 
-const CreateTodo: StandardSchemaV1<unknown, { id: string; title: string }> = {
-  "~standard": {
-    version: 1,
-    vendor: "inline",
-    validate: (v: unknown) => ({ value: v as { id: string; title: string } }),
-  },
-}
+const CreateTodo = z.object({
+  id: z.string().min(1),
+  title: z.string().min(1).max(256),
+})
 
 export default new Hyper({ prefix: "/todos" })
   .get("/", () => ok([...store.values()]))
