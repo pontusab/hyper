@@ -11,8 +11,13 @@ bun add @usehyper/rate-limit
 ## Usage
 
 ```ts
-import { rateLimit, authRateLimitPlugin } from "@usehyper/rate-limit"
-app({ use: [rateLimit({ max: 100, windowMs: 60_000 })], plugins: [authRateLimitPlugin()] })
+import { Hyper } from "@usehyper/core"
+import { authRateLimitPlugin, rateLimit } from "@usehyper/rate-limit"
+
+export default new Hyper()
+  .use(rateLimit({ max: 100, windowMs: 60_000 }))
+  .use(authRateLimitPlugin())
+  .listen(3000)
 ```
 
 ## Docs

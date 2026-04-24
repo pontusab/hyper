@@ -1,22 +1,22 @@
 # create-hyper
 
-Scaffolder for Hyper apps — `bun create hyper my-app`.
-
-## Install
-
-```bash
-bun add create-hyper
-```
+Scaffolder for Hyper apps.
 
 ## Usage
 
-```ts
+```bash
 bun create hyper my-app
 ```
 
-## Docs
+Pick a template:
 
-See the [main README](../../README.md) and [docs/](../../docs) for guides and integration recipes.
+- `minimal` — one route, zero plugins. Perfect for learning.
+- `todo` — CRUD with Zod validation + `@usehyper/log`.
+- `ai` — MCP-exposed routes with `meta.mcp` annotations.
+
+```bash
+bun create hyper my-app --template todo
+```
 
 ## License
 

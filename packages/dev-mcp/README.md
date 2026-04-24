@@ -1,6 +1,6 @@
 # @usehyper/dev-mcp
 
-Dev-mode app-as-MCP server — expose /.hyper/mcp with introspection + replay tools.
+Dev-mode app-as-MCP server — exposes `/.hyper/mcp` with introspection + replay tools.
 
 ## Install
 
@@ -11,8 +11,12 @@ bun add @usehyper/dev-mcp
 ## Usage
 
 ```ts
+import { Hyper } from "@usehyper/core"
 import { devMcp } from "@usehyper/dev-mcp"
-app({ plugins: process.env.NODE_ENV !== "production" ? [devMcp()] : [] })
+
+const app = new Hyper()
+if (process.env.NODE_ENV !== "production") app.use(devMcp())
+export default app.listen(3000)
 ```
 
 ## Docs

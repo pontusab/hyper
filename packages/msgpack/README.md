@@ -11,8 +11,12 @@ bun add @usehyper/msgpack
 ## Usage
 
 ```ts
+import { Hyper } from "@usehyper/core"
 import { msgpack } from "@usehyper/msgpack"
-app({ use: [msgpack()] })
+
+export default new Hyper()
+  .use(msgpack())
+  .listen(3000)
 ```
 
 ## Docs

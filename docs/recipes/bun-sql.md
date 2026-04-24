@@ -6,8 +6,8 @@ structured DB observability.
 
 ```ts
 import { SQL } from "bun"
-import { wrapQueries } from "@usehyper/log/wrap-queries"
 import { log } from "@usehyper/log"
+import { wrapQueries } from "@usehyper/log/wrap-queries"
 
 const sqlRaw = new SQL(process.env.DATABASE_URL!)
 export const sql = wrapQueries(sqlRaw, {
@@ -16,33 +16,29 @@ export const sql = wrapQueries(sqlRaw, {
 })
 ```
 
-Decorate:
+Decorate the app:
 
 ```ts
-import { app } from "@usehyper/core"
+import { Hyper, notFound, ok } from "@usehyper/core"
 import { sql } from "./sql.ts"
 
-export const api = app({
-  decorate: [() => ({ sql })],
-})
-```
-
-Usage in a route:
-
-```ts
-route.get("/users/:id").handle(async ({ params, ctx }) => {
-  const rows = await ctx.sql`SELECT id, email FROM users WHERE id = ${params.id}`
-  return rows.length === 0 ? notFound() : ok(rows[0])
-})
+export default new Hyper()
+  .decorate(() => ({ sql }))
+  .get("/users/:id", async ({ ctx, params }) => {
+    const rows = await ctx.sql`SELECT id, email FROM users WHERE id = ${params.id}`
+    return rows.length === 0 ? notFound({ code: "not_found" }) : ok(rows[0])
+  })
+  .listen(3000)
 ```
 
 ## Connection lifecycle
 
 ```ts
-app({
-  decorate: [() => ({ sql, [Symbol.asyncDispose]: () => sql.close() })],
-})
+new Hyper().decorate(() => ({
+  sql,
+  [Symbol.asyncDispose]: () => sql.close(),
+}))
 ```
 
-`Symbol.asyncDispose` is awaited when the app stops (SIGTERM, test tear-
-down, or explicit `app.close()`).
+`Symbol.asyncDispose` is awaited when the app stops (SIGTERM, test
+teardown, or explicit `app.close()`).

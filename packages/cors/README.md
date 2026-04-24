@@ -11,8 +11,13 @@ bun add @usehyper/cors
 ## Usage
 
 ```ts
+import { Hyper } from "@usehyper/core"
 import { corsPlugin } from "@usehyper/cors"
-app({ plugins: [corsPlugin({ origin: ["https://example.com"] })] })
+
+export default new Hyper()
+  .use(corsPlugin({ origin: ["https://example.com"] }))
+  .get("/", () => ({ hello: "world" }))
+  .listen(3000)
 ```
 
 ## Docs

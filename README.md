@@ -14,12 +14,12 @@ bun run dev
 - **Secure by default.** HSTS (prod-only), method-override rejection, 1MB body cap, prototype-pollution guards, per-route timeouts, 32-byte secret floor on JWT/session, strict CORS wildcard rejection, CSRF double-submit, auth endpoint rate-limiting.
 - **AI-native.** Every route projects to OpenAPI 3.1, a typed RPC client, and an MCP manifest from the same definition. `hyper mcp` serves your app to any MCP-aware agent.
 - **One-setup DX.** `new Hyper().<method>(path, opts?, handler)` is the whole story — verb shortcuts for simple routes, the full `route.<method>(path).body(Schema).handle(...)` builder when you want it, plus a single polymorphic `.use()` to compose sub-apps, plugins, middleware, and ESM namespaces. Typed ctx, typed errors (`.throws({...})` / `.errors({...})`), fluent middleware.
-- **Testable in milliseconds.** `@usehyper/testing` ships `app.test()`, memory stores, deterministic time, event capture, fuzz corpus, type-level helpers. All 191 framework tests run in ~150ms.
+- **Testable in milliseconds.** `@hyper/testing` ships `app.test()`, memory stores, deterministic time, event capture, fuzz corpus, type-level helpers. All 218 framework tests run in ~170ms.
 
 ## Quick example
 
 ```ts
-import { Hyper, ok } from "@usehyper/core"
+import { Hyper, ok } from "@hyper/core"
 import { z } from "zod"
 
 export default new Hyper()
@@ -43,7 +43,7 @@ Each sub-app carries its own prefix; compose with `.use()`:
 
 ```ts
 // src/routes/users.ts
-import { Hyper, ok } from "@usehyper/core"
+import { Hyper, ok } from "@hyper/core"
 import { z } from "zod"
 
 export default new Hyper({ prefix: "/users" })
@@ -58,7 +58,7 @@ export default new Hyper({ prefix: "/users" })
 
 ```ts
 // src/app.ts
-import { Hyper } from "@usehyper/core"
+import { Hyper } from "@hyper/core"
 import users from "./routes/users.ts"
 import posts from "./routes/posts.ts"
 
@@ -99,6 +99,6 @@ hyper diff <component>      show drift between installed + registry
 
 ## Status
 
-0.1.0 early preview. Public API may still change. 191 passing tests, security posture audited via `hyper security --check`, performance gates measured via `hyper bench --tests`.
+0.1.0 early preview. Public API may still change. 218 passing tests, security posture audited via `hyper security --check`, performance gates measured via `hyper bench --tests`.
 
 MIT licensed.

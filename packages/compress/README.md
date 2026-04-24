@@ -11,8 +11,12 @@ bun add @usehyper/compress
 ## Usage
 
 ```ts
+import { Hyper } from "@usehyper/core"
 import { compress } from "@usehyper/compress"
-app({ use: [compress()] })
+
+export default new Hyper()
+  .use(compress())
+  .listen(3000)
 ```
 
 ## Docs

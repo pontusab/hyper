@@ -6,10 +6,10 @@ Hyper stays out of your data layer. Use Drizzle directly and wire it to
 ## Setup
 
 ```ts
-import { drizzle } from "drizzle-orm/bun-sqlite"
 import { Database } from "bun:sqlite"
-import { wrapQueries } from "@usehyper/log/wrap-queries"
+import { drizzle } from "drizzle-orm/bun-sqlite"
 import { log } from "@usehyper/log"
+import { wrapQueries } from "@usehyper/log/wrap-queries"
 
 const raw = drizzle(new Database(process.env.DB_URL ?? "app.db"))
 export const db = wrapQueries(raw, {
@@ -27,24 +27,18 @@ a `db.query.slow` event with the full SQL and bound parameters.
 Expose the wrapped client on every request:
 
 ```ts
-import { app } from "@usehyper/core"
+import { Hyper, notFound, ok } from "@usehyper/core"
 import { db } from "./db.ts"
 
-export const api = app({
-  decorate: [() => ({ db })],
-  routes: [/* ... */],
-})
-```
-
-Handlers read it via `ctx.db`:
-
-```ts
-route.get("/users/:id").handle(async ({ params, ctx }) => {
-  const user = await ctx.db.query.users.findFirst({
-    where: (u, { eq }) => eq(u.id, params.id),
+export default new Hyper()
+  .decorate(() => ({ db }))
+  .get("/users/:id", async ({ ctx, params }) => {
+    const user = await ctx.db.query.users.findFirst({
+      where: (u, { eq }) => eq(u.id, params.id),
+    })
+    return user ? ok(user) : notFound({ code: "not_found" })
   })
-  return user ? ok(user) : notFound()
-})
+  .listen(3000)
 ```
 
 ## Migrations
@@ -57,9 +51,10 @@ owns schema; Hyper never touches it.
 Swap in an in-memory SQLite for isolated tests:
 
 ```ts
-import { drizzle } from "drizzle-orm/bun-sqlite"
 import { Database } from "bun:sqlite"
+import { drizzle } from "drizzle-orm/bun-sqlite"
+import { Hyper } from "@usehyper/core"
 
 const testDb = drizzle(new Database(":memory:"))
-const scoped = api.test({ decorate: () => ({ db: testDb }) })
+const testApp = new Hyper().decorate(() => ({ db: testDb })) /* …routes… */
 ```

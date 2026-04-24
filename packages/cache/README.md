@@ -11,8 +11,13 @@ bun add @usehyper/cache
 ## Usage
 
 ```ts
+import { Hyper, ok } from "@usehyper/core"
 import { cache } from "@usehyper/cache"
-route.get("/feed").use(cache({ maxAgeMs: 60_000 })).handle(...)
+
+export default new Hyper()
+  .use(cache({ maxAgeMs: 60_000 }))
+  .get("/feed", async () => ok(await loadFeed()))
+  .listen(3000)
 ```
 
 ## Docs

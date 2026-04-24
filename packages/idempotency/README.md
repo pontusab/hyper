@@ -1,6 +1,6 @@
 # @usehyper/idempotency
 
-Idempotency-Key middleware — one-shot result caching for mutating requests.
+`Idempotency-Key` middleware — one-shot result caching for mutating requests.
 
 ## Install
 
@@ -11,8 +11,12 @@ bun add @usehyper/idempotency
 ## Usage
 
 ```ts
+import { Hyper } from "@usehyper/core"
 import { idempotency } from "@usehyper/idempotency"
-app({ use: [idempotency()] })
+
+export default new Hyper()
+  .use(idempotency())
+  .listen(3000)
 ```
 
 ## Docs

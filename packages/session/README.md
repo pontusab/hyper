@@ -11,8 +11,14 @@ bun add @usehyper/session
 ## Usage
 
 ```ts
-import { session, csrfGuard } from "@usehyper/session"
-app({ use: [session({ secret: env.SESSION_SECRET }), csrfGuard()] })
+import { Hyper } from "@usehyper/core"
+import { csrfGuard, session } from "@usehyper/session"
+
+export default new Hyper()
+  .use(session({ secret: process.env.SESSION_SECRET! }))
+  .use(csrfGuard())
+  .get("/me", ({ ctx }) => ({ session: ctx.session }))
+  .listen(3000)
 ```
 
 ## Docs

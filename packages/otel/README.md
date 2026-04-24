@@ -11,8 +11,12 @@ bun add @usehyper/otel
 ## Usage
 
 ```ts
+import { Hyper } from "@usehyper/core"
 import { otelMiddleware } from "@usehyper/otel"
-app({ use: [otelMiddleware()] })
+
+export default new Hyper()
+  .use(otelMiddleware())
+  .listen(3000)
 ```
 
 ## Docs

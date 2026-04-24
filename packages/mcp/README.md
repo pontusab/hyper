@@ -1,6 +1,6 @@
 # @usehyper/mcp
 
-Model Context Protocol (MCP) adapter for Hyper.
+Model Context Protocol (MCP) adapter for Hyper — turn any Hyper app into an MCP server.
 
 ## Install
 
@@ -11,8 +11,12 @@ bun add @usehyper/mcp
 ## Usage
 
 ```ts
+import { Hyper, ok } from "@usehyper/core"
 import { mcpServer } from "@usehyper/mcp"
-const server = mcpServer(api)
+
+const app = new Hyper().get("/ping", () => ok({ pong: true }))
+
+const server = mcpServer(app)
 Bun.serve({ port: 5174, fetch: server.handle })
 ```
 

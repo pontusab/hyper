@@ -1,6 +1,6 @@
 # @usehyper/subscribe
 
-route.subscribe() primitive — projects to SSE, MCP resource notifications, tRPC subscriptions.
+`subscribe()` primitive — projects to SSE, MCP resource notifications, tRPC subscriptions.
 
 ## Install
 
@@ -11,8 +11,16 @@ bun add @usehyper/subscribe
 ## Usage
 
 ```ts
+import { Hyper } from "@usehyper/core"
 import { subscribe } from "@usehyper/subscribe"
-route.get("/events").pipe(subscribe(async function* () { yield { type: "tick" } }))
+
+export default new Hyper()
+  .use(
+    subscribe("/events", async function* () {
+      yield { data: { type: "tick", at: Date.now() } }
+    }),
+  )
+  .listen(3000)
 ```
 
 ## Docs

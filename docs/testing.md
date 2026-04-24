@@ -1,33 +1,36 @@
 # Testing Hyper apps
 
-Hyper ships `@usehyper/testing` with everything you need to write fast, deterministic
-tests against an in-process app — no sockets, no ports, no fixtures to wire up.
+Hyper ships `@usehyper/testing` with everything you need to write fast,
+deterministic tests against an in-process app — no sockets, no ports,
+no fixtures to wire up.
 
 ```ts
-import { app, route, ok } from "@usehyper/core"
-import { assertResponse, call, asUser, memoryKv } from "@usehyper/testing"
+import { Hyper, ok } from "@usehyper/core"
+import { asUser, assertResponse, call } from "@usehyper/testing"
 
-const api = app({
-  routes: [route.get("/me").handle(({ ctx }) => ok({ id: ctx.user.id }))],
-})
+const app = new Hyper()
+  .decorate(() => asUser({ id: "u1", roles: ["admin"] }))
+  .get("/me", ({ ctx }) => ok({ id: ctx.user.id }))
 
-const test = api.test({ ctx: asUser({ id: "u1", roles: ["admin"] }) })
-const res = await call(test, "GET", "/me")
+const res = await call(app, "GET", "/me")
 assertResponse(res).isOk().jsonMatches({ id: "u1" })
 ```
+
+`call` accepts both `Hyper` instances (returned from `new Hyper()`) and
+built `HyperApp` values, so the same helpers work for unit and
+integration tests.
 
 ## What you get
 
 | Helper | Use for |
 | --- | --- |
-| `app.test(overrides)` | Clone the app with swapped env, ctx, plugins |
 | `call(app, method, path, init)` | Shortcut for `app.fetch(new Request(...))` |
 | `fakeRequest(method, path, init)` | Build a `Request` with JSON body + headers |
 | `assertResponse(res)` | Fluent matchers: `isOk`, `isError`, `jsonMatches`, `hasHeader` |
 | `asUser({ id, roles })` | Produce a ctx stub satisfying `AppContext["user"]` |
 | `memoryKv()` / `memoryDb()` / `memoryRateLimiter()` | In-memory store stand-ins |
 | `testClock()` / `useTestClock()` / `advanceTime(ms)` | Deterministic time |
-| `captureEvents(app)` | Collect every `log.event()` for assertions |
+| `captureEvents(app)` | Collect every `ctx.log.event()` for assertions |
 | `mockPlugin({...})` | One-shot plugin for tests |
 | `mockCtx({...})` | Typed `AppContext` stub |
 | `snapshotManifest(app)` | Capture OpenAPI / MCP / client for snapshot tests |
@@ -38,7 +41,8 @@ assertResponse(res).isOk().jsonMatches({ id: "u1" })
 ## Deterministic time
 
 ```ts
-import { useTestClock, advanceTime } from "@usehyper/testing"
+import { advanceTime, useTestClock } from "@usehyper/testing"
+
 useTestClock()
 // `Date.now()` and `setTimeout` now step forward only when you say so.
 advanceTime(5_000)
@@ -48,8 +52,9 @@ advanceTime(5_000)
 
 ```ts
 import { captureEvents } from "@usehyper/testing"
-const events = captureEvents(api)
-await call(api, "POST", "/orders", { body: { id: "o1" } })
+
+const events = captureEvents(app)
+await call(app, "POST", "/orders", { body: { id: "o1" } })
 expect(events.find((e) => e.name === "order.placed")).toBeDefined()
 ```
 
@@ -57,6 +62,7 @@ expect(events.find((e) => e.name === "order.placed")).toBeDefined()
 
 ```ts
 import { expectTypeOf } from "@usehyper/testing"
+
 expectTypeOf<Input<typeof users.list>>().toEqualTypeOf<void>()
 ```
 
@@ -64,17 +70,18 @@ expectTypeOf<Input<typeof users.list>>().toEqualTypeOf<void>()
 
 ```ts
 import { fuzzRoute } from "@usehyper/testing/fuzz"
-const report = await fuzzRoute(api, "POST /users")
+
+const report = await fuzzRoute(app, "POST /users")
 expect(report.ok).toBe(true)
 ```
 
-The built-in corpus covers prototype pollution, path traversal, oversized
-payloads, method-override smuggling, malformed JSON, CSRF, and a dozen other
-common mistakes. Feed your own via `{ extraCases: [...] }`.
+The built-in corpus covers prototype pollution, path traversal,
+oversized payloads, method-override smuggling, malformed JSON, CSRF, and
+a dozen other common mistakes. Feed your own via `{ extraCases: [...] }`.
 
 ## `hyper test` CLI
 
-```
+```bash
 hyper test                   # example contracts + bun:test
 hyper test --fuzz            # + run fuzzRoute against every route
 hyper test --types           # + run tsgo --noEmit
@@ -85,6 +92,6 @@ hyper test --reporter=junit  # emit test-report.xml
 
 Run `bun test --watch` alongside the app during development:
 
-```
+```bash
 hyper dev --test
 ```

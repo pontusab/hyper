@@ -1,17 +1,23 @@
 # @usehyper/openapi-arktype
 
-SchemaConverter for ArkType to @usehyper/openapi.
+ArkType `SchemaConverter` for `@usehyper/openapi`.
 
 ## Install
 
 ```bash
-bun add @usehyper/openapi-arktype
+bun add @usehyper/openapi @usehyper/openapi-arktype arktype
 ```
 
 ## Usage
 
 ```ts
+import { Hyper } from "@usehyper/core"
+import { openapiPlugin } from "@usehyper/openapi"
 import { arktypeConverter } from "@usehyper/openapi-arktype"
+
+export default new Hyper()
+  .use(openapiPlugin({ converter: arktypeConverter }))
+  .listen(3000)
 ```
 
 ## Docs

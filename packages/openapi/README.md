@@ -1,19 +1,23 @@
 # @usehyper/openapi
 
-OpenAPI 3.1 serializer + Swagger UI for Hyper. Pluggable SchemaConverter.
+OpenAPI 3.1 serializer + Swagger UI for Hyper. Pluggable `SchemaConverter`.
 
 ## Install
 
 ```bash
-bun add @usehyper/openapi
+bun add @usehyper/openapi @usehyper/openapi-zod
 ```
 
 ## Usage
 
 ```ts
+import { Hyper } from "@usehyper/core"
 import { openapiPlugin } from "@usehyper/openapi"
 import { zodConverter } from "@usehyper/openapi-zod"
-app({ plugins: [openapiPlugin({ converter: zodConverter })] })
+
+export default new Hyper()
+  .use(openapiPlugin({ converter: zodConverter }))
+  .listen(3000)
 ```
 
 ## Docs

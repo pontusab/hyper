@@ -11,8 +11,12 @@ bun add @usehyper/csp
 ## Usage
 
 ```ts
+import { Hyper } from "@usehyper/core"
 import { cspPlugin } from "@usehyper/csp"
-app({ plugins: [cspPlugin({ strictApi: true })] })
+
+export default new Hyper()
+  .use(cspPlugin({ strictApi: true }))
+  .listen(3000)
 ```
 
 ## Docs

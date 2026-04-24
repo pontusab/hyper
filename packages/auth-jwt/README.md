@@ -1,6 +1,6 @@
 # @usehyper/auth-jwt
 
-JWT auth middleware + .auth() route builder sugar for Hyper.
+JWT auth plugin for Hyper — bearer-token verification, typed `ctx.user`, role/scope guards.
 
 ## Install
 
@@ -11,8 +11,13 @@ bun add @usehyper/auth-jwt
 ## Usage
 
 ```ts
+import { Hyper, ok } from "@usehyper/core"
 import { authJwtPlugin } from "@usehyper/auth-jwt"
-app({ plugins: [authJwtPlugin({ secretEnv: "JWT_SECRET" })] })
+
+export default new Hyper()
+  .use(authJwtPlugin({ secretEnv: "JWT_SECRET" }))
+  .get("/me", ({ ctx }) => ok({ user: ctx.user }))
+  .listen(3000)
 ```
 
 ## Docs
