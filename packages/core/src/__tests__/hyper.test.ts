@@ -16,6 +16,7 @@
 
 import { afterAll, describe, expect, test } from "bun:test"
 import { Hyper, group, hyper, ok, route } from "../index.ts"
+import type { StandardSchemaV1 } from "../standard-schema.ts"
 
 // ---------------------------------------------------------------------
 // Basic verbs + string shortcut
@@ -38,7 +39,7 @@ describe("Hyper — verb shortcuts", () => {
   })
 
   test("GET with opts + handler wires params/query/body schemas", async () => {
-    const schema = {
+    const schema: StandardSchemaV1<unknown, { name: string }> = {
       "~standard": {
         version: 1 as const,
         vendor: "test",
@@ -215,7 +216,7 @@ describe("Hyper — lifecycle config", () => {
   test(".decorate adds static ctx visible to handlers", async () => {
     const app = new Hyper()
       .decorate(() => ({ counter: 42 }))
-      .get("/", ({ ctx }) => ok({ counter: (ctx as { counter: number }).counter }))
+      .get("/", ({ ctx }) => ok({ counter: ctx.counter }))
 
     const res = await app.fetch(new Request("http://x/"))
     expect(await res.json()).toEqual({ counter: 42 })
@@ -228,7 +229,7 @@ describe("Hyper — lifecycle config", () => {
         calls++
         return { tick: calls }
       })
-      .get("/", ({ ctx }) => ok({ tick: (ctx as { tick: number }).tick }))
+      .get("/", ({ ctx }) => ok({ tick: ctx.tick }))
 
     const r1 = await app.fetch(new Request("http://x/"))
     const r2 = await app.fetch(new Request("http://x/"))

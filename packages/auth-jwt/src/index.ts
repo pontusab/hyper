@@ -15,6 +15,15 @@ import { JwtError, type JwtPayload, type VerifyOptions, verifyJwt } from "./jwt.
 export { JwtError, verifyJwt } from "./jwt.ts"
 export type { JwtAlgorithm, JwtHeader, JwtPayload, VerifyOptions } from "./jwt.ts"
 
+/**
+ * Default `ctx.user` shape when no `loadUser` is supplied. Mirrors the
+ * populated fields in the middleware below.
+ */
+export interface AuthUser {
+  readonly sub: string
+  readonly scope?: string | readonly string[]
+}
+
 export interface AuthJwtConfig extends VerifyOptions {
   /** Optional: map verified payload → ctx.user. */
   readonly loadUser?: (payload: JwtPayload) => unknown | Promise<unknown>
@@ -46,7 +55,16 @@ export function validateJwtSecret(
 
 declare module "@hyper/core" {
   interface AppContext {
-    readonly user?: unknown
+    /**
+     * The authenticated user. Defaults to the `AuthUser` shape
+     * populated by the middleware when no `loadUser` is supplied.
+     *
+     * To type a custom shape, augment this interface in your app:
+     *   declare module "@hyper/core" {
+     *     interface AppContext { user?: MyUser }
+     *   }
+     */
+    readonly user?: AuthUser
     readonly jwt?: JwtPayload
   }
 }

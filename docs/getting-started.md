@@ -56,7 +56,7 @@ Hyper sub-apps compose through a single polymorphic `.use()`:
 import { Hyper, ok } from "@hyper/core"
 export default new Hyper({ prefix: "/users" })
   .get("/", () => ok([{ id: 1 }]))
-  .get("/:id", ({ params }) => ok({ id: (params as { id: string }).id }))
+  .get("/:id", ({ params }) => ok({ id: params.id }))
 ```
 
 ```ts

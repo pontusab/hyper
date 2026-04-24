@@ -74,12 +74,38 @@ export interface ListenOptions {
   readonly drain?: boolean
 }
 
+// ---------------------------------------------------------------------
+// Type helpers
+// ---------------------------------------------------------------------
+
+/**
+ * Extract the `:param` segments from a path literal as a `{ [name]: string }`
+ * record. Falls back to an empty record when the path has no params — so
+ * destructuring `({ params })` stays valid on schema-less static paths.
+ */
+export type PathParams<P extends string> = P extends `${string}:${infer Param}/${infer Rest}`
+  ? { [K in Param | keyof PathParams<`/${Rest}`>]: string }
+  : P extends `${string}:${infer Param}`
+    ? { [K in Param]: string }
+    : Record<string, never>
+
+/**
+ * Narrow the output of a `StandardSchemaV1` or fall back to `Fallback`
+ * when the schema is absent (undefined in the options bag).
+ */
+export type InferSchema<S, Fallback> = S extends StandardSchemaV1<unknown, infer O> ? O : Fallback
+
 /** Per-route options accepted by the verb shortcuts. */
-export interface RouteOpts {
-  readonly params?: StandardSchemaV1
-  readonly query?: StandardSchemaV1
-  readonly body?: StandardSchemaV1
-  readonly headers?: StandardSchemaV1
+export interface RouteOpts<
+  P extends StandardSchemaV1 | undefined = StandardSchemaV1 | undefined,
+  Q extends StandardSchemaV1 | undefined = StandardSchemaV1 | undefined,
+  B extends StandardSchemaV1 | undefined = StandardSchemaV1 | undefined,
+  H extends StandardSchemaV1 | undefined = StandardSchemaV1 | undefined,
+> {
+  readonly params?: P
+  readonly query?: Q
+  readonly body?: B
+  readonly headers?: H
   readonly meta?: RouteMeta
   readonly use?: readonly Middleware[]
   /** Declared thrown-error shapes keyed by HTTP status. */
@@ -88,8 +114,20 @@ export interface RouteOpts {
   readonly errors?: Record<string, StandardSchemaV1>
 }
 
-/** Handler function passed to verb shortcuts. */
-export type VerbHandler = (ctx: HandlerCtx) => HandlerReturn | Promise<HandlerReturn>
+/** The typed handler signature for `new Hyper<Ctx>().<verb>(path, [opts,] handler)`. */
+export type VerbHandler<
+  Path extends string = string,
+  Opts extends RouteOpts | undefined = undefined,
+  Ctx extends AppContext = AppContext,
+> = (
+  ctx: HandlerCtx<
+    Opts extends { params: infer P } ? InferSchema<P, PathParams<Path>> : PathParams<Path>,
+    Opts extends { query: infer Q } ? InferSchema<Q, unknown> : unknown,
+    Opts extends { body: infer B } ? InferSchema<B, unknown> : unknown,
+    Opts extends { headers: infer H } ? InferSchema<H, unknown> : unknown,
+    Ctx
+  >,
+) => HandlerReturn | Promise<HandlerReturn>
 
 /**
  * Polymorphic dispatch — `.use()` accepts any of these shapes.
@@ -104,7 +142,8 @@ export type VerbHandler = (ctx: HandlerCtx) => HandlerReturn | Promise<HandlerRe
  *   7. Plain object   — walked as an ESM namespace / PlainRouter.
  */
 export type UseArg =
-  | Hyper
+  // biome-ignore lint/suspicious/noExplicitAny: variance hole for heterogeneous Hyper<Ctx>
+  | Hyper<any>
   | GroupBuilder
   | RouteGroup
   | Route
@@ -113,17 +152,13 @@ export type UseArg =
   | Middleware
   | Record<string, unknown>
 
-interface PendingSub {
-  readonly sub: Hyper
-  readonly prefix: string
-}
-
 /** Brand used for duck-typed recognition across package boundaries. */
-export const HYPER_BUILDER_BRAND: unique symbol = Symbol.for("hyper.builder")
+export const HYPER_BUILDER_BRAND = "__hyperBuilder__" as const
 
 // Shared state for graceful-shutdown handler. One process-level
 // listener per signal no matter how many `Hyper` instances `.listen()`.
-const activeServers: Set<Hyper> = new Set()
+// biome-ignore lint/suspicious/noExplicitAny: heterogeneous by design
+const activeServers: Set<Hyper<any>> = new Set()
 let drainInstalled = false
 
 function installDrainHandlersOnce(): void {
@@ -158,9 +193,9 @@ function installDrainHandlersOnce(): void {
  * `.listen()` has produced a `HyperApp`, subsequent mutations transparently
  * invalidate the cache and rebuild on next access.
  */
-export class Hyper {
+export class Hyper<Ctx extends AppContext = AppContext> {
   /** Duck-typed brand so CLI tooling can recognize a `Hyper` across package boundaries. */
-  readonly [HYPER_BUILDER_BRAND] = true
+  readonly __hyperBuilder__ = true
 
   readonly #prefix: string
   readonly #options: HyperOptions
@@ -172,8 +207,8 @@ export class Hyper {
   #routerConfig?: PlainRouterConfig
   #envConfig?: EnvConfigLike
   #securityOverrides: Partial<SecurityDefaults> = {}
-  #built?: HyperApp
-  #server?: Server
+  #built: HyperApp | undefined
+  #server: Server<unknown> | undefined
 
   constructor(opts: HyperOptions = {}) {
     this.#prefix = normalizePrefix(opts.prefix ?? "")
@@ -192,7 +227,7 @@ export class Hyper {
   }
 
   /** The live `Bun.Server` — populated after `.listen()`. */
-  get server(): Server | undefined {
+  get server(): Server<unknown> | undefined {
     return this.#server
   }
 
@@ -220,44 +255,72 @@ export class Hyper {
   // Verb shortcuts
   // -----------------------------------------------------------------
 
-  get(path: string, handler: VerbHandler): this
-  get(path: string, opts: RouteOpts, handler: VerbHandler): this
+  get<Path extends string>(path: Path, handler: VerbHandler<Path, undefined, Ctx>): this
+  get<Path extends string, const O extends RouteOpts>(
+    path: Path,
+    opts: O,
+    handler: VerbHandler<Path, O, Ctx>,
+  ): this
   get(path: string, body: string): this
   get(path: string, a: unknown, b?: unknown): this {
     return this.#addRoute("GET", path, a, b)
   }
-  post(path: string, handler: VerbHandler): this
-  post(path: string, opts: RouteOpts, handler: VerbHandler): this
+  post<Path extends string>(path: Path, handler: VerbHandler<Path, undefined, Ctx>): this
+  post<Path extends string, const O extends RouteOpts>(
+    path: Path,
+    opts: O,
+    handler: VerbHandler<Path, O, Ctx>,
+  ): this
   post(path: string, body: string): this
   post(path: string, a: unknown, b?: unknown): this {
     return this.#addRoute("POST", path, a, b)
   }
-  put(path: string, handler: VerbHandler): this
-  put(path: string, opts: RouteOpts, handler: VerbHandler): this
+  put<Path extends string>(path: Path, handler: VerbHandler<Path, undefined, Ctx>): this
+  put<Path extends string, const O extends RouteOpts>(
+    path: Path,
+    opts: O,
+    handler: VerbHandler<Path, O, Ctx>,
+  ): this
   put(path: string, body: string): this
   put(path: string, a: unknown, b?: unknown): this {
     return this.#addRoute("PUT", path, a, b)
   }
-  patch(path: string, handler: VerbHandler): this
-  patch(path: string, opts: RouteOpts, handler: VerbHandler): this
+  patch<Path extends string>(path: Path, handler: VerbHandler<Path, undefined, Ctx>): this
+  patch<Path extends string, const O extends RouteOpts>(
+    path: Path,
+    opts: O,
+    handler: VerbHandler<Path, O, Ctx>,
+  ): this
   patch(path: string, body: string): this
   patch(path: string, a: unknown, b?: unknown): this {
     return this.#addRoute("PATCH", path, a, b)
   }
-  delete(path: string, handler: VerbHandler): this
-  delete(path: string, opts: RouteOpts, handler: VerbHandler): this
+  delete<Path extends string>(path: Path, handler: VerbHandler<Path, undefined, Ctx>): this
+  delete<Path extends string, const O extends RouteOpts>(
+    path: Path,
+    opts: O,
+    handler: VerbHandler<Path, O, Ctx>,
+  ): this
   delete(path: string, body: string): this
   delete(path: string, a: unknown, b?: unknown): this {
     return this.#addRoute("DELETE", path, a, b)
   }
-  head(path: string, handler: VerbHandler): this
-  head(path: string, opts: RouteOpts, handler: VerbHandler): this
+  head<Path extends string>(path: Path, handler: VerbHandler<Path, undefined, Ctx>): this
+  head<Path extends string, const O extends RouteOpts>(
+    path: Path,
+    opts: O,
+    handler: VerbHandler<Path, O, Ctx>,
+  ): this
   head(path: string, body: string): this
   head(path: string, a: unknown, b?: unknown): this {
     return this.#addRoute("HEAD", path, a, b)
   }
-  options(path: string, handler: VerbHandler): this
-  options(path: string, opts: RouteOpts, handler: VerbHandler): this
+  options<Path extends string>(path: Path, handler: VerbHandler<Path, undefined, Ctx>): this
+  options<Path extends string, const O extends RouteOpts>(
+    path: Path,
+    opts: O,
+    handler: VerbHandler<Path, O, Ctx>,
+  ): this
   options(path: string, body: string): this
   options(path: string, a: unknown, b?: unknown): this {
     return this.#addRoute("OPTIONS", path, a, b)
@@ -282,7 +345,8 @@ export class Hyper {
   }
 
   /** Polymorphic `.use()` — see {@link UseArg}. */
-  use(prefix: string, sub: Hyper): this
+  // biome-ignore lint/suspicious/noExplicitAny: sub-app Ctx is opaque at this boundary
+  use(prefix: string, sub: Hyper<any>): this
   use(arg: UseArg): this
   use(arg1: unknown, arg2?: unknown): this {
     this.#invalidate()
@@ -326,18 +390,28 @@ export class Hyper {
     return this
   }
 
-  /** Static context decoration (db, redis, caches) — constructed once at boot. */
-  decorate<A extends object>(factory: DecorateFactory<never, A>): this {
+  /**
+   * Static context decoration (db, redis, caches) — constructed once at boot.
+   * Returns a `Hyper` with the widened `Ctx` so downstream handlers see the
+   * added shape without casting.
+   */
+  decorate<A extends object>(factory: (env?: unknown) => A | Promise<A>): Hyper<Ctx & Readonly<A>> {
     this.#invalidate()
     this.#decorators.push(factory as DecorateFactory)
-    return this
+    return this as unknown as Hyper<Ctx & Readonly<A>>
   }
 
-  /** Per-request context derivation. */
-  derive<A extends object>(factory: DeriveFactory<never, AppContext, A>): this {
+  /**
+   * Per-request context derivation. Runs once per request, after decorators
+   * and before the handler. Returned fields merge into `ctx` and are visible
+   * to the handler with full type inference.
+   */
+  derive<A extends object>(
+    factory: (args: { ctx: Ctx; env?: unknown; req: Request }) => A | Promise<A>,
+  ): Hyper<Ctx & Readonly<A>> {
     this.#invalidate()
-    this.#derives.push(factory as DeriveFactory)
-    return this
+    this.#derives.push(factory as unknown as DeriveFactory)
+    return this as unknown as Hyper<Ctx & Readonly<A>>
   }
 
   /** Declare env schema. Parsed at boot; `parseEnv` throws on bad input. */
@@ -483,12 +557,12 @@ export class Hyper {
     }
 
     let opts: RouteOpts | undefined
-    let handler: VerbHandler
+    let handler: (ctx: HandlerCtx) => HandlerReturn | Promise<HandlerReturn>
     if (maybeHandler !== undefined) {
       opts = optsOrHandler as RouteOpts
-      handler = maybeHandler as VerbHandler
+      handler = maybeHandler as (ctx: HandlerCtx) => HandlerReturn | Promise<HandlerReturn>
     } else {
-      handler = optsOrHandler as VerbHandler
+      handler = optsOrHandler as (ctx: HandlerCtx) => HandlerReturn | Promise<HandlerReturn>
     }
 
     const fullPath = joinPaths(this.#prefix, path)
@@ -534,7 +608,8 @@ export class Hyper {
     }
   }
 
-  #useSubApp(sub: Hyper, extraPrefix: string): this {
+  // biome-ignore lint/suspicious/noExplicitAny: heterogeneous sub-app Ctx
+  #useSubApp(sub: Hyper<any>, extraPrefix: string): this {
     // Use the sub-app's already-built route list — its own prefix
     // (from `new Hyper({ prefix })`) is already baked into each path.
     const built = sub.build()

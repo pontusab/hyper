@@ -13,7 +13,7 @@ bun run dev
 - **Bun-first, zero-alloc hot paths.** Hand-rolled router, lazy body parsing, `Bun.CookieMap`, `Bun.password`, `Bun.hash.xxHash3`. `staticResponse()` shortcuts mount as native `Bun.serve` routes and bypass the handler entirely.
 - **Secure by default.** HSTS (prod-only), method-override rejection, 1MB body cap, prototype-pollution guards, per-route timeouts, 32-byte secret floor on JWT/session, strict CORS wildcard rejection, CSRF double-submit, auth endpoint rate-limiting.
 - **AI-native.** Every route projects to OpenAPI 3.1, a typed RPC client, and an MCP manifest from the same definition. `hyper mcp` serves your app to any MCP-aware agent.
-- **One-setup DX.** `app({ routes })` + `route.<method>(path).body(Schema).handle(...)` is the whole story. Typed ctx, typed errors (`.throws({...})` / `.errors({...})`), fluent middleware.
+- **One-setup DX.** `new Hyper().<method>(path, opts?, handler)` is the whole story — verb shortcuts for simple routes, the full `route.<method>(path).body(Schema).handle(...)` builder when you want it, plus a single polymorphic `.use()` to compose sub-apps, plugins, middleware, and ESM namespaces. Typed ctx, typed errors (`.throws({...})` / `.errors({...})`), fluent middleware.
 - **Testable in milliseconds.** `@hyper/testing` ships `app.test()`, memory stores, deterministic time, event capture, fuzz corpus, type-level helpers. All 191 framework tests run in ~150ms.
 
 ## Quick example
@@ -48,7 +48,7 @@ import { z } from "zod"
 
 export default new Hyper({ prefix: "/users" })
   .get("/", () => ok([{ id: 1 }]))
-  .get("/:id", ({ params }) => ok({ id: (params as { id: string }).id }))
+  .get("/:id", ({ params }) => ok({ id: params.id }))
   .post(
     "/",
     { body: z.object({ name: z.string() }) },

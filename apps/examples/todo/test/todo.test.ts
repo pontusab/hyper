@@ -1,52 +1,32 @@
 import { beforeEach, describe, expect, test } from "bun:test"
-import { type HyperApp, app, conflict, created, notFound, ok, route } from "@hyper/core"
+import { Hyper, conflict, created, notFound, ok } from "@hyper/core"
 import { hyperLog, memoryDrain } from "@hyper/log"
 import { CreateTodo, TodoParams } from "../src/schemas.ts"
 import { memoryStore } from "../src/store.ts"
 
-// Build a fresh app per-test so the store is isolated.
-function buildApp(): { app: HyperApp; drain: ReturnType<typeof memoryDrain> } {
+function buildApp() {
   const drain = memoryDrain()
-  const health = route.get("/health").handle(() => ok({ ok: true }))
-  const list = route.get("/todos").handle(async (c) => {
-    return ok(await (c.ctx as unknown as { store: ReturnType<typeof memoryStore> }).store.list())
-  })
-  const create = route
-    .post("/todos")
-    .body(CreateTodo)
-    .handle(async (c) => {
-      const store = (c.ctx as unknown as { store: ReturnType<typeof memoryStore> }).store
-      return created(await store.create({ title: c.body.title }))
+  const app = new Hyper()
+    .decorate(() => ({ store: memoryStore() }))
+    .use(hyperLog({ drains: [drain], service: "todo-example" }))
+    .get("/health", () => ok({ ok: true }))
+    .get("/todos", async ({ ctx }) => ok(await ctx.store.list()))
+    .post("/todos", { body: CreateTodo }, async ({ ctx, body }) =>
+      created(await ctx.store.create({ title: body.title })),
+    )
+    .patch("/todos/:id", { params: TodoParams }, async ({ ctx, params }) => {
+      const updated = await ctx.store.toggle(params.id)
+      return updated ? ok(updated) : notFound({ code: "not_found" })
     })
-  const toggle = route
-    .patch("/todos/:id")
-    .params(TodoParams)
-    .handle(async (c) => {
-      const store = (c.ctx as unknown as { store: ReturnType<typeof memoryStore> }).store
-      const updated = await store.toggle(c.params.id)
-      return updated ? ok(updated) : notFound({ id: c.params.id })
+    .delete("/todos/:id", { params: TodoParams }, async ({ ctx, params }) => {
+      const removed = await ctx.store.remove(params.id)
+      return removed ? ok({ removed: params.id }) : conflict({ code: "conflict" })
     })
-  const remove = route
-    .delete("/todos/:id")
-    .params(TodoParams)
-    .handle(async (c) => {
-      const store = (c.ctx as unknown as { store: ReturnType<typeof memoryStore> }).store
-      const removed = await store.remove(c.params.id)
-      return removed ? ok({ removed: c.params.id }) : conflict({ id: c.params.id })
-    })
-
-  return {
-    app: app({
-      routes: [health, list, create, toggle, remove],
-      decorate: [() => ({ store: memoryStore() })],
-      plugins: [hyperLog({ drains: [drain], service: "todo-example" })],
-    }),
-    drain,
-  }
+  return { app, drain }
 }
 
 describe("todo example", () => {
-  let a: HyperApp
+  let a: ReturnType<typeof buildApp>["app"]
   let drain: ReturnType<typeof memoryDrain>
   beforeEach(() => {
     const built = buildApp()
@@ -61,12 +41,10 @@ describe("todo example", () => {
   })
 
   test("full CRUD flow", async () => {
-    // list: empty
     let res = await a.fetch(new Request("http://localhost/todos"))
     expect(res.status).toBe(200)
     expect(await res.json()).toEqual([])
 
-    // create
     res = await a.fetch(
       new Request("http://localhost/todos", {
         method: "POST",
@@ -75,21 +53,22 @@ describe("todo example", () => {
       }),
     )
     expect(res.status).toBe(201)
-    const created = (await res.json()) as { id: string; title: string; done: boolean }
-    expect(created.title).toBe("buy milk")
-    expect(created.done).toBe(false)
+    const createdTodo = (await res.json()) as { id: string; title: string; done: boolean }
+    expect(createdTodo.title).toBe("buy milk")
+    expect(createdTodo.done).toBe(false)
 
-    // toggle
-    res = await a.fetch(new Request(`http://localhost/todos/${created.id}`, { method: "PATCH" }))
+    res = await a.fetch(
+      new Request(`http://localhost/todos/${createdTodo.id}`, { method: "PATCH" }),
+    )
     expect(res.status).toBe(200)
     const toggled = (await res.json()) as { done: boolean }
     expect(toggled.done).toBe(true)
 
-    // remove
-    res = await a.fetch(new Request(`http://localhost/todos/${created.id}`, { method: "DELETE" }))
+    res = await a.fetch(
+      new Request(`http://localhost/todos/${createdTodo.id}`, { method: "DELETE" }),
+    )
     expect(res.status).toBe(200)
 
-    // list: empty again
     res = await a.fetch(new Request("http://localhost/todos"))
     expect(await res.json()).toEqual([])
   })
@@ -115,7 +94,8 @@ describe("todo example", () => {
   test("emits one structured log event per request", async () => {
     await a.fetch(new Request("http://localhost/health"))
     expect(drain.events).toHaveLength(1)
-    const event = drain.events[0]!
+    const event = drain.events[0]
+    if (!event) throw new Error("expected a log event")
     expect(event.service).toBe("todo-example")
     expect(event.status).toBe(200)
     expect(event.path).toBe("/health")

@@ -115,36 +115,31 @@ export default new Hyper()
 
 function todoTemplate(opts: ScaffoldOptions): readonly ScaffoldFile[] {
   const files = [...minimalTemplate(opts)]
-  const todo = `import { Hyper, conflict, notFound, ok } from "@hyper/core"
+  const todo = `import type { StandardSchemaV1 } from "@hyper/core"
+import { Hyper, conflict, notFound, ok } from "@hyper/core"
 
 interface Todo { id: string; title: string; done: boolean }
 const store = new Map<string, Todo>()
 
+const CreateTodo: StandardSchemaV1<unknown, { id: string; title: string }> = {
+  "~standard": {
+    version: 1,
+    vendor: "inline",
+    validate: (v: unknown) => ({ value: v as { id: string; title: string } }),
+  },
+}
+
 export default new Hyper({ prefix: "/todos" })
   .get("/", () => ok([...store.values()]))
-  .post(
-    "/",
-    {
-      body: {
-        "~standard": {
-          version: 1,
-          vendor: "inline",
-          validate: (v: unknown) => ({ value: v as { id: string; title: string } }),
-        },
-      },
-    },
-    ({ body }) => {
-      const b = body as { id: string; title: string }
-      if (store.has(b.id)) return conflict({ id: b.id })
-      const t: Todo = { id: b.id, title: b.title, done: false }
-      store.set(t.id, t)
-      return ok(t)
-    },
-  )
+  .post("/", { body: CreateTodo }, ({ body }) => {
+    if (store.has(body.id)) return conflict({ code: "conflict" })
+    const t: Todo = { id: body.id, title: body.title, done: false }
+    store.set(t.id, t)
+    return ok(t)
+  })
   .get("/:id", ({ params }) => {
-    const id = String((params as { id: string }).id)
-    const t = store.get(id)
-    return t ? ok(t) : notFound({ id })
+    const t = store.get(params.id)
+    return t ? ok(t) : notFound({ code: "not_found" })
   })
   .listen(Number(process.env.PORT ?? 3000))
 `

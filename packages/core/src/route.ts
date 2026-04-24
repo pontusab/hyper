@@ -45,7 +45,13 @@ export interface BuilderState {
 
 export type InferIn<S> = S extends StandardSchemaV1<infer _I, infer O> ? O : unknown
 
-export interface HandlerCtx<Params = unknown, Query = unknown, Body = unknown, HeadersT = unknown> {
+export interface HandlerCtx<
+  Params = unknown,
+  Query = unknown,
+  Body = unknown,
+  HeadersT = unknown,
+  Ctx extends import("./types.ts").AppContext = import("./types.ts").AppContext,
+> {
   readonly req: Request
   readonly url: URL
   readonly params: Params
@@ -54,7 +60,7 @@ export interface HandlerCtx<Params = unknown, Query = unknown, Body = unknown, H
   readonly headers: HeadersT
   readonly cookies: () => import("bun").CookieMap
   /** Decorated app context — `ctx.log`, `ctx.db`, etc. */
-  readonly ctx: import("./types.ts").AppContext
+  readonly ctx: Ctx
 }
 
 /** A Route that can also be invoked as a plain async function. */
