@@ -1,7 +1,7 @@
 /**
  * bun:sqlite-backed CacheStore. Persistent, zero-dependency, ~10k rps.
  *
- *   import { sqliteCache } from "@hyper/cache/sqlite"
+ *   import { sqliteCache } from "@usehyper/cache/sqlite"
  *   const store = sqliteCache({ path: "./cache.sqlite" })
  *   use(cache({ maxAge: 60, store }))
  *

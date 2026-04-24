@@ -1,17 +1,17 @@
-# @hyper/trpc
+# @usehyper/trpc
 
 tRPC bridge — mount tRPC into Hyper, or convert a tRPC router to Hyper routes.
 
 ## Install
 
 ```bash
-bun add @hyper/trpc
+bun add @usehyper/trpc
 ```
 
 ## Usage
 
 ```ts
-import { toTrpcRouter } from "@hyper/trpc"
+import { toTrpcRouter } from "@usehyper/trpc"
 export const trpcRouter = toTrpcRouter(api, { t })
 ```
 

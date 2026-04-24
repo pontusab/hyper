@@ -1,5 +1,5 @@
 /**
- * @hyper/cli — programmatic entry for embedding.
+ * @usehyper/cli — programmatic entry for embedding.
  */
 
 export { parseArgs } from "./args.ts"

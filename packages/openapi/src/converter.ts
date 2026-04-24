@@ -2,12 +2,12 @@
  * SchemaConverter — the pluggable boundary.
  *
  * A converter inspects a Standard Schema value and returns an OpenAPI
- * JSON Schema fragment. The base @hyper/openapi package ships a
+ * JSON Schema fragment. The base @usehyper/openapi package ships a
  * `fallbackConverter` that just emits `type: object`. Integrations like
- * `@hyper/openapi-zod` / `-valibot` / `-arktype` extend this.
+ * `@usehyper/openapi-zod` / `-valibot` / `-arktype` extend this.
  */
 
-import type { StandardSchemaV1 } from "@hyper/core"
+import type { StandardSchemaV1 } from "@usehyper/core"
 
 export type JsonSchema = Record<string, unknown>
 

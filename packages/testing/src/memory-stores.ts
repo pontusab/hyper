@@ -1,10 +1,10 @@
 /**
  * Memory stores — drop-in replacements for the Store shapes that
- * @hyper/cache, @hyper/idempotency, @hyper/rate-limit, @hyper/session
+ * @usehyper/cache, @usehyper/idempotency, @usehyper/rate-limit, @usehyper/session
  * accept. Identical surface, zero persistence, deterministic for tests.
  *
  * These shapes intentionally don't import from the consumer packages —
- * they duplicate the tiny interfaces so `@hyper/testing` can serve any
+ * they duplicate the tiny interfaces so `@usehyper/testing` can serve any
  * of them without cyclic deps.
  */
 

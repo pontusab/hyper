@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test"
-import { app, route } from "@hyper/core"
+import { app, route } from "@usehyper/core"
 import { idempotency } from "../index.ts"
 
-describe("@hyper/idempotency", () => {
+describe("@usehyper/idempotency", () => {
   let calls = 0
   const r = route
     .post("/pay")

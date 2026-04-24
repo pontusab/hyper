@@ -5,7 +5,7 @@
  * MCP  → :5174 (POST JSON-RPC, same app.invoke() path)
  */
 
-import { mcpServer } from "@hyper/mcp"
+import { mcpServer } from "@usehyper/mcp"
 import a from "./app.ts"
 
 const http = Bun.serve({

@@ -1,17 +1,17 @@
-# @hyper/subscribe
+# @usehyper/subscribe
 
 route.subscribe() primitive — projects to SSE, MCP resource notifications, tRPC subscriptions.
 
 ## Install
 
 ```bash
-bun add @hyper/subscribe
+bun add @usehyper/subscribe
 ```
 
 ## Usage
 
 ```ts
-import { subscribe } from "@hyper/subscribe"
+import { subscribe } from "@usehyper/subscribe"
 route.get("/events").pipe(subscribe(async function* () { yield { type: "tick" } }))
 ```
 

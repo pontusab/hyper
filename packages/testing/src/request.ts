@@ -6,7 +6,7 @@
  * without the ceremony of building headers by hand.
  */
 
-import type { HttpMethod } from "@hyper/core"
+import type { HttpMethod } from "@usehyper/core"
 
 export interface FakeRequestInit {
   readonly query?: Record<string, string | number | boolean>
@@ -64,8 +64,8 @@ function toFormData(obj: Record<string, string>): FormData {
 
 /**
  * Partial-ctx helper — produces a `user`-shaped stub for routes guarded
- * by `@hyper/auth-jwt`. Bypasses JWT verify in tests that don't need a
- * signed token; use `@hyper/testing/auth` for real-signed tokens.
+ * by `@usehyper/auth-jwt`. Bypasses JWT verify in tests that don't need a
+ * signed token; use `@usehyper/testing/auth` for real-signed tokens.
  */
 export interface FakeUser {
   readonly id: string

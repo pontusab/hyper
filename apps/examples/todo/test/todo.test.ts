@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test } from "bun:test"
-import { Hyper, conflict, created, notFound, ok } from "@hyper/core"
-import { hyperLog, memoryDrain } from "@hyper/log"
+import { Hyper, conflict, created, notFound, ok } from "@usehyper/core"
+import { hyperLog, memoryDrain } from "@usehyper/log"
 import { CreateTodo, TodoParams } from "../src/schemas.ts"
 import { memoryStore } from "../src/store.ts"
 

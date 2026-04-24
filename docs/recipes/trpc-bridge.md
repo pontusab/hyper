@@ -1,12 +1,12 @@
 # Recipe: tRPC bridge
 
-`@hyper/trpc` gives you a two-way bridge: call Hyper routes from tRPC
+`@usehyper/trpc` gives you a two-way bridge: call Hyper routes from tRPC
 clients, or mount a tRPC router under Hyper.
 
 ## Expose Hyper routes as a tRPC router
 
 ```ts
-import { toTrpcRouter } from "@hyper/trpc"
+import { toTrpcRouter } from "@usehyper/trpc"
 import { initTRPC } from "@trpc/server"
 import { api } from "./app.ts"
 
@@ -22,7 +22,7 @@ Schema definitions — no duplication.
 ## Mount an existing tRPC router under Hyper
 
 ```ts
-import { fromTrpcRouter } from "@hyper/trpc"
+import { fromTrpcRouter } from "@usehyper/trpc"
 import { userRouter } from "./user-router.ts"
 
 const api = app({

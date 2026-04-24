@@ -3,7 +3,7 @@
  *
  * Usage:
  *   import { sql as raw } from "bun"
- *   import { wrapBunSql } from "@hyper/log/bun-sql"
+ *   import { wrapBunSql } from "@usehyper/log/bun-sql"
  *   const sql = wrapBunSql(raw, () => ctx.log)
  */
 

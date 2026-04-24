@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test"
 import { sqliteCache } from "../sqlite.ts"
 
-describe("@hyper/cache/sqlite", () => {
+describe("@usehyper/cache/sqlite", () => {
   test("roundtrips entries and persists headers/body/etag", async () => {
     const s = sqliteCache({ path: ":memory:", maxEntries: 10 })
     const body = new TextEncoder().encode("hello")

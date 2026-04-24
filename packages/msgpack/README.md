@@ -1,17 +1,17 @@
-# @hyper/msgpack
+# @usehyper/msgpack
 
 MessagePack wire format for Hyper — content-negotiated encode/decode.
 
 ## Install
 
 ```bash
-bun add @hyper/msgpack
+bun add @usehyper/msgpack
 ```
 
 ## Usage
 
 ```ts
-import { msgpack } from "@hyper/msgpack"
+import { msgpack } from "@usehyper/msgpack"
 app({ use: [msgpack()] })
 ```
 

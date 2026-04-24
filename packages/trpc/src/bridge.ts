@@ -12,7 +12,7 @@
  * an explicit Hyper route that forwards the request.
  */
 
-import type { HyperPlugin, Middleware } from "@hyper/core"
+import type { HyperPlugin, Middleware } from "@usehyper/core"
 import type { TrpcBridgeOptions, TrpcRouterLike } from "./types.ts"
 
 export function trpcPlugin<Ctx = unknown>(
@@ -24,7 +24,7 @@ export function trpcPlugin<Ctx = unknown>(
   const procedures = trpcAny?._def?.procedures ?? {}
 
   return {
-    name: "@hyper/trpc",
+    name: "@usehyper/trpc",
     async build(app) {
       // The bridge is delivered as an HTTP handler mounted via
       // `trpcHandler(path)` returned below. This `build` hook is a no-op

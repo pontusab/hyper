@@ -15,7 +15,7 @@ requires configuration — it's the default for every `app({...})`.
 | `Strict-Transport-Security` | `max-age=31536000; includeSubDomains` on HTTPS when `NODE_ENV=production` | HSTS never leaks on localhost/dev |
 | `Server` | suppressed | Zero footprinting |
 
-Content Security Policy is opt-in via `@hyper/csp` (sensible strict API
+Content Security Policy is opt-in via `@usehyper/csp` (sensible strict API
 defaults + nonce support for HTML-serving apps).
 
 ## Request hardening
@@ -29,15 +29,15 @@ defaults + nonce support for HTML-serving apps).
   method_override_rejected`. Nothing rewrites the verb.
 - **Request timeout** — global `30s` default; override per-route with
   `.timeout(ms)`.
-- **Explicit CORS** — never `*` by accident. `@hyper/cors` refuses any
+- **Explicit CORS** — never `*` by accident. `@usehyper/cors` refuses any
   config that would emit `*` + `credentials: true`, and rejects bare
   `*` unless you set `allowAnyOrigin: true`.
 
 ## Secrets & auth
 
-- **JWT secrets** must be ≥32 bytes (`@hyper/auth-jwt`). Pass
+- **JWT secrets** must be ≥32 bytes (`@usehyper/auth-jwt`). Pass
   `allowShortSecret: true` only in tests.
-- **Session secrets** must be ≥32 bytes (`@hyper/session`). Same escape
+- **Session secrets** must be ≥32 bytes (`@usehyper/session`). Same escape
   hatch exists for tests.
 - **CSRF double-submit** via `csrfGuard` middleware — only enforced on
   already-established sessions, so logins still work. Token lives in a
@@ -65,7 +65,7 @@ Defaults are chosen so that you don't have to think about them. Every
 override exists, but they're off the happy path:
 
 ```ts
-import { app } from "@hyper/core"
+import { app } from "@usehyper/core"
 app({
   security: {
     rejectMethodOverride: false,         // default: true

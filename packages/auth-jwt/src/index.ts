@@ -1,5 +1,5 @@
 /**
- * @hyper/auth-jwt — JWT authentication middleware + `.auth()` route sugar.
+ * @usehyper/auth-jwt — JWT authentication middleware + `.auth()` route sugar.
  *
  *   app({ plugins: [authJwtPlugin({ secret: env.JWT_SECRET })] })
  *   route.get("/me").auth().handle((c) => ok({ user: c.ctx.user }))
@@ -8,8 +8,8 @@
  * plus a pre-chained middleware that enforces presence of `ctx.user`.
  */
 
-import { RouteBuilder } from "@hyper/core"
-import type { HyperPlugin, Middleware } from "@hyper/core"
+import { RouteBuilder } from "@usehyper/core"
+import type { HyperPlugin, Middleware } from "@usehyper/core"
 import { JwtError, type JwtPayload, type VerifyOptions, verifyJwt } from "./jwt.ts"
 
 export { JwtError, verifyJwt } from "./jwt.ts"
@@ -48,19 +48,19 @@ export function validateJwtSecret(
   const bytes = new TextEncoder().encode(secret).byteLength
   if (bytes < MIN_JWT_SECRET_BYTES) {
     throw new Error(
-      `@hyper/auth-jwt: secret is ${bytes} bytes; minimum is ${MIN_JWT_SECRET_BYTES}. Why: short HS256 secrets are brute-forceable in hours on commodity hardware. Fix: generate a 32+ byte secret (e.g., \`openssl rand -base64 48\`) or pass \`allowShortSecret: true\` at your own risk.`,
+      `@usehyper/auth-jwt: secret is ${bytes} bytes; minimum is ${MIN_JWT_SECRET_BYTES}. Why: short HS256 secrets are brute-forceable in hours on commodity hardware. Fix: generate a 32+ byte secret (e.g., \`openssl rand -base64 48\`) or pass \`allowShortSecret: true\` at your own risk.`,
     )
   }
 }
 
-declare module "@hyper/core" {
+declare module "@usehyper/core" {
   interface AppContext {
     /**
      * The authenticated user. Defaults to the `AuthUser` shape
      * populated by the middleware when no `loadUser` is supplied.
      *
      * To type a custom shape, augment this interface in your app:
-     *   declare module "@hyper/core" {
+     *   declare module "@usehyper/core" {
      *     interface AppContext { user?: MyUser }
      *   }
      */
@@ -117,7 +117,7 @@ export function authJwtPlugin(config: AuthJwtConfig): HyperPlugin {
   validateJwtSecret(config.secret, { allowShort: config.allowShortSecret ?? false })
   installAuthMethod(authJwt(config))
   return {
-    name: "@hyper/auth-jwt",
+    name: "@usehyper/auth-jwt",
   }
 }
 

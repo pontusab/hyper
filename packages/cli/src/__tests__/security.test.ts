@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { app, route } from "@hyper/core"
+import { app, route } from "@usehyper/core"
 import { auditApp } from "../commands/security.ts"
 
 describe("hyper security --check — auditApp", () => {
@@ -52,10 +52,10 @@ describe("hyper security --check — auditApp", () => {
   })
 
   test("warns when session() middleware is present on a mutating route without csrfGuard()", async () => {
-    const fakeSession: import("@hyper/core").Middleware = Object.assign(
+    const fakeSession: import("@usehyper/core").Middleware = Object.assign(
       async ({ next }: { next: () => Promise<unknown> }) => next() as Promise<Response>,
-      { __hyperTag: "@hyper/session" },
-    ) as unknown as import("@hyper/core").Middleware
+      { __hyperTag: "@usehyper/session" },
+    ) as unknown as import("@usehyper/core").Middleware
     const a = app({
       routes: [
         route
@@ -70,14 +70,14 @@ describe("hyper security --check — auditApp", () => {
   })
 
   test("passes sec-csrf when session + csrfGuard are chained", async () => {
-    const fakeSession: import("@hyper/core").Middleware = Object.assign(
+    const fakeSession: import("@usehyper/core").Middleware = Object.assign(
       async ({ next }: { next: () => Promise<unknown> }) => next() as Promise<Response>,
-      { __hyperTag: "@hyper/session" },
-    ) as unknown as import("@hyper/core").Middleware
-    const fakeCsrf: import("@hyper/core").Middleware = Object.assign(
+      { __hyperTag: "@usehyper/session" },
+    ) as unknown as import("@usehyper/core").Middleware
+    const fakeCsrf: import("@usehyper/core").Middleware = Object.assign(
       async ({ next }: { next: () => Promise<unknown> }) => next() as Promise<Response>,
-      { __hyperTag: "@hyper/session:csrf" },
-    ) as unknown as import("@hyper/core").Middleware
+      { __hyperTag: "@usehyper/session:csrf" },
+    ) as unknown as import("@usehyper/core").Middleware
     const a = app({
       routes: [
         route

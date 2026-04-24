@@ -1,10 +1,10 @@
 /**
- * @hyper/client — typed RPC client + codegen for Hyper apps.
+ * @usehyper/client — typed RPC client + codegen for Hyper apps.
  *
  * Runtime:  createClient(transport) gives a `.call({ method, path, ... })` primitive.
  * Typed:    `hyper client <out>` emits `client.ts` + `client.d.ts` from the
  *           running app's `toClientManifest()`.
- * TanStack: `@hyper/client/tanstack-query` ships queryOptions / mutationOptions.
+ * TanStack: `@usehyper/client/tanstack-query` ships queryOptions / mutationOptions.
  *
  * Exports are ergonomic re-exports; see individual files for detail.
  */
@@ -30,4 +30,4 @@ export type {
   InferRouterCtx,
   InferRouterInputs,
   InferRouterOutputs,
-} from "@hyper/core"
+} from "@usehyper/core"

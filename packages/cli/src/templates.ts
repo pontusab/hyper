@@ -2,7 +2,7 @@
  * Built-in templates (inline strings so the CLI stays zero-asset).
  *
  * - minimal: one app file + adapter + tests scaffolding.
- * - api: minimal + @hyper/log wired + /health + example CRUD route.
+ * - api: minimal + @usehyper/log wired + /health + example CRUD route.
  */
 
 export interface Template {
@@ -10,7 +10,7 @@ export interface Template {
   readonly files: Readonly<Record<string, string>>
 }
 
-const MINIMAL_APP = `import { app, ok, route } from "@hyper/core"
+const MINIMAL_APP = `import { app, ok, route } from "@usehyper/core"
 
 export default app({
   routes: [
@@ -61,17 +61,17 @@ const MINIMAL_PKG = `{
     "test": "bun test"
   },
   "dependencies": {
-    "@hyper/core": "latest"
+    "@usehyper/core": "latest"
   },
   "devDependencies": {
-    "@hyper/cli": "latest",
+    "@usehyper/cli": "latest",
     "@types/bun": "latest"
   }
 }
 `
 
-const API_APP = `import { app, ok, route } from "@hyper/core"
-import { hyperLog } from "@hyper/log"
+const API_APP = `import { app, ok, route } from "@usehyper/core"
+import { hyperLog } from "@usehyper/log"
 
 const health = route.get("/health").handle(() => ok({ ok: true }))
 
@@ -104,8 +104,8 @@ export const TEMPLATES: Record<string, Template> = {
       "src/adapter.ts": MINIMAL_ADAPTER,
       "tsconfig.json": MINIMAL_TSCONFIG,
       "package.json": MINIMAL_PKG.replace(
-        '"@hyper/core": "latest"',
-        '"@hyper/core": "latest",\n    "@hyper/log": "latest"',
+        '"@usehyper/core": "latest"',
+        '"@usehyper/core": "latest",\n    "@usehyper/log": "latest"',
       ),
     },
   },

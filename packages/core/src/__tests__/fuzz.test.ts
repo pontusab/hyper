@@ -3,7 +3,7 @@
  * secure-by-default baseline refuses every known-bad shape.
  *
  * This corpus is the single source of truth referenced by
- * @hyper/testing/fuzz; keeping it here lets core tests run it directly.
+ * @usehyper/testing/fuzz; keeping it here lets core tests run it directly.
  */
 
 import { describe, expect, test } from "bun:test"

@@ -29,7 +29,7 @@ curl http://localhost:3000/
 Open `src/app.ts`:
 
 ```ts
-import { Hyper, ok } from "@hyper/core"
+import { Hyper, ok } from "@usehyper/core"
 import { z } from "zod"
 
 export default new Hyper()
@@ -53,7 +53,7 @@ Hyper sub-apps compose through a single polymorphic `.use()`:
 
 ```ts
 // src/routes/users.ts
-import { Hyper, ok } from "@hyper/core"
+import { Hyper, ok } from "@usehyper/core"
 export default new Hyper({ prefix: "/users" })
   .get("/", () => ok([{ id: 1 }]))
   .get("/:id", ({ params }) => ok({ id: params.id }))
@@ -61,7 +61,7 @@ export default new Hyper({ prefix: "/users" })
 
 ```ts
 // src/app.ts
-import { Hyper } from "@hyper/core"
+import { Hyper } from "@usehyper/core"
 import users from "./routes/users.ts"
 
 export default new Hyper()
@@ -80,7 +80,7 @@ Create `src/__tests__/users.test.ts`:
 
 ```ts
 import { expect, test } from "bun:test"
-import { assertResponse, call } from "@hyper/testing"
+import { assertResponse, call } from "@usehyper/testing"
 import api from "../app.ts"
 
 test("POST /users returns an id", async () => {

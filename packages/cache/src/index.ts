@@ -1,5 +1,5 @@
 /**
- * @hyper/cache — stale-while-revalidate + ETag + stampede protection.
+ * @usehyper/cache — stale-while-revalidate + ETag + stampede protection.
  *
  * Keyed by method + URL. Only caches GET/HEAD.
  *
@@ -13,7 +13,7 @@
  *   - If `If-None-Match` matches, we return 304.
  */
 
-import { type Middleware, coerce } from "@hyper/core"
+import { type Middleware, coerce } from "@usehyper/core"
 
 export interface CacheEntry {
   readonly status: number

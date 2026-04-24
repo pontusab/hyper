@@ -1,13 +1,13 @@
 # Recipe: bun:sql
 
 Bun's native SQL driver is the fastest Node-compatible client to
-Postgres/MySQL. Combine it with `@hyper/log/wrap-queries` for zero-dep
+Postgres/MySQL. Combine it with `@usehyper/log/wrap-queries` for zero-dep
 structured DB observability.
 
 ```ts
 import { SQL } from "bun"
-import { wrapQueries } from "@hyper/log/wrap-queries"
-import { log } from "@hyper/log"
+import { wrapQueries } from "@usehyper/log/wrap-queries"
+import { log } from "@usehyper/log"
 
 const sqlRaw = new SQL(process.env.DATABASE_URL!)
 export const sql = wrapQueries(sqlRaw, {
@@ -19,7 +19,7 @@ export const sql = wrapQueries(sqlRaw, {
 Decorate:
 
 ```ts
-import { app } from "@hyper/core"
+import { app } from "@usehyper/core"
 import { sql } from "./sql.ts"
 
 export const api = app({

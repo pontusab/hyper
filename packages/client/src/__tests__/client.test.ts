@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { app, created, ok, route } from "@hyper/core"
+import { app, created, ok, route } from "@usehyper/core"
 import { applyPathParams, createClient } from "../client.ts"
 import { generateClient } from "../codegen.ts"
 import type { Transport } from "../types.ts"
@@ -101,7 +101,7 @@ describe("codegen", () => {
   test("resultTypes: true emits Result<T, Errors> tagged unions", () => {
     const stubSchema = {
       "~standard": { version: 1, vendor: "test", validate: (v: unknown) => ({ value: v }) },
-    } as unknown as import("@hyper/core").StandardSchemaV1
+    } as unknown as import("@usehyper/core").StandardSchemaV1
     const a = app({
       routes: [
         route

@@ -1,5 +1,5 @@
 {
-  "name": "@hyper/testing",
+  "name": "@usehyper/testing",
   "version": "0.1.0",
   "type": "module",
   "description": "Testing helpers for Hyper apps — app.test, fakeRequest, matchers, memory stores, fuzz.",
@@ -33,11 +33,11 @@
     "test": "bun test"
   },
   "peerDependencies": {
-    "@hyper/core": "workspace:*"
+    "@usehyper/core": "workspace:*"
   },
   "devDependencies": {
-    "@hyper/core": "workspace:*",
-    "@hyper/log": "workspace:*",
+    "@usehyper/core": "workspace:*",
+    "@usehyper/log": "workspace:*",
     "@types/bun": "1.3.1",
     "expect-type": "1.2.2"
   },

@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test"
-import { app } from "@hyper/core"
+import { app } from "@usehyper/core"
 import { collect, subscribe } from "../index.ts"
 
-describe("@hyper/subscribe", () => {
+describe("@usehyper/subscribe", () => {
   test("projects to SSE over HTTP", async () => {
     const r = subscribe<{ n: number }>("/ticks", async function* () {
       yield { data: { n: 1 } }

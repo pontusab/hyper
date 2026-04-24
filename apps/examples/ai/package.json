@@ -8,10 +8,10 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@hyper/client": "workspace:*",
-    "@hyper/core": "workspace:*",
-    "@hyper/log": "workspace:*",
-    "@hyper/mcp": "workspace:*",
+    "@usehyper/client": "workspace:*",
+    "@usehyper/core": "workspace:*",
+    "@usehyper/log": "workspace:*",
+    "@usehyper/mcp": "workspace:*",
     "zod": "4.3.6"
   },
   "devDependencies": {

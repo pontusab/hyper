@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test"
-import { app, route } from "@hyper/core"
+import { app, route } from "@usehyper/core"
 import { DevRecorder, devMcpPlugin } from "../index.ts"
 
-describe("@hyper/dev-mcp", () => {
+describe("@usehyper/dev-mcp", () => {
   const hi = route
     .get("/hi")
     .meta({ name: "hi" })

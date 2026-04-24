@@ -3,7 +3,7 @@
  *
  * `signJwtHS256({...})` — produces a real signed HS256 JWT you can put
  * in the `authorization: Bearer <token>` header. Bun.CryptoHasher is the
- * same primitive `@hyper/auth-jwt` uses, so end-to-end tests exercise
+ * same primitive `@usehyper/auth-jwt` uses, so end-to-end tests exercise
  * the production verify path.
  */
 

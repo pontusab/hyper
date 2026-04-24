@@ -25,8 +25,8 @@ describe("cli args parser", () => {
 describe("cli templates", () => {
   test("minimal + api templates are well-formed", () => {
     expect(TEMPLATES.minimal).toBeDefined()
-    expect(TEMPLATES.minimal!.files["src/app.ts"]).toContain("@hyper/core")
+    expect(TEMPLATES.minimal!.files["src/app.ts"]).toContain("@usehyper/core")
     expect(TEMPLATES.api).toBeDefined()
-    expect(TEMPLATES.api!.files["src/app.ts"]).toContain("@hyper/log")
+    expect(TEMPLATES.api!.files["src/app.ts"]).toContain("@usehyper/log")
   })
 })

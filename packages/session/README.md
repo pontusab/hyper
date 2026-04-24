@@ -1,17 +1,17 @@
-# @hyper/session
+# @usehyper/session
 
 Signed-cookie session middleware for Hyper. Pluggable stores.
 
 ## Install
 
 ```bash
-bun add @hyper/session
+bun add @usehyper/session
 ```
 
 ## Usage
 
 ```ts
-import { session, csrfGuard } from "@hyper/session"
+import { session, csrfGuard } from "@usehyper/session"
 app({ use: [session({ secret: env.SESSION_SECRET }), csrfGuard()] })
 ```
 

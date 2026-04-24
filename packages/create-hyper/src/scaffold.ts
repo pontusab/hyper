@@ -57,12 +57,12 @@ const pkg = (name: string, extra: Record<string, string> = {}) =>
         typecheck: "tsgo --noEmit",
       },
       dependencies: {
-        "@hyper/core": "^0.0.0",
-        "@hyper/log": "^0.0.0",
+        "@usehyper/core": "^0.0.0",
+        "@usehyper/log": "^0.0.0",
         ...extra,
       },
       devDependencies: {
-        "@hyper/cli": "^0.0.0",
+        "@usehyper/cli": "^0.0.0",
         "@types/bun": "^1.3.1",
       },
     },
@@ -97,7 +97,7 @@ function minimalTemplate(
  * Minimal Hyper app.
  */
 
-import { Hyper, ok } from "@hyper/core"
+import { Hyper, ok } from "@usehyper/core"
 
 export default new Hyper()
   .get("/", () => ok({ hello: "world" }))
@@ -118,7 +118,7 @@ export default new Hyper()
 
 function todoTemplate(opts: ScaffoldOptions): readonly ScaffoldFile[] {
   const files = [...minimalTemplate(opts, { zod: "^4.0.0" })]
-  const todo = `import { Hyper, conflict, notFound, ok } from "@hyper/core"
+  const todo = `import { Hyper, conflict, notFound, ok } from "@usehyper/core"
 import { z } from "zod"
 
 interface Todo { id: string; title: string; done: boolean }
@@ -148,7 +148,7 @@ export default new Hyper({ prefix: "/todos" })
 
 function aiTemplate(opts: ScaffoldOptions): readonly ScaffoldFile[] {
   const files = [...minimalTemplate(opts)]
-  const ai = `import { Hyper, ok } from "@hyper/core"
+  const ai = `import { Hyper, ok } from "@usehyper/core"
 
 export default new Hyper()
   .post(

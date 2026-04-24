@@ -1,5 +1,5 @@
 /**
- * Public types for @hyper/core.
+ * Public types for @usehyper/core.
  *
  * Kept in a single file so declaration merging surfaces (AppContext,
  * RouteMeta, ErrorRegistry) are easy to locate and re-export.
@@ -12,7 +12,7 @@ export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "HEAD" | 
 
 /**
  * Consumer-augmentable app context. Decorate/derive/plugins populate
- * this via `declare module "@hyper/core" { interface AppContext { ... } }`.
+ * this via `declare module "@usehyper/core" { interface AppContext { ... } }`.
  *
  * Declared as an empty `interface` (not `type = {}`) so that TypeScript
  * honors declaration-merging: every `declare module` contribution adds
@@ -45,7 +45,7 @@ export interface RouteMeta {
   name?: string
   /** Free-form tags; plugins may filter on these. */
   tags?: readonly string[]
-  /** Set by `@hyper/mcp`; if absent, the route is not MCP-exposed. */
+  /** Set by `@usehyper/mcp`; if absent, the route is not MCP-exposed. */
   mcp?: false | { description: string; [k: string]: unknown }
   /** Reserved for internal tooling (dev MCP etc.). Never projected. */
   internal?: boolean
@@ -265,15 +265,15 @@ export interface HyperApp {
   readonly routeList: readonly Route[]
   /** Shared invoke path — HTTP/MCP/RPC/actions all funnel here. */
   readonly invoke: (input: InvokeInput) => Promise<InvokeResult>
-  /** OpenAPI 3.1 serializer (schema conversion provided by @hyper/openapi). */
+  /** OpenAPI 3.1 serializer (schema conversion provided by @usehyper/openapi). */
   readonly toOpenAPI: (cfg?: {
     title?: string
     version?: string
     description?: string
   }) => import("./projection.ts").OpenAPIManifest
-  /** MCP manifest. @hyper/mcp adds the transport. */
+  /** MCP manifest. @usehyper/mcp adds the transport. */
   readonly toMCPManifest: () => import("./projection.ts").MCPManifest
-  /** Client manifest. @hyper/client consumes this. */
+  /** Client manifest. @usehyper/client consumes this. */
   readonly toClientManifest: () => import("./projection.ts").ClientManifest
   /** Original AppConfig — used by `app.test()` to produce scoped clones. */
   readonly __config: AppConfig

@@ -126,7 +126,7 @@ This isn't marketing. Each of these is a concrete runtime or build-time feature 
 
 Opinionated where it matters, escapable everywhere else.
 
-- One import path (`@hyper/core`), one way to register a route (`route.<method>(path).handle(...)`), one way to return (data or helper).
+- One import path (`@usehyper/core`), one way to register a route (`route.<method>(path).handle(...)`), one way to return (data or helper).
 - Errors readable without Googling (`{ status, message, why, fix, links }`).
 - Shadcn-style CLI drops adapters, middleware, and client code into the user's repo. You own it. You edit it.
 - Every structural decision justifies itself in one sentence; if it can't, it gets cut.
@@ -140,7 +140,7 @@ The core primitive. Every other feature attaches to this.
 ### 3.1 The builder — 7 core methods, pure values
 
 ```ts
-import { route, z } from "@hyper/core"
+import { route, z } from "@usehyper/core"
 
 const handler = route.<method>(pathLiteral)
   .params(schema?)     // optional — narrows path-inferred params
@@ -188,7 +188,7 @@ No `.returns(schema, { status })`. The handler's return type is the contract.
 ```ts
 import { ok, created, accepted, noContent, redirect,
          notFound, conflict, unprocessable, unauthorized, forbidden,
-         sse, stream, file, html, text } from "@hyper/core"
+         sse, stream, file, html, text } from "@usehyper/core"
 
 route.post("/users")
   .body(CreateUser)
@@ -233,7 +233,7 @@ route.get("/download/:id").handle(({ params }) => file(`/uploads/${params.id}`))
 **Thrown**: unexpected. Uniformly handled by the error plugin. Structured with `why`/`fix` for humans and agents.
 
 ```ts
-import { createError } from "@hyper/core"
+import { createError } from "@usehyper/core"
 
 throw createError({
   status: 404,
@@ -325,8 +325,8 @@ That is the entire route. 200 OK, JSON, typed.
   cookies,   // parsed cookies (lazy)
   req,       // the raw Request (escape hatch)
   env,       // merged, validated env (see §6)
-  log,       // evlog wide-event builder (if @hyper/evlog installed)
-  user,      // auth subject (if @hyper/auth-* installed)
+  log,       // evlog wide-event builder (if @usehyper/evlog installed)
+  user,      // auth subject (if @usehyper/auth-* installed)
   // ...plus anything from decorate / derive / plugins
 }) => { ... })
 ```
@@ -362,7 +362,7 @@ export const db = drizzle(new Bun.SQL(process.env.DATABASE_URL!))
 export type DB = typeof db
 
 // app.ts
-import { app } from "@hyper/core"
+import { app } from "@usehyper/core"
 import { db } from "./db"
 
 export default app({
@@ -411,7 +411,7 @@ import type { db } from "./db"
 import type { Redis } from "ioredis"
 import type Stripe from "stripe"
 
-declare module "@hyper/core" {
+declare module "@usehyper/core" {
   interface AppContext {
     db: typeof db
     redis: Redis
@@ -439,8 +439,8 @@ Use a plugin (not `decorate`/`derive`) when you need:
 
 ```ts
 // src/routes/users.ts
-import { route, group, z } from "@hyper/core"
-import { created, notFound } from "@hyper/core"
+import { route, group, z } from "@usehyper/core"
+import { created, notFound } from "@usehyper/core"
 
 export const users = group("/users").add(
   route.get("/:id").handle(async ({ params, db, redis, log }) => {
@@ -616,7 +616,7 @@ Plugins receive validated env as a function argument, not per-request. This make
 For deep call stacks where threading `ctx.env` is painful:
 
 ```ts
-import { useEnv } from "@hyper/core"
+import { useEnv } from "@usehyper/core"
 
 function chargeCustomer(amount: number) {
   const env = useEnv()  // via AsyncLocalStorage
@@ -661,7 +661,7 @@ route.post("/users")
   .handle(async ({ body, db }) => created(await db.users.insert(body)))
 ```
 
-At build time, `@hyper/mcp` emits a tool manifest: name, description, input schema, output schema, auth requirements. The `hyper mcp` command serves these as a real MCP server, authenticating the agent against the same plugins as HTTP.
+At build time, `@usehyper/mcp` emits a tool manifest: name, description, input schema, output schema, auth requirements. The `hyper mcp` command serves these as a real MCP server, authenticating the agent against the same plugins as HTTP.
 
 Defaults are conservative: `mcp` is `false` per route unless the route explicitly opts in via meta. No route becomes an agent tool accidentally.
 
@@ -748,7 +748,7 @@ APIs die from evolution. These primitives keep evolution first-class.
 ### 8.1 `route.resource()` — CRUD bundles
 
 ```ts
-import { route, z } from "@hyper/core"
+import { route, z } from "@usehyper/core"
 
 export const users = route.resource("/users", {
   schema: UserSchema,
@@ -879,7 +879,7 @@ Plugins are how you extend Hyper without bloating core.
 ### 9.1 Shape
 
 ```ts
-import { definePlugin } from "@hyper/core"
+import { definePlugin } from "@usehyper/core"
 
 export function myPlugin(config: MyConfig = {}) {
   return definePlugin({
@@ -948,8 +948,8 @@ Plugin dependencies declared via `requires: ["evlog"]` — app fails to start if
 Plugins extend the route builder with sugar methods via TypeScript declaration merging:
 
 ```ts
-// Inside @hyper/auth-jwt
-declare module "@hyper/core" {
+// Inside @usehyper/auth-jwt
+declare module "@usehyper/core" {
   interface RouteBuilder<C, B> {
     auth(role: "user" | "admin"): this
   }
@@ -957,8 +957,8 @@ declare module "@hyper/core" {
 
 // User code
 route.post("/admin/purge")
-  .auth("admin")        // added by @hyper/auth-jwt
-  .rateLimit({ rpm: 1 }) // added by @hyper/rate-limit
+  .auth("admin")        // added by @usehyper/auth-jwt
+  .rateLimit({ rpm: 1 }) // added by @usehyper/rate-limit
   .handle(...)
 ```
 
@@ -967,8 +967,8 @@ All sugar methods are shorthand for `.meta({ auth: ..., rateLimit: ... })`. They
 ### 9.4 tRPC v11 as a plugin — effortless coexistence
 
 ```ts
-import { app } from "@hyper/core"
-import { trpc } from "@hyper/trpc"
+import { app } from "@usehyper/core"
+import { trpc } from "@usehyper/trpc"
 import { appRouter } from "./trpc/router"
 
 export default app({
@@ -988,7 +988,7 @@ What this gets you:
 
 - tRPC procedures mounted under `/trpc/*` via tRPC's WinterCG fetch adapter, running on Bun.serve with no intermediate HTTP layer
 - **Shared context**: procedures receive the full Hyper ctx (`ctx.log`, `ctx.env`, `ctx.user`, `ctx.db`, …)
-- **Middleware interop**: `@hyper/auth-jwt` authenticates tRPC procedures without tRPC-specific wiring; helpers `toTrpcMiddleware(hyperMw)` and `toHyperMiddleware(trpcMw)` bridge the other direction
+- **Middleware interop**: `@usehyper/auth-jwt` authenticates tRPC procedures without tRPC-specific wiring; helpers `toTrpcMiddleware(hyperMw)` and `toHyperMiddleware(trpcMw)` bridge the other direction
 - **Error bridge**: tRPC errors are wrapped in `{ why, fix }` so tRPC and REST errors look identical in logs
 - **Schema reuse**: both `procedure.input(schema)` and `route.body(schema)` accept Standard Schema — share Zod/Valibot/ArkType schemas
 - **Shared subscriptions**: tRPC v11 SSE subscriptions run through Hyper's streaming infrastructure
@@ -999,7 +999,7 @@ tRPC's client-side ecosystem (`@trpc/react-query`, links, batching) works unchan
 
 ### 9.5 Core exports only what plugins need
 
-`@hyper/core` exports:
+`@usehyper/core` exports:
 
 - `app`, `route`, `group`, `createError`, return helpers (`ok`, `created`, …), Standard Schema glue
 - `definePlugin` and the plugin types
@@ -1012,13 +1012,13 @@ Every other feature — logging, OpenAPI, MCP, auth, CORS, rate limiting, cachin
 
 ## 10. Evlog as a reference plugin
 
-`@hyper/evlog` demonstrates the plugin protocol end-to-end. It is not part of core. If you don't install it, `ctx.log` doesn't exist and routes simply don't log.
+`@usehyper/evlog` demonstrates the plugin protocol end-to-end. It is not part of core. If you don't install it, `ctx.log` doesn't exist and routes simply don't log.
 
 ### 10.1 What it adds
 
 ```ts
-import { app } from "@hyper/core"
-import { evlog, createAxiomDrain } from "@hyper/evlog"
+import { app } from "@usehyper/core"
+import { evlog, createAxiomDrain } from "@usehyper/evlog"
 
 export default app({
   plugins: [
@@ -1063,7 +1063,7 @@ One wide event per request. Accumulated context. One log line emitted at the end
 
 ### 10.3 How the plugin wires in
 
-- **Context extension**: `ctx.log` typed via `declare module "@hyper/core"`
+- **Context extension**: `ctx.log` typed via `declare module "@usehyper/core"`
 - **Request hooks**: `before` creates a fresh log builder; `after` emits it; `onError` merges error fields before emission
 - **Error wrapping**: catches `createError`, ensures `why`/`fix` are on the output; catches uncaught throws and wraps them with generic `{ why: "Uncaught", fix: "add try/catch near the origin" }`
 - **Secret redaction**: reads the env schema's secret markers, plus the plugin's `redact` config, and masks before drain
@@ -1203,7 +1203,7 @@ These are the numbers Hyper commits to. Benchmarks run on M-series Bun on Linux,
 | p999 latency (trivial route) | < 2ms | Full stack, local |
 | Memory retained per in-flight req | < 8KB | Pooled ctx |
 | Cold start (Bun startup + first response) | < 30ms | Static route, compiled build |
-| Core runtime bundle | < 30KB gzipped | `@hyper/core` only |
+| Core runtime bundle | < 30KB gzipped | `@usehyper/core` only |
 | Second-run `hyper dev` startup | < 200ms | Content-hash build cache |
 
 If we miss a target, we fix the code. If we can't fix the code, we change the claim. No fudging.
@@ -1213,8 +1213,8 @@ If we miss a target, we fix the code. If we can't fix the code, we change the cl
 `Accept` / `Content-Type` drives serialization:
 
 - `application/json` (default)
-- `application/msgpack` (via `@hyper/msgpack`, negotiated automatically with the typed client)
-- `application/cbor` (via `@hyper/cbor`)
+- `application/msgpack` (via `@usehyper/msgpack`, negotiated automatically with the typed client)
+- `application/cbor` (via `@usehyper/cbor`)
 
 Internal service-to-service traffic using the typed client negotiates MessagePack by default, ~2-5× smaller payloads, ~2× faster serialize. Handler code unchanged.
 
@@ -1246,9 +1246,9 @@ Steps 1 and 2 run in parallel (tsgo doesn't need the route graph; route graph do
 dist/
 ├── server.js            # single bundled server, Bun-runnable
 ├── routes.json          # canonical route graph (schemas serialized)
-├── openapi.json         # emitted by @hyper/openapi
-├── mcp-manifest.json    # emitted by @hyper/mcp
-├── client/              # emitted by @hyper/client (typed SDK, tsup output)
+├── openapi.json         # emitted by @usehyper/openapi
+├── mcp-manifest.json    # emitted by @usehyper/mcp
+├── client/              # emitted by @usehyper/client (typed SDK, tsup output)
 │   ├── index.js
 │   └── index.d.ts
 └── meta.json            # build metadata: versions, timings, targets
@@ -1274,7 +1274,7 @@ Runs `bun --hot` for the server + `tsgo --noEmit --watch` for type checking in p
 
 ### 14.1 Hybrid: packages + copied files
 
-**Packages** are everything with versioning-as-a-product — core runtime, typechecking dependencies, OpenAPI emitter. Shipped via npm under `@hyper/*`. Updated via `bun update`.
+**Packages** are everything with versioning-as-a-product — core runtime, typechecking dependencies, OpenAPI emitter. Shipped via npm under `@usehyper/*`. Updated via `bun update`.
 
 **Copied files** are everything users want to fork — adapters, auth middleware, session stores, error handlers, scaffolding. Shipped via the `hyper add` CLI command into the user's own repo. Updated via a `hyper diff` command that shows drift from the registry version.
 
@@ -1282,33 +1282,33 @@ The split mirrors shadcn/ui's model, adapted to API frameworks where core infere
 
 ### 14.2 Naming convention (locked)
 
-- **npm scope**: `@hyper/*` for every official package
-- **CLI binary**: `hyper` (exported by `@hyper/cli`)
+- **npm scope**: `@usehyper/*` for every official package
+- **CLI binary**: `hyper` (exported by `@usehyper/cli`)
 - **Runs via**: `bunx hyper <cmd>` or (installed) `hyper <cmd>`
-- **Module augmentation target**: `declare module "@hyper/core"`
-- **User imports**: always scoped (`@hyper/<pkg>`), never bare
+- **Module augmentation target**: `declare module "@usehyper/core"`
+- **User imports**: always scoped (`@usehyper/<pkg>`), never bare
 
 ### 14.3 Official packages
 
 | Package | Purpose |
 |---|---|
-| `@hyper/core` | Route builder, group, app, context types, return helpers, error primitives, plugin protocol, hooks (`useLog`, `useEnv`, `useRequest`) |
-| `@hyper/cli` | The `hyper` binary — `init`, `add`, `dev`, `build`, `routes`, `typecheck`, `openapi`, `mcp`, `client`, `bench`, `env`, `test` |
-| `@hyper/evlog` | Reference plugin — wide events, `why`/`fix`, AI SDK wrapper, drains |
-| `@hyper/openapi` | OpenAPI emitter + Swagger UI route |
-| `@hyper/mcp` | MCP server plugin (app-as-tools) |
-| `@hyper/trpc` | tRPC v11 bridge |
-| `@hyper/auth-jwt` | JWT auth middleware |
-| `@hyper/session` | Session middleware |
-| `@hyper/rate-limit` | Rate limiting (consumes `.rateLimit()` meta) |
-| `@hyper/idempotency` | Idempotency (consumes `.idempotent()` meta) |
-| `@hyper/cache` | HTTP caching (consumes `.cache()` meta) |
-| `@hyper/cors` | CORS |
-| `@hyper/otel` | OpenTelemetry + `.slo()` integration |
-| `@hyper/db` | Opinionated `Bun.sql` wrapper with evlog query events |
-| `@hyper/drizzle`, `@hyper/prisma` | Pre-configured `decorate` helpers |
-| `@hyper/client` | Runtime helpers for the generated typed client |
-| `@hyper/msgpack`, `@hyper/cbor` | Binary wire format plugins |
+| `@usehyper/core` | Route builder, group, app, context types, return helpers, error primitives, plugin protocol, hooks (`useLog`, `useEnv`, `useRequest`) |
+| `@usehyper/cli` | The `hyper` binary — `init`, `add`, `dev`, `build`, `routes`, `typecheck`, `openapi`, `mcp`, `client`, `bench`, `env`, `test` |
+| `@usehyper/evlog` | Reference plugin — wide events, `why`/`fix`, AI SDK wrapper, drains |
+| `@usehyper/openapi` | OpenAPI emitter + Swagger UI route |
+| `@usehyper/mcp` | MCP server plugin (app-as-tools) |
+| `@usehyper/trpc` | tRPC v11 bridge |
+| `@usehyper/auth-jwt` | JWT auth middleware |
+| `@usehyper/session` | Session middleware |
+| `@usehyper/rate-limit` | Rate limiting (consumes `.rateLimit()` meta) |
+| `@usehyper/idempotency` | Idempotency (consumes `.idempotent()` meta) |
+| `@usehyper/cache` | HTTP caching (consumes `.cache()` meta) |
+| `@usehyper/cors` | CORS |
+| `@usehyper/otel` | OpenTelemetry + `.slo()` integration |
+| `@usehyper/db` | Opinionated `Bun.sql` wrapper with evlog query events |
+| `@usehyper/drizzle`, `@usehyper/prisma` | Pre-configured `decorate` helpers |
+| `@usehyper/client` | Runtime helpers for the generated typed client |
+| `@usehyper/msgpack`, `@usehyper/cbor` | Binary wire format plugins |
 | `create-hyper` | `bunx create-hyper@latest` scaffolder (unscoped per npm convention) |
 
 ### 14.4 Shadcn-style copied files
@@ -1335,7 +1335,7 @@ Hosted at `registry.hyper.dev/r/<ref>.json` (placeholder). Each registry entry d
     { "path": "src/middleware/auth-jwt.ts", "url": "..." },
     { "path": "src/middleware/auth-jwt.test.ts", "url": "..." }
   ],
-  "dependencies": { "@hyper/core": "^1.0.0", "jose": "^5.0.0" },
+  "dependencies": { "@usehyper/core": "^1.0.0", "jose": "^5.0.0" },
   "postInstall": "hyper env --check"
 }
 ```
@@ -1433,7 +1433,7 @@ Milestones are ordered by value: each milestone builds a usable subset.
 - Layered env system with boot validation
 - All return helpers
 - `createError` + thrown/returned error semantics
-- `@hyper/evlog` reference plugin
+- `@usehyper/evlog` reference plugin
 - `hyper dev` / `hyper build` / `hyper typecheck` CLI
 - Example app in `examples/`
 
@@ -1442,27 +1442,27 @@ Milestones are ordered by value: each milestone builds a usable subset.
 ### M2 — Modern (the differentiators)
 
 - Multi-protocol projection — typed RPC client codegen
-- `@hyper/mcp` plugin + `hyper mcp` CLI
+- `@usehyper/mcp` plugin + `hyper mcp` CLI
 - `route.resource()` CRUD bundles
 - `.version()` + `.deprecated()` + `.throws()` + `.example()`
 - Live typed client in dev (file watcher writes `.d.ts` to linked workspace)
-- `@hyper/trpc` — tRPC v11 integration plugin
+- `@usehyper/trpc` — tRPC v11 integration plugin
 - `hyper test` contract tests
-- `@hyper/drizzle` / `@hyper/prisma` adapters
+- `@usehyper/drizzle` / `@usehyper/prisma` adapters
 
 **Exit criteria**: an example app exposes itself as both REST and MCP, and agents successfully invoke routes.
 
 ### M3 — Production (reliability, ecosystem, shadcn CLI)
 
-- `@hyper/openapi` + `/docs` UI route
-- `@hyper/idempotency`, `@hyper/cache`, `@hyper/rate-limit`
-- `@hyper/otel` with `.slo()` integration
-- `@hyper/cors`, `@hyper/auth-jwt`, `@hyper/session`
+- `@usehyper/openapi` + `/docs` UI route
+- `@usehyper/idempotency`, `@usehyper/cache`, `@usehyper/rate-limit`
+- `@usehyper/otel` with `.slo()` integration
+- `@usehyper/cors`, `@usehyper/auth-jwt`, `@usehyper/session`
 - Dev-mode app-as-MCP-server
-- Binary wire format negotiation (`@hyper/msgpack`)
+- Binary wire format negotiation (`@usehyper/msgpack`)
 - Subscription primitive (`route.subscribe()`)
-- `@hyper/db` (Bun.sql wrapper with evlog query logs)
-- `@hyper/rsc` server action compat
+- `@usehyper/db` (Bun.sql wrapper with evlog query logs)
+- `@usehyper/rsc` server action compat
 - Shadcn-style CLI + public registry
 
 **Exit criteria**: performance targets from §12.5 hit in published benchmarks; v1.0 release-candidate ready.
@@ -1492,7 +1492,7 @@ Milestones are ordered by value: each milestone builds a usable subset.
 
 ### 18.1 Naming
 
-- `@hyper/*` npm scope availability — must be verified before first publish. If unavailable, fallbacks: `@hypernative`, `@hyperdev`, `@zap`, `@edge-api`, `@jet`, or rebrand entirely. Name check is a v0-ship concern, not a design-doc concern.
+- `@usehyper/*` npm scope availability — must be verified before first publish. If unavailable, fallbacks: `@hypernative`, `@hyperdev`, `@zap`, `@edge-api`, `@jet`, or rebrand entirely. Name check is a v0-ship concern, not a design-doc concern.
 - Framework name conflict risk (the word "hyper" is heavily used). Consider a distinctive secondary handle for discoverability.
 
 ### 18.2 MCP-export security
@@ -1503,7 +1503,7 @@ Milestones are ordered by value: each milestone builds a usable subset.
 
 ### 18.3 Evlog version pinning
 
-- Tying core error semantics to `@hyper/evlog` creates a supply-chain coupling. Mitigation: Hyper re-exports `createError` under its own surface; if evlog's wire format changes, we absorb the break in `@hyper/evlog` without touching `@hyper/core`.
+- Tying core error semantics to `@usehyper/evlog` creates a supply-chain coupling. Mitigation: Hyper re-exports `createError` under its own surface; if evlog's wire format changes, we absorb the break in `@usehyper/evlog` without touching `@usehyper/core`.
 - Evlog itself is young. We pin an exact minor version in v0 and validate compatibility per upgrade.
 
 ### 18.4 TS 7 programmatic API timing
@@ -1550,14 +1550,14 @@ export type DB = typeof db
 
 // src/hyper.d.ts
 import type { db } from "./db"
-declare module "@hyper/core" {
+declare module "@usehyper/core" {
   interface AppContext {
     db: typeof db
   }
 }
 
 // src/routes/users.ts
-import { route, group, z, created, notFound, conflict } from "@hyper/core"
+import { route, group, z, created, notFound, conflict } from "@usehyper/core"
 
 const UserSchema = z.object({
   id: z.uuid(),
@@ -1599,10 +1599,10 @@ export const users = group("/users")
   )
 
 // src/app.ts
-import { app, z } from "@hyper/core"
-import { evlog } from "@hyper/evlog"
-import { openapi } from "@hyper/openapi"
-import { mcp } from "@hyper/mcp"
+import { app, z } from "@usehyper/core"
+import { evlog } from "@usehyper/evlog"
+import { openapi } from "@usehyper/openapi"
+import { mcp } from "@usehyper/mcp"
 import { db } from "./db"
 import { users } from "./routes/users"
 
@@ -1630,8 +1630,8 @@ Four files. No OpenAPI setup, no MCP wiring, no validation plumbing, no error ha
 - **Decorators** — hide behavior from grep, require `experimentalDecorators` or stage-3 migration, break tree-shaking. No.
 - **File-based routing as the default** — great for pages, wrong for APIs. Splits resources across files, couples paths to filenames, fights composition. Optional authoring mode at most.
 - **Effect-TS-style handler composition** — powerful, but adds a learning cliff that kills adoption. Keep handlers as plain async functions; users can integrate Effect inside the handler body if they want.
-- **GraphQL schema as first-class** — scope creep. Available as a plugin (`@hyper/graphql`) if someone builds one; not in core.
+- **GraphQL schema as first-class** — scope creep. Available as a plugin (`@usehyper/graphql`) if someone builds one; not in core.
 - **tRPC-style queries/mutations split** — HTTP verbs encode this already. Don't add a second dimension.
 - **RPC-only, no REST** — even in 2026 the network is REST-shaped. Two surfaces from one handler, not one surface with a worse name.
 - **Global app singleton** — `new Hono()` works for Hono because of its chain; Hyper's config object is better for composition and testing.
-- **Framework-owned ORM** — no. `@hyper/db` is a thin `Bun.sql` wrapper. Drizzle / Prisma / Kysely are `decorate` helpers, not replacements.
+- **Framework-owned ORM** — no. `@usehyper/db` is a thin `Bun.sql` wrapper. Drizzle / Prisma / Kysely are `decorate` helpers, not replacements.

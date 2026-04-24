@@ -5,7 +5,7 @@
  * routes (meta.internal) are never surfaced here.
  */
 
-import type { HyperApp, Route } from "@hyper/core"
+import type { HyperApp, Route } from "@usehyper/core"
 import type { DevRecorder } from "./recorder.ts"
 
 export interface DevTool {

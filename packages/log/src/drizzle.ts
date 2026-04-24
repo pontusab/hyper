@@ -4,7 +4,7 @@
  *
  * Usage:
  *   import { drizzle } from "drizzle-orm/bun-sqlite"
- *   import { wrapDrizzle } from "@hyper/log/drizzle"
+ *   import { wrapDrizzle } from "@usehyper/log/drizzle"
  *   const db = wrapDrizzle(drizzle(...), () => ctx.log)
  */
 

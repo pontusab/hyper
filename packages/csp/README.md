@@ -1,17 +1,17 @@
-# @hyper/csp
+# @usehyper/csp
 
 Content-Security-Policy + sibling headers (CSP, CORP, COEP, COOP, Report-To) for Hyper.
 
 ## Install
 
 ```bash
-bun add @hyper/csp
+bun add @usehyper/csp
 ```
 
 ## Usage
 
 ```ts
-import { cspPlugin } from "@hyper/csp"
+import { cspPlugin } from "@usehyper/csp"
 app({ plugins: [cspPlugin({ strictApi: true })] })
 ```
 

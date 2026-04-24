@@ -7,7 +7,7 @@
  * - Parse errors throw at boot with a `why`/`fix` shape listing every
  *   field that failed (agents fix all of them in one edit).
  * - Secret marking: paths matching the provided `secret` paths are
- *   redacted by `@hyper/log` and never echoed to error responses.
+ *   redacted by `@usehyper/log` and never echoed to error responses.
  * - `useEnv()` via AsyncLocalStorage for deep code.
  */
 
@@ -90,10 +90,10 @@ export class EnvParseError extends Error {
 }
 
 /**
- * Mark secret paths on an env object in-place for @hyper/log consumers.
+ * Mark secret paths on an env object in-place for @usehyper/log consumers.
  * A non-enumerable symbol keyed off the env carries the list.
  */
-export const SECRET_PATHS: unique symbol = Symbol.for("@hyper/core/secret-paths")
+export const SECRET_PATHS: unique symbol = Symbol.for("@usehyper/core/secret-paths")
 
 export function markSecrets<T extends object>(env: T, paths: readonly string[]): T {
   Object.defineProperty(env, SECRET_PATHS, {

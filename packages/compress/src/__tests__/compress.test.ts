@@ -1,11 +1,11 @@
 import { describe, expect, test } from "bun:test"
 import { brotliDecompressSync, gunzipSync } from "node:zlib"
-import { app, route } from "@hyper/core"
+import { app, route } from "@usehyper/core"
 import { compress } from "../index.ts"
 
 const BIG = "x".repeat(4096)
 
-describe("@hyper/compress", () => {
+describe("@usehyper/compress", () => {
   test("gzips large text responses when accept-encoding allows", async () => {
     const a = app({
       routes: [

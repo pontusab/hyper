@@ -1,9 +1,9 @@
-import { type HyperApp, app, conflict, created, notFound, ok, route } from "@hyper/core"
-import { hyperLog } from "@hyper/log"
+import { type HyperApp, app, conflict, created, notFound, ok, route } from "@usehyper/core"
+import { hyperLog } from "@usehyper/log"
 import { CreateTodo, TodoParams } from "./schemas.ts"
 import { type TodoStore, memoryStore } from "./store.ts"
 
-declare module "@hyper/core" {
+declare module "@usehyper/core" {
   interface AppContext {
     readonly store: TodoStore
   }

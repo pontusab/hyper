@@ -1,5 +1,5 @@
 /**
- * @hyper/subscribe — `route.subscribe()` primitive.
+ * @usehyper/subscribe — `route.subscribe()` primitive.
  *
  * A single subscription definition projects to:
  *   - HTTP: Server-Sent Events on GET <path>
@@ -11,8 +11,8 @@
  * adapters read the same iterator factory so the shape stays uniform.
  */
 
-import { route, sse } from "@hyper/core"
-import type { CallableRoute, RouteMeta } from "@hyper/core"
+import { route, sse } from "@usehyper/core"
+import type { CallableRoute, RouteMeta } from "@usehyper/core"
 
 export interface SubscribeEvent<T = unknown> {
   readonly event?: string

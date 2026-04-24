@@ -1,11 +1,11 @@
 /**
- * @hyper/openapi-valibot — SchemaConverter for Valibot schemas.
+ * @usehyper/openapi-valibot — SchemaConverter for Valibot schemas.
  *
  * Valibot schemas are plain objects with a `kind: "schema"` marker plus
  * `type` field (e.g. "object", "string", "array", "union", "optional").
  */
 
-import type { JsonSchema, SchemaConverter } from "@hyper/openapi"
+import type { JsonSchema, SchemaConverter } from "@usehyper/openapi"
 
 interface ValibotSchema {
   readonly kind: "schema"

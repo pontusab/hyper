@@ -3,13 +3,13 @@
  * event into an in-memory array, so tests can assert on observability
  * contracts (what routes emit, what redaction shape, etc.).
  *
- * We don't import @hyper/log here to keep the peer-dep boundary clean;
+ * We don't import @usehyper/log here to keep the peer-dep boundary clean;
  * instead we install a plugin with a request.after hook that drains
  * whatever structured log the ctx exposes. Users can additionally plug
- * @hyper/log's `captureDrain` for full fidelity.
+ * @usehyper/log's `captureDrain` for full fidelity.
  */
 
-import type { HyperApp, HyperPlugin, TestOverrides } from "@hyper/core"
+import type { HyperApp, HyperPlugin, TestOverrides } from "@usehyper/core"
 
 export interface CapturedEvent {
   readonly method: string
@@ -45,7 +45,7 @@ export function captureEvents(
   const events: CapturedEvent[] = []
   let stopped = false
   const plugin: HyperPlugin = {
-    name: "@hyper/testing:capture",
+    name: "@usehyper/testing:capture",
     request: {
       after({ req, res, route }) {
         if (stopped) return

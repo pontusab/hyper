@@ -9,8 +9,8 @@
     "bench": "bun run bench/baseline.ts"
   },
   "dependencies": {
-    "@hyper/core": "workspace:*",
-    "@hyper/log": "workspace:*",
+    "@usehyper/core": "workspace:*",
+    "@usehyper/log": "workspace:*",
     "zod": "4.3.6"
   },
   "devDependencies": {

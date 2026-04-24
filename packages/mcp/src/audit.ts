@@ -3,7 +3,7 @@
  * auth requirements inferred from route meta.
  */
 
-import type { HyperApp } from "@hyper/core"
+import type { HyperApp } from "@usehyper/core"
 
 export interface AuditReport {
   readonly exposedCount: number

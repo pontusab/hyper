@@ -13,7 +13,7 @@
  *   - a `default` or named `app` export of either shape
  */
 
-import { Hyper, type HyperApp } from "@hyper/core"
+import { Hyper, type HyperApp } from "@usehyper/core"
 
 export async function loadApp(entry: string): Promise<HyperApp | null> {
   process.env.HYPER_SKIP_LISTEN = "1"

@@ -1,5 +1,5 @@
 /**
- * @hyper/log types — the wide-event surface.
+ * @usehyper/log types — the wide-event surface.
  *
  * One log per request is the default. Handlers call `ctx.log.set({...})`
  * to accumulate fields; the request-level event is flushed on response

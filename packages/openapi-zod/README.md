@@ -1,17 +1,17 @@
-# @hyper/openapi-zod
+# @usehyper/openapi-zod
 
-SchemaConverter for Zod (v3 + v4) to @hyper/openapi.
+SchemaConverter for Zod (v3 + v4) to @usehyper/openapi.
 
 ## Install
 
 ```bash
-bun add @hyper/openapi-zod
+bun add @usehyper/openapi-zod
 ```
 
 ## Usage
 
 ```ts
-import { zodConverter } from "@hyper/openapi-zod"
+import { zodConverter } from "@usehyper/openapi-zod"
 ```
 
 ## Docs

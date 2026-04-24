@@ -1,15 +1,15 @@
 # Recipe: Drizzle ORM
 
 Hyper stays out of your data layer. Use Drizzle directly and wire it to
-`@hyper/log` so every query shows up in structured events with timing.
+`@usehyper/log` so every query shows up in structured events with timing.
 
 ## Setup
 
 ```ts
 import { drizzle } from "drizzle-orm/bun-sqlite"
 import { Database } from "bun:sqlite"
-import { wrapQueries } from "@hyper/log/wrap-queries"
-import { log } from "@hyper/log"
+import { wrapQueries } from "@usehyper/log/wrap-queries"
+import { log } from "@usehyper/log"
 
 const raw = drizzle(new Database(process.env.DB_URL ?? "app.db"))
 export const db = wrapQueries(raw, {
@@ -27,7 +27,7 @@ a `db.query.slow` event with the full SQL and bound parameters.
 Expose the wrapped client on every request:
 
 ```ts
-import { app } from "@hyper/core"
+import { app } from "@usehyper/core"
 import { db } from "./db.ts"
 
 export const api = app({

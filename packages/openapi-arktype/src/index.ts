@@ -1,11 +1,11 @@
 /**
- * @hyper/openapi-arktype — SchemaConverter for ArkType.
+ * @usehyper/openapi-arktype — SchemaConverter for ArkType.
  *
  * ArkType types expose a `toJsonSchema()` method (v2+). We thin-wrap that
  * so users get proper JSON Schema without pulling ArkType at runtime.
  */
 
-import type { JsonSchema, SchemaConverter } from "@hyper/openapi"
+import type { JsonSchema, SchemaConverter } from "@usehyper/openapi"
 
 interface ArkType {
   readonly toJsonSchema?: () => JsonSchema

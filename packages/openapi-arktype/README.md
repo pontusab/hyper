@@ -1,17 +1,17 @@
-# @hyper/openapi-arktype
+# @usehyper/openapi-arktype
 
-SchemaConverter for ArkType to @hyper/openapi.
+SchemaConverter for ArkType to @usehyper/openapi.
 
 ## Install
 
 ```bash
-bun add @hyper/openapi-arktype
+bun add @usehyper/openapi-arktype
 ```
 
 ## Usage
 
 ```ts
-import { arktypeConverter } from "@hyper/openapi-arktype"
+import { arktypeConverter } from "@usehyper/openapi-arktype"
 ```
 
 ## Docs

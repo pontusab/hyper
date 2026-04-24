@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import { runExamples } from "@hyper/core"
-import { mcpServer } from "@hyper/mcp"
+import { runExamples } from "@usehyper/core"
+import { mcpServer } from "@usehyper/mcp"
 import a from "../src/app.ts"
 
 describe("ai example", () => {

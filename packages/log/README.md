@@ -1,17 +1,17 @@
-# @hyper/log
+# @usehyper/log
 
 Wide-event structured logger for Hyper — the reference plugin.
 
 ## Install
 
 ```bash
-bun add @hyper/log
+bun add @usehyper/log
 ```
 
 ## Usage
 
 ```ts
-import { log } from "@hyper/log"
+import { log } from "@usehyper/log"
 log.event("user.created", { id })
 ```
 

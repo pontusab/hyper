@@ -12,14 +12,14 @@
  *   [sec-proto]         JSON prototype-pollution guard is enabled
  *   [sec-method-override] rejectMethodOverride is enabled
  *   [sec-timeout]       requestTimeoutMs is a positive finite number
- *   [sec-jwt-secret]    Any @hyper/auth-jwt secret env is >=32 bytes at boot
- *   [sec-session-secret] Any @hyper/session secret env is >=32 bytes at boot
+ *   [sec-jwt-secret]    Any @usehyper/auth-jwt secret env is >=32 bytes at boot
+ *   [sec-session-secret] Any @usehyper/session secret env is >=32 bytes at boot
  *   [sec-cors-wildcard] corsPlugin(origin:"*") is opt-in only
  *   [sec-auth-rate]     Routes with meta.authEndpoint have an auto-rate-limit plugin
  *   [sec-route-timeout] No route declares timeoutMs > global request budget
  */
 
-import type { HyperApp, Route } from "@hyper/core"
+import type { HyperApp, Route } from "@usehyper/core"
 import { type ParsedArgs, isJson } from "../args.ts"
 import { resolveEntry } from "../entry.ts"
 import { loadApp } from "../load-app.ts"
@@ -148,16 +148,16 @@ async function audit(app: HyperApp): Promise<readonly Finding[]> {
   const plugins = cfg.plugins ?? []
 
   // CSRF / session coverage: we walk middleware tags on every route.
-  // session() is a middleware tagged "@hyper/session"; csrfGuard() is
-  // tagged "@hyper/session:csrf". A mutating route with session but
+  // session() is a middleware tagged "@usehyper/session"; csrfGuard() is
+  // tagged "@usehyper/session:csrf". A mutating route with session but
   // without csrf is suspicious — we raise a warn, not a fail, because
   // bearer-token APIs legitimately use session without CSRF.
   const MUTATING = new Set(["POST", "PUT", "PATCH", "DELETE"])
   const sessionNoCsrf: string[] = []
   for (const r of app.routeList) {
     const tags = r.middlewareTags ?? []
-    const hasSession = tags.includes("@hyper/session")
-    const hasCsrfTag = tags.includes("@hyper/session:csrf")
+    const hasSession = tags.includes("@usehyper/session")
+    const hasCsrfTag = tags.includes("@usehyper/session:csrf")
     if (MUTATING.has(r.method) && hasSession && !hasCsrfTag) {
       sessionNoCsrf.push(`${r.method} ${r.path}`)
     }
@@ -173,7 +173,7 @@ async function audit(app: HyperApp): Promise<readonly Finding[]> {
   } else {
     // Only emit a pass marker when session is actually used somewhere.
     const anySession = app.routeList.some((r) =>
-      (r.middlewareTags ?? []).includes("@hyper/session"),
+      (r.middlewareTags ?? []).includes("@usehyper/session"),
     )
     if (anySession) {
       out.push({
@@ -184,7 +184,7 @@ async function audit(app: HyperApp): Promise<readonly Finding[]> {
     }
   }
 
-  const hasAuthRl = plugins.some((p) => p.name === "@hyper/rate-limit:auth")
+  const hasAuthRl = plugins.some((p) => p.name === "@usehyper/rate-limit:auth")
   const authRoutes = app.routeList.filter((r) => r.meta.authEndpoint === true)
   if (authRoutes.length > 0 && !hasAuthRl) {
     out.push({
@@ -192,7 +192,7 @@ async function audit(app: HyperApp): Promise<readonly Finding[]> {
       level: "fail",
       message: `${authRoutes.length} route(s) marked authEndpoint but no auto-rate-limit plugin installed.`,
       why: "Auth endpoints unthrottled are trivially credential-stuffable.",
-      fix: "Add `authRateLimitPlugin()` from @hyper/rate-limit (limit: 10, window: '1m' is a good default).",
+      fix: "Add `authRateLimitPlugin()` from @usehyper/rate-limit (limit: 10, window: '1m' is a good default).",
     })
   } else if (authRoutes.length > 0) {
     out.push({

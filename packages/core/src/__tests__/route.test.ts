@@ -25,7 +25,7 @@ function objectSchema<T extends Record<string, string>>(shape: T): StandardSchem
   }
 }
 
-describe("@hyper/core route builder", () => {
+describe("@usehyper/core route builder", () => {
   test("bare-data return becomes JSON 200", async () => {
     const r = route.get("/").handle(() => ({ ok: true }))
     const a = app({ routes: [r] })

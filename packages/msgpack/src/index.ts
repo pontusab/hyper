@@ -1,5 +1,5 @@
 /**
- * @hyper/msgpack — content-negotiated MessagePack middleware + transport.
+ * @usehyper/msgpack — content-negotiated MessagePack middleware + transport.
  *
  *   use(msgpack())
  *
@@ -10,7 +10,7 @@
  * HTTP semantics are preserved; only the wire format changes.
  */
 
-import type { Middleware } from "@hyper/core"
+import type { Middleware } from "@usehyper/core"
 import { decode, encode } from "./codec.ts"
 
 export { decode, encode } from "./codec.ts"

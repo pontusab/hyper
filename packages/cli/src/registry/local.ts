@@ -49,13 +49,13 @@ async function component(
 // Raw component sources --------------------------------------------------
 
 const BUN_ADAPTER = `/**
- * Bun adapter — copied from @hyper/cli registry; edit freely.
+ * Bun adapter — copied from @usehyper/cli registry; edit freely.
  *
  * Uses Bun.serve({ routes }) so param-free routes short-circuit the
  * framework router entirely (the fast path).
  */
 
-import type { HyperApp } from "@hyper/core"
+import type { HyperApp } from "@usehyper/core"
 
 export interface BunAdapterConfig {
   readonly port?: number
@@ -79,7 +79,7 @@ const NODE_ADAPTER_STUB = `/**
  * You can delete this file if you only target Bun.
  */
 
-import type { HyperApp } from "@hyper/core"
+import type { HyperApp } from "@usehyper/core"
 
 export function startNode(_app: HyperApp): void {
   throw new Error("node adapter not implemented yet — see packages/cli/templates.")
@@ -90,7 +90,7 @@ const WORKERS_ADAPTER_STUB = `/**
  * Cloudflare Workers adapter stub.
  */
 
-import type { HyperApp } from "@hyper/core"
+import type { HyperApp } from "@usehyper/core"
 
 export default {
   fetch(req: Request, _env: unknown, _ctx: unknown, app: HyperApp) {
@@ -106,7 +106,7 @@ const VERCEL_ADAPTER_STUB = `/**
  * export default startVercel(app)
  */
 
-import type { HyperApp } from "@hyper/core"
+import type { HyperApp } from "@usehyper/core"
 
 export function startVercel(app: HyperApp) {
   return (req: Request) => app.fetch(req)
@@ -117,7 +117,7 @@ const LAMBDA_ADAPTER_STUB = `/**
  * AWS Lambda function URL adapter stub.
  */
 
-import type { HyperApp } from "@hyper/core"
+import type { HyperApp } from "@usehyper/core"
 
 export function startLambda(app: HyperApp) {
   return async (event: { rawPath: string; requestContext: { http: { method: string } }; body?: string; headers?: Record<string, string> }) => {
@@ -139,10 +139,10 @@ export function startLambda(app: HyperApp) {
 
 const CORS_MW = `/**
  * Copied CORS middleware.
- * Swap @hyper/cors for this if you need to hand-tune behavior.
+ * Swap @usehyper/cors for this if you need to hand-tune behavior.
  */
 
-export { corsPlugin as cors } from "@hyper/cors"
+export { corsPlugin as cors } from "@usehyper/cors"
 `
 
 const AUTH_RECIPE = `/**
@@ -153,7 +153,7 @@ const AUTH_RECIPE = `/**
  * 3. On protected routes, chain .auth()
  */
 
-export { authJwt, authJwtPlugin, installAuthMethod } from "@hyper/auth-jwt"
+export { authJwt, authJwtPlugin, installAuthMethod } from "@usehyper/auth-jwt"
 `
 
 export async function buildLocalRegistry(): Promise<readonly RegistryComponent[]> {
@@ -177,13 +177,13 @@ export async function buildLocalRegistry(): Promise<readonly RegistryComponent[]
       "cors",
       "Default CORS middleware wired with sane origin allowlist defaults.",
       [{ path: "src/middleware/cors.ts", contents: CORS_MW }],
-      ["@hyper/cors"],
+      ["@usehyper/cors"],
     ),
     component(
       "auth",
       "HS256 JWT auth starter.",
       [{ path: "src/middleware/auth.ts", contents: AUTH_RECIPE }],
-      ["@hyper/auth-jwt"],
+      ["@usehyper/auth-jwt"],
     ),
   ])
 }

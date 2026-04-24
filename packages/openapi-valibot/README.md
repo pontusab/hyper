@@ -1,17 +1,17 @@
-# @hyper/openapi-valibot
+# @usehyper/openapi-valibot
 
-SchemaConverter for Valibot to @hyper/openapi.
+SchemaConverter for Valibot to @usehyper/openapi.
 
 ## Install
 
 ```bash
-bun add @hyper/openapi-valibot
+bun add @usehyper/openapi-valibot
 ```
 
 ## Usage
 
 ```ts
-import { valibotConverter } from "@hyper/openapi-valibot"
+import { valibotConverter } from "@usehyper/openapi-valibot"
 ```
 
 ## Docs

@@ -7,7 +7,7 @@
  * `.build()` so tests never need to call it manually.
  */
 
-import { type HttpMethod, Hyper, type HyperApp } from "@hyper/core"
+import { type HttpMethod, Hyper, type HyperApp } from "@usehyper/core"
 import { type FakeRequestInit, fakeRequest } from "./request.ts"
 
 export function call(

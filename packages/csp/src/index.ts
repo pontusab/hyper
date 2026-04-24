@@ -1,5 +1,5 @@
 /**
- * @hyper/csp — Content-Security-Policy + strict-by-default siblings.
+ * @usehyper/csp — Content-Security-Policy + strict-by-default siblings.
  *
  * Most Hyper deployments serve JSON APIs and never render HTML, so the
  * default policy is extremely restrictive:
@@ -13,7 +13,7 @@
  * nonce from `ctx.cspNonce` and inject it into inline `<script>` tags.
  */
 
-import type { HyperPlugin } from "@hyper/core"
+import type { HyperPlugin } from "@usehyper/core"
 
 export interface CspConfig {
   /** Emit `Content-Security-Policy-Report-Only` instead of the enforcing header. */
@@ -65,7 +65,7 @@ const API_DEFAULT: Partial<Record<CspDirective, readonly string[]>> = {
   "upgrade-insecure-requests": [],
 }
 
-declare module "@hyper/core" {
+declare module "@usehyper/core" {
   interface AppContext {
     readonly cspNonce?: string
   }
@@ -81,7 +81,7 @@ export function cspPlugin(config: CspConfig = {}): HyperPlugin {
     : "content-security-policy"
 
   return {
-    name: "@hyper/csp",
+    name: "@usehyper/csp",
     request: {
       before({ ctx }) {
         if (config.nonce) {

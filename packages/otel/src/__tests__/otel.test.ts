@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test"
-import { app, route } from "@hyper/core"
+import { app, route } from "@usehyper/core"
 import { SloRecorder, otel } from "../index.ts"
 
-describe("@hyper/otel", () => {
+describe("@usehyper/otel", () => {
   test("records duration samples to the SLO recorder", async () => {
     const rec = new SloRecorder()
     const r = route

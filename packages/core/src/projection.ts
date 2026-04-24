@@ -15,7 +15,7 @@
 
 import type { Route, RouteMeta } from "./types.ts"
 
-/** Minimal serializable schema descriptor — the full converter lives in @hyper/openapi. */
+/** Minimal serializable schema descriptor — the full converter lives in @usehyper/openapi. */
 export interface SchemaDescriptor {
   readonly kind: "unknown" | "object" | "string" | "number" | "boolean" | "array"
   readonly properties?: Record<string, SchemaDescriptor>
@@ -81,7 +81,7 @@ export function projectRoutes(routes: readonly Route[]): readonly ProjectedRoute
   return routes.filter((r) => !r.meta.internal).map(projectRoute)
 }
 
-/** Minimal OpenAPI 3.1 manifest. @hyper/openapi adds schema conversion later. */
+/** Minimal OpenAPI 3.1 manifest. @usehyper/openapi adds schema conversion later. */
 export interface OpenAPIManifest {
   readonly openapi: "3.1.0"
   readonly info: { title: string; version: string; description?: string }
@@ -149,7 +149,7 @@ export function toOpenAPI(
   }
 }
 
-/** MCP manifest (JSON-RPC shaped). @hyper/mcp produces the transport. */
+/** MCP manifest (JSON-RPC shaped). @usehyper/mcp produces the transport. */
 export interface MCPManifest {
   readonly version: "1.0"
   readonly tools: readonly MCPTool[]
@@ -190,7 +190,7 @@ export function toMCPManifest(routes: readonly Route[]): MCPManifest {
   return { version: "1.0", tools }
 }
 
-/** Typed-client manifest — the serializable contract @hyper/client consumes. */
+/** Typed-client manifest — the serializable contract @usehyper/client consumes. */
 export interface ClientManifest {
   readonly version: "1.0"
   readonly routes: readonly ProjectedRoute[]

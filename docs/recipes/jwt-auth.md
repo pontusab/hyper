@@ -1,12 +1,12 @@
 # Recipe: JWT auth
 
-Use `@hyper/auth-jwt` for bearer-token APIs. HS256 or RS256.
+Use `@usehyper/auth-jwt` for bearer-token APIs. HS256 or RS256.
 
 ## Setup
 
 ```ts
-import { app } from "@hyper/core"
-import { authJwt, authJwtPlugin } from "@hyper/auth-jwt"
+import { app } from "@usehyper/core"
+import { authJwt, authJwtPlugin } from "@usehyper/auth-jwt"
 
 export const api = app({
   env: {
@@ -26,7 +26,7 @@ export const api = app({
 ## Route-level opt-in (no plugin)
 
 ```ts
-import { authJwt } from "@hyper/auth-jwt"
+import { authJwt } from "@usehyper/auth-jwt"
 
 route
   .get("/private")
@@ -36,10 +36,10 @@ route
 
 ## Issuing tokens in tests
 
-`@hyper/testing` ships `signJwtHS256`:
+`@usehyper/testing` ships `signJwtHS256`:
 
 ```ts
-import { bearerAsUser, signJwtHS256 } from "@hyper/testing"
+import { bearerAsUser, signJwtHS256 } from "@usehyper/testing"
 
 const token = await signJwtHS256({ sub: "u1", roles: ["admin"] }, SECRET_32_BYTES)
 const res = await fetch("/me", { headers: { authorization: `Bearer ${token}` } })

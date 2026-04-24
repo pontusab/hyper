@@ -26,7 +26,7 @@ export async function runEnvCheck(args: ParsedArgs): Promise<number> {
   const unsafe = args.flags["unsafe-print"] === true || args.flags.unsafePrint === true
 
   try {
-    const core = (await import("@hyper/core")) as typeof import("../../../core/src/index.ts")
+    const core = (await import("@usehyper/core")) as typeof import("../../../core/src/index.ts")
     const cfg = app.__config
     const schemas = collectEnvSchemas(cfg)
     const secretPaths = Array.isArray(cfg.env?.secrets) ? (cfg.env?.secrets ?? []) : []

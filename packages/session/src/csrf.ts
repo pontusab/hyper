@@ -21,7 +21,7 @@
  */
 
 import { timingSafeEqual } from "node:crypto"
-import { type Middleware, coerce, createError } from "@hyper/core"
+import { type Middleware, coerce, createError } from "@usehyper/core"
 
 export interface CsrfConfig {
   readonly cookieName?: string
@@ -76,7 +76,7 @@ export function csrfGuard(config: CsrfConfig = {}): Middleware {
     }
     return res
   }
-  ;(mw as unknown as { __hyperTag: string }).__hyperTag = "@hyper/session:csrf"
+  ;(mw as unknown as { __hyperTag: string }).__hyperTag = "@usehyper/session:csrf"
   return mw
 }
 

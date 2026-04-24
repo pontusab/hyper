@@ -11,7 +11,7 @@
  * middleware, logging, and validation run exactly once.
  */
 
-import type { HttpMethod, HyperApp, MCPManifest } from "@hyper/core"
+import type { HttpMethod, HyperApp, MCPManifest } from "@usehyper/core"
 
 export interface McpServer {
   readonly handle: (req: Request) => Promise<Response>

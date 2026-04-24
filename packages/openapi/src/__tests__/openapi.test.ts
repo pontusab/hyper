@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test"
-import { app, route } from "@hyper/core"
+import { app, route } from "@usehyper/core"
 import { generate, openapiHandlers } from "../index.ts"
 
-describe("@hyper/openapi", () => {
+describe("@usehyper/openapi", () => {
   const bodySchema = {
     "~standard": {
       version: 1 as const,

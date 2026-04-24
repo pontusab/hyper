@@ -3,7 +3,7 @@
  *
  *   // drizzle recipe:
  *   import { drizzle } from "drizzle-orm/bun-sqlite"
- *   import { wrapDrizzle } from "@hyper/log/drizzle"
+ *   import { wrapDrizzle } from "@usehyper/log/drizzle"
  *   const db = wrapDrizzle(drizzle(...), () => /* ctx.log *\/ undefined)
  *
  * The store is intentionally async so tests + benches look realistic.

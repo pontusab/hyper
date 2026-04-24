@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test"
 import { sqliteSessions } from "../sqlite.ts"
 
-describe("@hyper/session/sqlite", () => {
+describe("@usehyper/session/sqlite", () => {
   test("stores + retrieves + destroys data", async () => {
     const s = sqliteSessions({ path: ":memory:" })
     await s.set("sid1", { userId: "u1" }, 60_000)

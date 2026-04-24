@@ -7,7 +7,7 @@
  * `meta.trpc.type`.
  */
 
-import { type CallableRoute, route } from "@hyper/core"
+import { type CallableRoute, route } from "@usehyper/core"
 import type { TrpcRouterLike, TrpcToHyperOptions } from "./types.ts"
 
 export function trpcToHyper(

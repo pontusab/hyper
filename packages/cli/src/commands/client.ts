@@ -1,6 +1,6 @@
 /**
  * `hyper client <outDir> [entry]` — emits client.ts + client.d.ts from the
- * app's `toClientManifest()`. Codegen lives in @hyper/client; the CLI is
+ * app's `toClientManifest()`. Codegen lives in @usehyper/client; the CLI is
  * responsible for loading the app and writing files.
  */
 
@@ -28,9 +28,9 @@ export async function runClient(args: ParsedArgs): Promise<number> {
     return 2
   }
 
-  // Dynamic import keeps @hyper/client as a CLI-dev dep, not a runtime dep.
+  // Dynamic import keeps @usehyper/client as a CLI-dev dep, not a runtime dep.
   // biome-ignore format: keep single-line for tsgo
-  const mod = (await import("@hyper/client/codegen")) as typeof import("../../../client/src/codegen.ts")
+  const mod = (await import("@usehyper/client/codegen")) as typeof import("../../../client/src/codegen.ts")
   const baseUrl = typeof args.flags.baseUrl === "string" ? args.flags.baseUrl : ""
   const result = mod.generateClient({
     manifest: app.toClientManifest(),

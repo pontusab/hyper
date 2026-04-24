@@ -1,11 +1,11 @@
 /**
  * Type utilities for downstream consumers.
  *
- * These let `@hyper/client` and user code derive input/output/context
+ * These let `@usehyper/client` and user code derive input/output/context
  * types from a router tree without reflection.
  *
  * Usage:
- *   import { type InferRouterInputs } from "@hyper/core"
+ *   import { type InferRouterInputs } from "@usehyper/core"
  *   type Inputs = InferRouterInputs<typeof router>
  *   type CreateUser = Inputs["users"]["create"]
  */

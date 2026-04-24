@@ -2,10 +2,10 @@
 import { readFile } from "node:fs/promises"
 import { resolve } from "node:path"
 /**
- * native-only-check: fails if any @hyper/core package depends on a
+ * native-only-check: fails if any @usehyper/core package depends on a
  * userland substitute for a Bun primitive.
  *
- * The rule: @hyper/core must not import from (or depend on) any of the
+ * The rule: @usehyper/core must not import from (or depend on) any of the
  * banned packages. Other packages may use them only for interop shims.
  */
 import { Glob } from "bun"
@@ -38,7 +38,7 @@ const BANNED = new Set([
 ])
 
 // Subset of packages the rule applies to strictly (core must be pristine).
-const STRICT_PACKAGES = new Set(["@hyper/core"])
+const STRICT_PACKAGES = new Set(["@usehyper/core"])
 
 const root = resolve(import.meta.dir, "..")
 const glob = new Glob("packages/*/package.json")

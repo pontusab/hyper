@@ -1,5 +1,5 @@
 /**
- * @hyper/otel — OpenTelemetry-flavored request spans + SLO histograms.
+ * @usehyper/otel — OpenTelemetry-flavored request spans + SLO histograms.
  *
  * The full OTLP exporter is wired via the user's `@opentelemetry/sdk-node`
  * setup (we reuse the global provider). This middleware just emits spans
@@ -7,7 +7,7 @@
  * into our built-in SLO recorder.
  */
 
-import type { Middleware } from "@hyper/core"
+import type { Middleware } from "@usehyper/core"
 import { SloRecorder } from "./slo.ts"
 
 export { SloRecorder } from "./slo.ts"

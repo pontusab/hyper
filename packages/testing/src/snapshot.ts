@@ -4,7 +4,7 @@
  * stable structure. A breaking change to any surface fails the snapshot.
  */
 
-import type { HyperApp } from "@hyper/core"
+import type { HyperApp } from "@usehyper/core"
 
 export interface ManifestSnapshot {
   readonly openapi: unknown

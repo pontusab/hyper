@@ -1,5 +1,5 @@
 /**
- * @hyper/compress — content-negotiated gzip/brotli compression.
+ * @usehyper/compress — content-negotiated gzip/brotli compression.
  *
  * Wired as middleware (not a plugin) because we need to return a new
  * Response. Inspect the handler's response, negotiate the encoding,
@@ -13,7 +13,7 @@
  */
 
 import { brotliCompressSync, gzipSync, constants as zlibConstants } from "node:zlib"
-import { type Middleware, coerce } from "@hyper/core"
+import { type Middleware, coerce } from "@usehyper/core"
 
 export interface CompressConfig {
   readonly threshold?: number

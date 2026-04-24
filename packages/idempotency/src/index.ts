@@ -1,5 +1,5 @@
 /**
- * @hyper/idempotency — Idempotency-Key middleware.
+ * @usehyper/idempotency — Idempotency-Key middleware.
  *
  * RFC-aligned behavior:
  *   - If request has `Idempotency-Key`, we hash (key + method + path + body)
@@ -11,7 +11,7 @@
  * This keeps consumers safe from retried PUT/POSTs at the edge.
  */
 
-import { type Middleware, coerce } from "@hyper/core"
+import { type Middleware, coerce } from "@usehyper/core"
 import { type IdempotencyStore, memoryStore } from "./store.ts"
 
 export { memoryStore } from "./store.ts"

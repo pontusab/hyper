@@ -7,7 +7,7 @@
  * `mockCtx({ db: fakeDb })` returns `AppContext` with those fields set.
  */
 
-import type { AppContext } from "@hyper/core"
+import type { AppContext } from "@usehyper/core"
 
 export function mockCtx<T extends Partial<AppContext> = Partial<AppContext>>(
   overrides: T = {} as T,

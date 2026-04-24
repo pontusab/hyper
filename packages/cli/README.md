@@ -1,11 +1,11 @@
-# @hyper/cli
+# @usehyper/cli
 
 Hyper CLI — init, dev, build, typecheck, env, routes.
 
 ## Install
 
 ```bash
-bun add @hyper/cli
+bun add @usehyper/cli
 ```
 
 ## Usage

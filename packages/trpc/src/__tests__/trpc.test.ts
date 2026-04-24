@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { app, route } from "@hyper/core"
+import { app, route } from "@usehyper/core"
 import { trpcHandler, trpcToHyper } from "../index.ts"
 
 // A fake router matching the structural shape tRPC exposes.

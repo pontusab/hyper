@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test"
-import { app, route } from "@hyper/core"
+import { app, route } from "@usehyper/core"
 import { authRateLimitPlugin, rateLimit } from "../index.ts"
 
-describe("@hyper/rate-limit", () => {
+describe("@usehyper/rate-limit", () => {
   test("429s after limit is reached, with Retry-After", async () => {
     const r = route
       .get("/")
@@ -20,7 +20,7 @@ describe("@hyper/rate-limit", () => {
   })
 })
 
-describe("@hyper/rate-limit :: authRateLimitPlugin", () => {
+describe("@usehyper/rate-limit :: authRateLimitPlugin", () => {
   test("auto-limits routes declaring meta.authEndpoint = true", async () => {
     const login = route
       .post("/auth/login")

@@ -11,7 +11,7 @@ line; behavior changes will be called out in the changelog.
 
 ### Added
 
-- Core runtime (`@hyper/core`): fluent `route.<method>(path).body(...).handle(...)`
+- Core runtime (`@usehyper/core`): fluent `route.<method>(path).body(...).handle(...)`
   builder, Standard Schema validation (zod/valibot/arktype), groups and plain-object
   routers, typed `ctx`, middleware with output access, `app({...})`
   boot with env parsing, `.throws({...})` / `.errors({...})` error catalogs,
@@ -34,27 +34,27 @@ line; behavior changes will be called out in the changelog.
   `allowShortSecret: true` opt-out, CSRF double-submit via `csrfGuard()`
   middleware, automatic rate-limiting of `meta.authEndpoint: true` routes via
   `authRateLimitPlugin`.
-- Reliability middleware: `@hyper/idempotency` (Idempotency-Key with caching +
-  concurrency lock), `@hyper/cache` (SWR + ETag + stampede protection),
-  `@hyper/rate-limit` (token bucket + auth plugin), `@hyper/otel` (tracing +
-  SLO recorder), `@hyper/compress` (gzip + brotli content-negotiated),
-  `@hyper/csp` (CSP / COEP / COOP with nonce support).
+- Reliability middleware: `@usehyper/idempotency` (Idempotency-Key with caching +
+  concurrency lock), `@usehyper/cache` (SWR + ETag + stampede protection),
+  `@usehyper/rate-limit` (token bucket + auth plugin), `@usehyper/otel` (tracing +
+  SLO recorder), `@usehyper/compress` (gzip + brotli content-negotiated),
+  `@usehyper/csp` (CSP / COEP / COOP with nonce support).
 - Persistence: `bun:sqlite` store implementations for cache, idempotency,
   rate-limit, and session.
-- Integrations: `@hyper/auth-jwt` (HS256 / RS256 + `route.auth()`),
-  `@hyper/session` (encrypted signed-cookie sessions), `@hyper/cors`,
-  `@hyper/openapi` with pluggable schema converters (`@hyper/openapi-zod`,
-  `@hyper/openapi-valibot`, `@hyper/openapi-arktype`), `@hyper/mcp` JSON-RPC 2.0
-  server, `@hyper/client` codegen (with `--result-types` for `Result<T, Errors>`
-  tagged unions), `@hyper/trpc` two-way bridge, `@hyper/msgpack`,
-  `@hyper/subscribe` (SSE), `@hyper/dev-mcp` (dev-mode introspection server),
-  `@hyper/log` structured logger with `/wrap-queries` ORM instrumentation and
+- Integrations: `@usehyper/auth-jwt` (HS256 / RS256 + `route.auth()`),
+  `@usehyper/session` (encrypted signed-cookie sessions), `@usehyper/cors`,
+  `@usehyper/openapi` with pluggable schema converters (`@usehyper/openapi-zod`,
+  `@usehyper/openapi-valibot`, `@usehyper/openapi-arktype`), `@usehyper/mcp` JSON-RPC 2.0
+  server, `@usehyper/client` codegen (with `--result-types` for `Result<T, Errors>`
+  tagged unions), `@usehyper/trpc` two-way bridge, `@usehyper/msgpack`,
+  `@usehyper/subscribe` (SSE), `@usehyper/dev-mcp` (dev-mode introspection server),
+  `@usehyper/log` structured logger with `/wrap-queries` ORM instrumentation and
   subpath exports for bun-sql / drizzle / prisma.
-- Testing (`@hyper/testing`): `app.test()`, `fakeRequest`, `assertResponse`,
+- Testing (`@usehyper/testing`): `app.test()`, `fakeRequest`, `assertResponse`,
   `memoryKv` / `memoryDb` / `memoryRateLimiter`, `testClock`, `captureEvents`,
   `mockPlugin`, `mockCtx`, `snapshotManifest`, `signJwtHS256`, `fuzzRoute`
   with built-in attack corpus, type-level `expectTypeOf` / `expectRoute`.
-- CLI (`@hyper/cli`): `init`, `dev --test`, `build`, `openapi`, `test --fuzz
+- CLI (`@usehyper/cli`): `init`, `dev --test`, `build`, `openapi`, `test --fuzz
   --types --reporter=junit`, `typecheck`, `env --check --unsafe-print`,
   `routes`, `client <out> --result-types`, `mcp --audit`, `add` / `diff`
   Shadcn-style registry, `bench --tests`, `security --check`, `version`.

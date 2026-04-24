@@ -1,7 +1,7 @@
 /**
  * runExamples(app) — walks every route's `meta.examples` and executes each
  * example against the in-process app.invoke() path. Used by `hyper test`
- * and directly inside consumer test files (see @hyper/testing).
+ * and directly inside consumer test files (see @usehyper/testing).
  */
 
 import type { HttpMethod, HyperApp, RouteExample } from "./types.ts"

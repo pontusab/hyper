@@ -38,7 +38,7 @@ export async function runTest(args: ParsedArgs): Promise<number> {
 
   const app = await loadApp(entry)
   if (app) {
-    const core = (await import("@hyper/core")) as typeof import("../../../core/src/index.ts")
+    const core = (await import("@usehyper/core")) as typeof import("../../../core/src/index.ts")
     const t0 = performance.now()
     const results = await core.runExamples(app)
     const failing = results.filter((r) => !r.ok)
@@ -66,7 +66,7 @@ export async function runTest(args: ParsedArgs): Promise<number> {
 
     if (runFuzz) {
       // biome-ignore format: keep single-line for tsgo
-      const fuzz = (await import("@hyper/testing/fuzz")) as typeof import("../../../testing/src/fuzz.ts")
+      const fuzz = (await import("@usehyper/testing/fuzz")) as typeof import("../../../testing/src/fuzz.ts")
       const reports: string[] = []
       let totalFailed = 0
       for (const r of app.routeList) {

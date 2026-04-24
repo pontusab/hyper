@@ -6,7 +6,7 @@
  * cache headers for the spec URL.
  */
 
-import type { HyperApp, HyperPlugin, InvokeInput, Route } from "@hyper/core"
+import type { HyperApp, HyperPlugin, InvokeInput, Route } from "@usehyper/core"
 import type { SchemaConverter } from "./converter.ts"
 import { type GenerateConfig, type OpenAPIDoc, generate } from "./generate.ts"
 import { type SwaggerHtmlOptions, swaggerHtml } from "./swagger.ts"
@@ -15,7 +15,7 @@ export interface OpenApiPluginConfig extends GenerateConfig, SwaggerHtmlOptions 
 
 export function openapiPlugin(config: OpenApiPluginConfig = {}): HyperPlugin {
   return {
-    name: "@hyper/openapi",
+    name: "@usehyper/openapi",
     build() {
       // Reserved for future dynamic-route registration.
     },

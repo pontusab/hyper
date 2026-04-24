@@ -1,4 +1,4 @@
-import { Hyper, ok } from "@hyper/core"
+import { Hyper, ok } from "@usehyper/core"
 
 export default new Hyper()
   .get("/health", () => ({ ok: true, at: new Date().toISOString() }))

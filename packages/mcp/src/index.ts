@@ -1,5 +1,5 @@
 /**
- * @hyper/mcp — exposes declared routes over the Model Context Protocol.
+ * @usehyper/mcp — exposes declared routes over the Model Context Protocol.
  *
  * Usage:
  *   const mcp = mcpServer(app)

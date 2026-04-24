@@ -45,7 +45,7 @@ import type {
   TestOverrides,
 } from "./types.ts"
 
-/** Version string for the banner line. Stays in sync with `@hyper/core`. */
+/** Version string for the banner line. Stays in sync with `@usehyper/core`. */
 const HYPER_VERSION = "0.1.0"
 
 /** Constructor-time options. */

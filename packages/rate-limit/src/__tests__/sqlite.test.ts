@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test"
 import { sqliteRateLimit } from "../sqlite.ts"
 
-describe("@hyper/rate-limit/sqlite", () => {
+describe("@usehyper/rate-limit/sqlite", () => {
   test("counts hits and blocks after limit", async () => {
     const s = sqliteRateLimit({ path: ":memory:" })
     const r1 = await s.take("ip:1", 2, 60_000)

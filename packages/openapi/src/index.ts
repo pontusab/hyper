@@ -1,11 +1,11 @@
 /**
- * @hyper/openapi — OpenAPI 3.1 serializer + Swagger UI for Hyper apps.
+ * @usehyper/openapi — OpenAPI 3.1 serializer + Swagger UI for Hyper apps.
  *
- *   import { openapiHandlers } from "@hyper/openapi"
+ *   import { openapiHandlers } from "@usehyper/openapi"
  *   const oa = openapiHandlers(app, { title: "My API", converters: [...] })
  *   // Then mount oa.spec at /openapi.json and oa.docs at /docs.
  *
- * SchemaConverter is pluggable — see @hyper/openapi-zod / -valibot / -arktype.
+ * SchemaConverter is pluggable — see @usehyper/openapi-zod / -valibot / -arktype.
  */
 
 export { fallbackConverter, firstConverter, isStandardSchema } from "./converter.ts"

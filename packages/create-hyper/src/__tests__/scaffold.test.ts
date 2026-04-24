@@ -6,7 +6,7 @@ describe("create-hyper scaffold", () => {
     const files = scaffold({ dir: "/tmp", name: "demo", template: "minimal" })
     const app = files.find((f) => f.path === "src/app.ts")
     expect(app).toBeDefined()
-    expect(app?.contents).toContain('import { Hyper, ok } from "@hyper/core"')
+    expect(app?.contents).toContain('import { Hyper, ok } from "@usehyper/core"')
     expect(app?.contents).toContain("new Hyper()")
     expect(app?.contents).toContain(".listen(")
   })

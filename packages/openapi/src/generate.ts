@@ -3,7 +3,7 @@
  * threading schemas through the registered `SchemaConverter`s.
  */
 
-import type { HyperApp, Route, RouteExample } from "@hyper/core"
+import type { HyperApp, Route, RouteExample } from "@usehyper/core"
 import { type JsonSchema, type SchemaConverter, firstConverter } from "./converter.ts"
 
 export interface GenerateConfig {

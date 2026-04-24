@@ -1,5 +1,5 @@
 {
-  "name": "@hyper/app-hello",
+  "name": "@usehyper/app-hello",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -10,7 +10,7 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@hyper/core": "workspace:*"
+    "@usehyper/core": "workspace:*"
   },
   "devDependencies": {
     "@types/bun": "1.3.1"

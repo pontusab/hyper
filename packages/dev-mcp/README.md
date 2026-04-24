@@ -1,17 +1,17 @@
-# @hyper/dev-mcp
+# @usehyper/dev-mcp
 
 Dev-mode app-as-MCP server — expose /.hyper/mcp with introspection + replay tools.
 
 ## Install
 
 ```bash
-bun add @hyper/dev-mcp
+bun add @usehyper/dev-mcp
 ```
 
 ## Usage
 
 ```ts
-import { devMcp } from "@hyper/dev-mcp"
+import { devMcp } from "@usehyper/dev-mcp"
 app({ plugins: process.env.NODE_ENV !== "production" ? [devMcp()] : [] })
 ```
 

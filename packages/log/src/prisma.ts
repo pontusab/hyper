@@ -12,7 +12,7 @@ type GetLog = () => LogBuilder | undefined
 // biome-ignore lint/suspicious/noExplicitAny: Prisma extension is dynamic by design
 export function prismaLogExtension(getLog: GetLog): any {
   return {
-    name: "@hyper/log",
+    name: "@usehyper/log",
     query: {
       $allOperations: async ({
         model,

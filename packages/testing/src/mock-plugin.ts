@@ -8,7 +8,7 @@
  *   })] } })
  */
 
-import type { HyperPlugin } from "@hyper/core"
+import type { HyperPlugin } from "@usehyper/core"
 
 export function mockPlugin(plugin: HyperPlugin): HyperPlugin {
   return plugin

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { app, createError, created, ok, route } from "@hyper/core"
+import { app, createError, created, ok, route } from "@usehyper/core"
 import { signJwtHS256 } from "../auth.ts"
 import { fuzzRoute } from "../fuzz.ts"
 import {
@@ -29,7 +29,7 @@ function makeApp() {
   return app({ routes: [ping, create] })
 }
 
-describe("@hyper/testing — request builders", () => {
+describe("@usehyper/testing — request builders", () => {
   test("fakeRequest populates query + headers + body", async () => {
     const req = fakeRequest("POST", "/x", { json: { a: 1 }, query: { q: "hi" }, auth: "Bearer t" })
     expect(req.url).toContain("?q=hi")
@@ -46,7 +46,7 @@ describe("@hyper/testing — request builders", () => {
   })
 })
 
-describe("@hyper/testing — assertResponse", () => {
+describe("@usehyper/testing — assertResponse", () => {
   test("hasStatus + hasJson + hasHeader chain", async () => {
     const res = await call(makeApp(), "GET", "/ping")
     const a = assertResponse(res).hasStatus(200).hasHeader("content-type", /json/)
@@ -59,7 +59,7 @@ describe("@hyper/testing — assertResponse", () => {
   })
 })
 
-describe("@hyper/testing — memory stores", () => {
+describe("@usehyper/testing — memory stores", () => {
   test("memoryKv honors TTL via the injected clock", async () => {
     const clock = testClock(1000)
     const kv = memoryKv<number>(clock)
@@ -91,7 +91,7 @@ describe("@hyper/testing — memory stores", () => {
   })
 })
 
-describe("@hyper/testing — test clock", () => {
+describe("@usehyper/testing — test clock", () => {
   test("ambient clock + advanceTime() work together", () => {
     const clock = testClock(500)
     useTestClock(clock)
@@ -100,7 +100,7 @@ describe("@hyper/testing — test clock", () => {
   })
 })
 
-describe("@hyper/testing — app.test() + captureEvents + mockPlugin", () => {
+describe("@usehyper/testing — app.test() + captureEvents + mockPlugin", () => {
   test("captureEvents records per-request wide events", async () => {
     const { app: a, capture } = captureEvents(makeApp())
     await call(a, "GET", "/ping")
@@ -139,7 +139,7 @@ describe("@hyper/testing — app.test() + captureEvents + mockPlugin", () => {
   })
 })
 
-describe("@hyper/testing — snapshots + fuzz", () => {
+describe("@usehyper/testing — snapshots + fuzz", () => {
   test("snapshotManifest covers all three projections", () => {
     const snap = snapshotManifest(makeApp())
     expect(snap.openapi).toBeDefined()
@@ -153,7 +153,7 @@ describe("@hyper/testing — snapshots + fuzz", () => {
   })
 })
 
-describe("@hyper/testing/auth", () => {
+describe("@usehyper/testing/auth", () => {
   test("signJwtHS256 produces a verifiable-looking token", () => {
     const token = signJwtHS256({
       secret: "x".repeat(32),

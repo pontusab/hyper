@@ -1,7 +1,7 @@
 /**
- * @hyper/openapi-zod — SchemaConverter that understands Zod v3 and v4.
+ * @usehyper/openapi-zod — SchemaConverter that understands Zod v3 and v4.
  *
- *   import { zodConverter } from "@hyper/openapi-zod"
+ *   import { zodConverter } from "@usehyper/openapi-zod"
  *   openapiHandlers(app, { converters: [zodConverter] })
  *
  * Detection:
@@ -13,7 +13,7 @@
  * / number / boolean / enum / union / optional / nullable / default).
  */
 
-import type { JsonSchema, SchemaConverter } from "@hyper/openapi"
+import type { JsonSchema, SchemaConverter } from "@usehyper/openapi"
 
 interface ZodLike {
   readonly _def: ZodDef

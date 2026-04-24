@@ -1,17 +1,17 @@
-# @hyper/rate-limit
+# @usehyper/rate-limit
 
 Token-bucket rate limiting for Hyper. In-memory + pluggable stores.
 
 ## Install
 
 ```bash
-bun add @hyper/rate-limit
+bun add @usehyper/rate-limit
 ```
 
 ## Usage
 
 ```ts
-import { rateLimit, authRateLimitPlugin } from "@hyper/rate-limit"
+import { rateLimit, authRateLimitPlugin } from "@usehyper/rate-limit"
 app({ use: [rateLimit({ max: 100, windowMs: 60_000 })], plugins: [authRateLimitPlugin()] })
 ```
 

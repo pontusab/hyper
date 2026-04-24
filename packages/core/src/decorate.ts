@@ -8,12 +8,12 @@
  *    (e.g., `ctx.user` from a JWT claim).
  * 3. Plugin-installed context via `plugin.context`.
  *
- * Types flow via `declare module "@hyper/core" { interface AppContext { ... } }`.
+ * Types flow via `declare module "@usehyper/core" { interface AppContext { ... } }`.
  *
  * Recipe (cross-file typing):
  *   // src/ctx.d.ts
  *   import type { Db } from "./db"
- *   declare module "@hyper/core" { interface AppContext { db: Db } }
+ *   declare module "@usehyper/core" { interface AppContext { db: Db } }
  */
 
 import type { AppContext } from "./types.ts"

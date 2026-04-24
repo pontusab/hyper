@@ -1,17 +1,17 @@
-# @hyper/cache
+# @usehyper/cache
 
 SWR + ETag + stampede protection for Hyper routes.
 
 ## Install
 
 ```bash
-bun add @hyper/cache
+bun add @usehyper/cache
 ```
 
 ## Usage
 
 ```ts
-import { cache } from "@hyper/cache"
+import { cache } from "@usehyper/cache"
 route.get("/feed").use(cache({ maxAgeMs: 60_000 })).handle(...)
 ```
 

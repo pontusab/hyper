@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test"
 import { sqliteIdempotency } from "../sqlite.ts"
 
-describe("@hyper/idempotency/sqlite", () => {
+describe("@usehyper/idempotency/sqlite", () => {
   test("stores responses with TTL expiry", async () => {
     const s = sqliteIdempotency({ path: ":memory:" })
     await s.set(

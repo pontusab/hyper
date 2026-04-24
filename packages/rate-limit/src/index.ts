@@ -1,5 +1,5 @@
 /**
- * @hyper/rate-limit — token-bucket rate limiting.
+ * @usehyper/rate-limit — token-bucket rate limiting.
  *
  * Pluggable store (default: in-memory). Default key extractor uses
  * the X-Forwarded-For / client IP; consumers can override (session id,
@@ -11,7 +11,7 @@
  * `RateLimit-Reset`. Responds 429 with `Retry-After` on exhaustion.
  */
 
-import { HyperError, type HyperPlugin, type Middleware, coerce } from "@hyper/core"
+import { HyperError, type HyperPlugin, type Middleware, coerce } from "@usehyper/core"
 
 export interface RateLimitStore {
   take(key: string, limit: number, windowMs: number): Promise<RateLimitResult>
@@ -128,7 +128,7 @@ export function authRateLimitPlugin(config: AuthRateLimitConfig = {}): HyperPlug
   const keyFn = config.key ?? defaultKey
 
   return {
-    name: "@hyper/rate-limit:auth",
+    name: "@usehyper/rate-limit:auth",
     request: {
       async before({ req, route }) {
         if (!route?.meta?.authEndpoint) return

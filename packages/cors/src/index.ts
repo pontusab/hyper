@@ -1,5 +1,5 @@
 /**
- * @hyper/cors — strict, zero-config-wins CORS for Hyper.
+ * @usehyper/cors — strict, zero-config-wins CORS for Hyper.
  *
  * Secure by default:
  *   - origins MUST be a list or a callback; wildcard "*" is refused when
@@ -11,7 +11,7 @@
  *   app({ plugins: [corsPlugin({ origin: ["https://app.example.com"] })] })
  */
 
-import type { HyperPlugin } from "@hyper/core"
+import type { HyperPlugin } from "@usehyper/core"
 
 export interface CorsConfig {
   readonly origin: readonly string[] | ((origin: string) => boolean) | "*"
@@ -66,7 +66,7 @@ export function corsPlugin(config: CorsConfig): HyperPlugin {
   const exposeHeaders = config.exposeHeaders?.join(", ")
   const maxAge = (config.maxAge ?? 600).toString()
   return {
-    name: "@hyper/cors",
+    name: "@usehyper/cors",
     request: {
       preRoute({ req }) {
         if (req.method !== "OPTIONS" || !req.headers.has("access-control-request-method")) {

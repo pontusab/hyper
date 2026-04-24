@@ -1,17 +1,17 @@
-# @hyper/auth-jwt
+# @usehyper/auth-jwt
 
 JWT auth middleware + .auth() route builder sugar for Hyper.
 
 ## Install
 
 ```bash
-bun add @hyper/auth-jwt
+bun add @usehyper/auth-jwt
 ```
 
 ## Usage
 
 ```ts
-import { authJwtPlugin } from "@hyper/auth-jwt"
+import { authJwtPlugin } from "@usehyper/auth-jwt"
 app({ plugins: [authJwtPlugin({ secretEnv: "JWT_SECRET" })] })
 ```
 

@@ -1,5 +1,5 @@
 /**
- * @hyper/dev-mcp — dev-time MCP surface mounted at /.hyper/mcp.
+ * @usehyper/dev-mcp — dev-time MCP surface mounted at /.hyper/mcp.
  *
  * Zero prod exposure: the plugin becomes a no-op unless `enabled: true`
  * or `NODE_ENV !== "production"`. `hyper build` strips it automatically

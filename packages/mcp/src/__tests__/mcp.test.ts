@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { app, created, ok, route } from "@hyper/core"
+import { app, created, ok, route } from "@usehyper/core"
 import { auditMcp, mcpServer } from "../index.ts"
 
 function buildApp() {
@@ -20,7 +20,7 @@ function buildApp() {
   })
 }
 
-describe("@hyper/mcp", () => {
+describe("@usehyper/mcp", () => {
   test("manifest contains only mcp-annotated routes", () => {
     const a = buildApp()
     const srv = mcpServer(a)

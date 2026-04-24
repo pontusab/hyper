@@ -1,5 +1,5 @@
 /**
- * @hyper/testing — ergonomic primitives for testing Hyper apps.
+ * @usehyper/testing — ergonomic primitives for testing Hyper apps.
  *
  * Philosophy: testing a Hyper route should feel like testing a plain
  * async function. No supertest, no dev-server juggling, no mock server.

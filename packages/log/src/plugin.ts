@@ -13,7 +13,7 @@
  * is safe without AsyncLocalStorage (which is reserved for useEnv()).
  */
 
-import type { HyperPlugin } from "@hyper/core"
+import type { HyperPlugin } from "@usehyper/core"
 import { createLogBuilder } from "./builder.ts"
 import { stdoutDrain } from "./drains.ts"
 import { DEFAULT_REDACT, redact } from "./redact.ts"
@@ -55,7 +55,7 @@ export function hyperLog(config: HyperLogPluginConfig = {}): HyperPlugin {
   }
 
   return {
-    name: "@hyper/log",
+    name: "@usehyper/log",
     request: {
       before({ req, ctx }) {
         const startedAt = clock()

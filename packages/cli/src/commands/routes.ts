@@ -1,4 +1,4 @@
-import type { HyperApp, Route } from "@hyper/core"
+import type { HyperApp, Route } from "@usehyper/core"
 import { type ParsedArgs, isJson } from "../args.ts"
 import { resolveEntry } from "../entry.ts"
 import { loadApp } from "../load-app.ts"

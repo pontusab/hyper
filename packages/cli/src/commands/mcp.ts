@@ -19,7 +19,7 @@ export async function runMcp(args: ParsedArgs): Promise<number> {
     console.error(`error: no default/named 'app' export in ${entry}`)
     return 2
   }
-  const mod = (await import("@hyper/mcp")) as typeof import("../../../mcp/src/index.ts")
+  const mod = (await import("@usehyper/mcp")) as typeof import("../../../mcp/src/index.ts")
 
   if (args.flags.manifest === true) {
     const manifest = app.toMCPManifest()

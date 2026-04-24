@@ -1,5 +1,5 @@
 {
-  "name": "@hyper/core",
+  "name": "@usehyper/core",
   "version": "0.1.0",
   "type": "module",
   "description": "Hyper core — Bun-first, AI-native API framework runtime.",

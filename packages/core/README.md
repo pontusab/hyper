@@ -1,4 +1,4 @@
-# @hyper/core
+# @usehyper/core
 
 Hyper core — the only hard dependency across the Hyper ecosystem. Zero runtime
 dependencies. Bun-native.
@@ -6,13 +6,13 @@ dependencies. Bun-native.
 ## Install
 
 ```bash
-bun add @hyper/core
+bun add @usehyper/core
 ```
 
 ## Usage
 
 ```ts
-import { app, ok, route } from "@hyper/core"
+import { app, ok, route } from "@usehyper/core"
 
 export const api = app({
   routes: [route.get("/").handle(() => ok({ hello: "world" }))],

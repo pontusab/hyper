@@ -1,5 +1,5 @@
 /**
- * @hyper/testing/fuzz — request-boundary attack corpus.
+ * @usehyper/testing/fuzz — request-boundary attack corpus.
  *
  * `fuzzRoute(app, "POST /users")` hammers the given route with a
  * baseline set of nasty inputs. Each entry expects the framework to
@@ -8,7 +8,7 @@
  * Consumers get parity coverage with the framework's own fuzz suite.
  */
 
-import type { HttpMethod, HyperApp } from "@hyper/core"
+import type { HttpMethod, HyperApp } from "@usehyper/core"
 import { fakeRequest } from "./request.ts"
 
 export interface FuzzCase {

@@ -1,7 +1,7 @@
 /**
  * `hyper openapi [out]` — emits openapi.json for the current app.
  *
- * Dynamically imports @hyper/openapi so consumers without it installed
+ * Dynamically imports @usehyper/openapi so consumers without it installed
  * don't incur the dependency. Falls back to `app.toOpenAPI()` (core).
  */
 
@@ -26,7 +26,7 @@ export async function runOpenapi(args: ParsedArgs): Promise<number> {
 
   let doc: unknown
   try {
-    const m = (await import("@hyper/openapi")) as typeof import("../../../openapi/src/index.ts")
+    const m = (await import("@usehyper/openapi")) as typeof import("../../../openapi/src/index.ts")
     doc = m.generate(app, {
       ...(typeof args.flags.title === "string" && { title: args.flags.title }),
       ...(typeof args.flags.version === "string" && { version: args.flags.version }),

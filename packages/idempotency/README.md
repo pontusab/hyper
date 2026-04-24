@@ -1,17 +1,17 @@
-# @hyper/idempotency
+# @usehyper/idempotency
 
 Idempotency-Key middleware — one-shot result caching for mutating requests.
 
 ## Install
 
 ```bash
-bun add @hyper/idempotency
+bun add @usehyper/idempotency
 ```
 
 ## Usage
 
 ```ts
-import { idempotency } from "@hyper/idempotency"
+import { idempotency } from "@usehyper/idempotency"
 app({ use: [idempotency()] })
 ```
 
