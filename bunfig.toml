@@ -1,0 +1,17 @@
+[install]
+# Exact versions only in root workspace to keep TS 7 preview pinned.
+exact = true
+registry = "https://registry.npmjs.org/"
+
+[test]
+# Fast feedback; Hyper tests should complete in < 5s per package
+coverage = false
+
+[run]
+# Run .ts files through Bun by default
+bun = true
+
+# Minimum Bun runtime required by all @hyper packages.
+# Do not downgrade without an ADR.
+[install.cache]
+disable = false

@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.hyper/
+*.log
+.DS_Store
+bun.lock
+bun.lockb
+.env
+.env.*
+!.env.example
+coverage/
+.bench/
+.cache/
+bench-reports/
+junit.xml
+*.tsbuildinfo
+

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "packageRules": [
+    {
+      "matchPackageNames": ["@typescript/native-preview"],
+      "schedule": ["before 9am on monday"],
+      "groupName": "tsgo nightly",
+      "labels": ["tsgo-bump"]
+    },
+    {
+      "matchPackageNames": ["@types/bun"],
+      "pinVersions": true,
+      "labels": ["bun-types"]
+    }
+  ],
+  "lockFileMaintenance": { "enabled": true, "schedule": ["before 9am on monday"] }
+}

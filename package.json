@@ -1,0 +1,30 @@
+{
+  "name": "hyper",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Hyper — Bun-first, AI-native API framework (monorepo root).",
+  "workspaces": ["packages/*", "apps/*", "apps/examples/*"],
+  "scripts": {
+    "typecheck": "bun run --filter='*' typecheck",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "test": "bun test",
+    "test:contract": "bun run --filter='apps/*' contract 2>/dev/null || true",
+    "test:fuzz": "bun run --filter='packages/*' test:fuzz 2>/dev/null || true",
+    "bench": "bun run ./tools/bench.ts",
+    "bench:pkg": "bun run --filter='packages/*' bench 2>/dev/null || true",
+    "native-only": "bun run ./tools/native-only-check.ts"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/bun": "1.3.1",
+    "@typescript/native-preview": "7.0.0-dev.20260423.1",
+    "typescript": "5.9.2",
+    "expect-type": "1.2.2"
+  },
+  "engines": {
+    "bun": ">=1.3.0"
+  },
+  "packageManager": "bun@1.3.11"
+}

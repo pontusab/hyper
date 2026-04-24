@@ -1,0 +1,18 @@
+{
+  "name": "@hyper/app-hello",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun --hot src/app.ts",
+    "start": "bun src/app.ts",
+    "typecheck": "tsgo --noEmit || bunx tsc --noEmit -p tsconfig.json",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@hyper/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/bun": "1.3.1"
+  }
+}

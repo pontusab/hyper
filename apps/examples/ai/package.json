@@ -1,0 +1,19 @@
+{
+  "name": "example-ai",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun --hot src/adapter.ts",
+    "start": "bun src/adapter.ts",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@hyper/core": "workspace:*",
+    "@hyper/log": "workspace:*",
+    "@hyper/mcp": "workspace:*",
+    "@hyper/client": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/bun": "1.3.1"
+  }
+}

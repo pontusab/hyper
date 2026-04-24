@@ -1,0 +1,5 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "include": ["src/**/*.ts"],
+  "exclude": ["**/*.test.ts", "**/*.fuzz.test.ts", "**/__bench__/**"]
+}
