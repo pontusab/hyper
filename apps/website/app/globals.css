@@ -118,3 +118,80 @@ a:hover {
   color: var(--color-fg);
   padding: 0 4px;
 }
+
+/* Rendered README content (per-component pages). Same monospace, sharp
+   edges, just spacing rules so the document reads. */
+.md {
+  font-size: 13px;
+  line-height: 1.7;
+}
+.md > * + * {
+  margin-top: 1em;
+}
+.md h1,
+.md h2,
+.md h3,
+.md h4 {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  margin-top: 2em;
+}
+.md h1 {
+  font-size: 14px;
+}
+.md h1::before {
+  content: "# ";
+  color: var(--color-fg-muted);
+}
+.md h2 {
+  font-size: 13px;
+}
+.md h2::before {
+  content: "## ";
+  color: var(--color-fg-muted);
+}
+.md h3 {
+  font-size: 13px;
+}
+.md h3::before {
+  content: "### ";
+  color: var(--color-fg-muted);
+}
+.md ul,
+.md ol {
+  padding-left: 1.5em;
+}
+.md li {
+  list-style: disc;
+}
+.md ol li {
+  list-style: decimal;
+}
+.md code {
+  background: var(--color-line-soft);
+  padding: 0 4px;
+  font-size: 12px;
+}
+.md pre {
+  border: 1px solid var(--color-line);
+  background: var(--color-bg-deep);
+  padding: 12px 16px;
+  overflow-x: auto;
+  font-size: 12px;
+  line-height: 1.55;
+}
+.md pre code {
+  background: transparent;
+  padding: 0;
+  font-size: 12px;
+}
+.md blockquote {
+  border-left: 2px solid var(--color-line);
+  padding-left: 1em;
+  color: var(--color-fg-muted);
+}
+.md a {
+  text-decoration: underline;
+}

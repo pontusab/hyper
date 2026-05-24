@@ -15,7 +15,6 @@
       "**/bun.lock*",
       "**/*.snap",
       "packages/cli/src/registry/snapshot.ts",
-      "apps/registry/src/generated/**",
       "apps/website/**",
       "**/hyper.lock.json"
     ]

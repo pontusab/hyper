@@ -1,32 +1,35 @@
 name: registry
 
+# Validates the registry graph + the website that hosts it. Vercel handles
+# the actual deploy via the GitHub integration on push to `main`, so this
+# workflow only gates: the manifest graph stays closed, the website's
+# registry routes still pass their tests, and `next build` succeeds.
+
 on:
   push:
     branches: [main]
     paths:
       - "packages/**"
-      - "apps/registry/**"
+      - "apps/website/**"
       - "tools/**"
       - ".github/workflows/registry.yml"
   pull_request:
     paths:
       - "packages/**"
-      - "apps/registry/**"
+      - "apps/website/**"
       - "tools/**"
   workflow_dispatch:
-  release:
-    types: [published]
 
 concurrency:
   group: registry-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 env:
   BUN_VERSION: 1.3.11
 
 jobs:
   validate:
-    name: validate registry graph + tests
+    name: validate registry graph + website
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -36,37 +39,8 @@ jobs:
       - run: bun install --frozen-lockfile
       - name: registry sanity check
         run: bun run registry:check
-      - name: registry app tests
-        run: bun test --cwd apps/registry
-
-  deploy:
-    name: deploy to Vercel
-    needs: validate
-    if: github.event_name == 'push' || github.event_name == 'release' || github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
-    environment:
-      name: hyperjs.ai
-      url: https://hyperjs.ai
-    steps:
-      - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: ${{ env.BUN_VERSION }}
-      - run: bun install --frozen-lockfile
-      - name: install Vercel CLI
-        run: bun add -g vercel@latest
-      - name: pull Vercel project (production)
-        if: github.event_name == 'push' || github.event_name == 'release'
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-        working-directory: apps/registry
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-      - name: build artifact
-        if: github.event_name == 'push' || github.event_name == 'release'
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-        working-directory: apps/registry
-      - name: deploy to production
-        if: github.event_name == 'push' || github.event_name == 'release'
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
-        working-directory: apps/registry
+      - name: website registry tests
+        run: bun test --cwd apps/website
+      - name: next build (production)
+        run: bun run build
+        working-directory: apps/website

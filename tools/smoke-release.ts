@@ -132,19 +132,12 @@ async function main(): Promise<number> {
         { cwd: work, timeoutMs: 60_000 },
       )
       if (r.code !== 0) {
-        throw new Error(
-          `init failed (code ${r.code}):\nSTDOUT:\n${r.stdout}\nSTDERR:\n${r.stderr}`,
-        )
+        throw new Error(`init failed (code ${r.code}):\nSTDOUT:\n${r.stdout}\nSTDERR:\n${r.stderr}`)
       }
     })
 
     await step("verify expected layout", async () => {
-      const expected = [
-        "hyper.config.json",
-        "hyper.lock.json",
-        "tsconfig.json",
-        "src/hyper/core",
-      ]
+      const expected = ["hyper.config.json", "hyper.lock.json", "tsconfig.json", "src/hyper/core"]
       for (const rel of expected) {
         if (!(await pathExists(join(target, rel)))) {
           throw new Error(`missing ${rel}`)
@@ -155,11 +148,10 @@ async function main(): Promise<number> {
     await step("boot hyper dev for 4s", async () => {
       // Smoke-boot the dev server. Killed by SIGTERM after the timeout —
       // exit code is non-zero in that case, which is what we want.
-      const r = await run(
-        "bunx",
-        [`--package=${cliTgz}`, "hyper", "dev"],
-        { cwd: target, timeoutMs: 4_000 },
-      )
+      const r = await run("bunx", [`--package=${cliTgz}`, "hyper", "dev"], {
+        cwd: target,
+        timeoutMs: 4_000,
+      })
       // SIGTERM exits with 143 on most shells, or null code from spawn.
       const acceptable = r.code === 143 || r.code === 0 || r.code === null
       if (!acceptable) {

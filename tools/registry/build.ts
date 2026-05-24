@@ -4,7 +4,7 @@
  * This is the single source of truth for "what does the Hyper registry contain
  * and what does each manifest look like". Three callers consume it:
  *
- *   - `apps/registry/src/manifests.ts`    — serves manifests dynamically at runtime
+ *   - `apps/website/lib/manifests.ts`     — serves manifests dynamically at runtime
  *   - `tools/build-cli-snapshot.ts`       — bakes a snapshot into the CLI tarball
  *   - `tools/build-registry.ts --check`   — CI sanity check (ensures the graph is valid)
  *

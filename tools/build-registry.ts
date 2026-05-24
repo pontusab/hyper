@@ -9,8 +9,8 @@
  *   - every declared subpath maps to a file that's actually shipped
  *
  * Used in CI. Manifests themselves are no longer checked into the repo —
- * the registry app generates them on demand at request time and the CDN
- * caches them. See `apps/registry/src/manifests.ts`.
+ * the website's registry routes generate them on demand at request time and
+ * the CDN caches them. See `apps/website/lib/manifests.ts`.
  *
  * Usage:
  *   bun run tools/build-registry.ts            # build + validate, exit non-zero on issues

@@ -1,10 +1,8 @@
 import Link from "next/link"
 
 const PRIMARY = [
-  { href: "/docs", label: "DOCS" },
-  { href: "https://hyperjs.ai", label: "REGISTRY" },
-  { href: "https://hyperjs.ai/mcp", label: "MCP" },
-  { href: "/changelog", label: "CHANGELOG" },
+  { href: "/registry", label: "REGISTRY" },
+  { href: "/mcp", label: "MCP" },
   { href: "https://github.com/pontusab/hyper", label: "GITHUB" },
   { href: "https://github.com/pontusab/hyper/issues", label: "ISSUES" },
 ] as const

@@ -314,12 +314,13 @@ SQLite").
 
 The wire format is dependency-free JSON. To host your own registry:
 
-1. Fork `apps/registry/` (it's a Hyper app — dogfoods the framework).
-2. Deploy to any Bun-capable function host. The included `vercel.json` is a
-   working reference. The function reads its data from a generated TypeScript
-   module (`apps/registry/src/generated/registry-data.ts`) that the
-   `vercel-build` hook regenerates on every deploy. No JSON is committed,
-   nothing is served from disk at request time.
+1. Fork `apps/website/` (the Next.js app that serves both the marketing
+   page and `/r/*`, `/schema/*`, `/healthz`, `/mcp`).
+2. Deploy to Vercel (or any host that supports Next.js). The included
+   `apps/website/vercel.json` is a working reference. The route handlers
+   read from a generated TypeScript module (`apps/website/lib/registry-data.ts`)
+   that the `vercel-build` hook regenerates on every deploy. No JSON is
+   committed, nothing is served from disk at request time.
 3. Configure `HYPER_REGISTRY_URL=https://your-domain` (or set
    `registryUrl` in `hyper.config.json`).
 
