@@ -35,7 +35,7 @@ export default function OpengraphImage() {
             letterSpacing: -12,
             color: BG,
             WebkitTextStrokeColor: FG,
-            WebkitTextStrokeWidth: 8,
+            WebkitTextStrokeWidth: 3,
           }}
         >
           hyper
