@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#2a2bd5"/>
+  <text
+    x="600"
+    y="315"
+    text-anchor="middle"
+    dominant-baseline="central"
+    font-family="ui-monospace, 'SF Mono', 'Cascadia Mono', 'JetBrains Mono', Menlo, monospace"
+    font-size="260"
+    font-weight="900"
+    letter-spacing="-6"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="5"
+    paint-order="stroke"
+  >hyper</text>
+</svg>

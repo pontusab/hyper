@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./og.svg" alt="Hyper" width="720" />
+</p>
+
 # Hyper
 
 Fast, opinionated, AI-native API framework for Bun. Distributed via a
