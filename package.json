@@ -10,7 +10,6 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "test": "bun test",
-    "test:contract": "bun run --filter='apps/*' contract 2>/dev/null || true",
     "test:fuzz": "bun run --filter='packages/*' test:fuzz 2>/dev/null || true",
     "bench": "bun run ./tools/bench.ts",
     "bench:pkg": "bun run --filter='packages/*' bench 2>/dev/null || true",
