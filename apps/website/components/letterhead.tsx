@@ -12,7 +12,9 @@ export function Letterhead() {
   return (
     <header className="grid grid-cols-2 gap-x-8 px-6 pt-6 pb-10 text-[12px] uppercase leading-tight tracking-wide sm:px-10">
       <div>
-        <div className="font-bold">HYPERJS.AI</div>
+        <Link href="/" className="font-bold no-underline hover:bg-[var(--color-mark)]">
+          HYPERJS.AI
+        </Link>
       </div>
       <div className="flex flex-col items-end">
         <Bracket href="/registry">REGISTRY</Bracket>
