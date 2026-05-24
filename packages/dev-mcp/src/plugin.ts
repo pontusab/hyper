@@ -1,5 +1,5 @@
 /**
- * @usehyper/dev-mcp — localhost-only MCP server embedded under /.hyper/mcp.
+ * @hyper/dev-mcp — localhost-only MCP server embedded under /.hyper/mcp.
  *
  *   app({ plugins: [devMcpPlugin({ enabled: process.env.NODE_ENV !== "production" })] })
  *
@@ -9,7 +9,7 @@
  *   - Never projects routes tagged `meta.internal: true`.
  */
 
-import type { HyperApp, HyperPlugin } from "@usehyper/core"
+import type { HyperApp, HyperPlugin } from "@hyper/core"
 import { DevRecorder, type RecordedError, type RecordedRequest } from "./recorder.ts"
 import { type DevTool, buildTools } from "./tools.ts"
 
@@ -41,7 +41,7 @@ export function devMcpPlugin(config: DevMcpConfig = {}): HyperPlugin {
   const startTimes = new WeakMap<Request, number>()
 
   return {
-    name: "@usehyper/dev-mcp",
+    name: "@hyper/dev-mcp",
     build(app) {
       if (!enabled) return
       appRef = app

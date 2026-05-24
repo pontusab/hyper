@@ -7,7 +7,18 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "ignore": ["**/node_modules/**", "**/dist/**", "**/.hyper/**", "**/bun.lock*", "**/*.snap"]
+    "ignore": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/.hyper/**",
+      "**/.next/**",
+      "**/bun.lock*",
+      "**/*.snap",
+      "packages/cli/src/registry/snapshot.ts",
+      "apps/registry/src/generated/**",
+      "apps/website/**",
+      "**/hyper.lock.json"
+    ]
   },
   "formatter": {
     "enabled": true,

@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test"
 import { decode, encode } from "../codec.ts"
 
-describe("@usehyper/msgpack codec", () => {
+describe("@hyper/msgpack codec", () => {
   test("roundtrips primitives", () => {
     for (const v of [
       null,

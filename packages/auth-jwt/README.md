@@ -1,18 +1,18 @@
-# @usehyper/auth-jwt
+# @hyper/auth-jwt
 
 JWT auth plugin for Hyper — bearer-token verification, typed `ctx.user`, role/scope guards.
 
 ## Install
 
 ```bash
-bun add @usehyper/auth-jwt
+bun add @hyper/auth-jwt
 ```
 
 ## Usage
 
 ```ts
-import { Hyper, ok } from "@usehyper/core"
-import { authJwtPlugin } from "@usehyper/auth-jwt"
+import { Hyper, ok } from "@hyper/core"
+import { authJwtPlugin } from "@hyper/auth-jwt"
 
 export default new Hyper()
   .use(authJwtPlugin({ secretEnv: "JWT_SECRET" }))

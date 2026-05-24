@@ -1,6 +1,6 @@
 import { type ParsedArgs, isJson } from "../args.ts"
 import { resolveEntry } from "../entry.ts"
-import { loadApp } from "../load-app.ts"
+import { loadApp, loadComponentModule } from "../load-app.ts"
 
 /**
  * `hyper env --check` — boots the app just far enough to run env parsing
@@ -26,7 +26,11 @@ export async function runEnvCheck(args: ParsedArgs): Promise<number> {
   const unsafe = args.flags["unsafe-print"] === true || args.flags.unsafePrint === true
 
   try {
-    const core = (await import("@usehyper/core")) as typeof import("../../../core/src/index.ts")
+    const core = await loadComponentModule<typeof import("@hyper/core")>("core")
+    if (!core) {
+      console.error("error: cannot find @hyper/core (run `hyper add core` first?)")
+      return 2
+    }
     const cfg = app.__config
     const schemas = collectEnvSchemas(cfg)
     const secretPaths = Array.isArray(cfg.env?.secrets) ? (cfg.env?.secrets ?? []) : []
@@ -67,11 +71,11 @@ export async function runEnvCheck(args: ParsedArgs): Promise<number> {
 
 function collectEnvSchemas(cfg: {
   env?: { schema?: unknown } | { schema?: unknown }[]
-}): import("../../../core/src/standard-schema.ts").StandardSchemaV1[] {
-  const schemas: import("../../../core/src/standard-schema.ts").StandardSchemaV1[] = []
+}): import("@hyper/core").StandardSchemaV1[] {
+  const schemas: import("@hyper/core").StandardSchemaV1[] = []
   const envCfg = (cfg as { env?: { schema?: unknown } }).env
   if (envCfg && typeof envCfg === "object" && "schema" in envCfg && envCfg.schema) {
-    schemas.push(envCfg.schema as import("../../../core/src/standard-schema.ts").StandardSchemaV1)
+    schemas.push(envCfg.schema as import("@hyper/core").StandardSchemaV1)
   }
   return schemas
 }

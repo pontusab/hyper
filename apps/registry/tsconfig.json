@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "isolatedDeclarations": false,
+    "paths": {
+      "@hyper/*": ["./src/hyper/*", "./src/hyper/*/index.ts"]
+    }
+  },
+  "include": ["src/**/*.ts", "api/**/*.ts", "test/**/*.ts"]
+}

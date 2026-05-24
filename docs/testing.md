@@ -1,12 +1,12 @@
 # Testing Hyper apps
 
-Hyper ships `@usehyper/testing` with everything you need to write fast,
+Hyper ships `@hyper/testing` with everything you need to write fast,
 deterministic tests against an in-process app — no sockets, no ports,
 no fixtures to wire up.
 
 ```ts
-import { Hyper, ok } from "@usehyper/core"
-import { asUser, assertResponse, call } from "@usehyper/testing"
+import { Hyper, ok } from "@hyper/core"
+import { asUser, assertResponse, call } from "@hyper/testing"
 
 const app = new Hyper()
   .decorate(() => asUser({ id: "u1", roles: ["admin"] }))
@@ -41,7 +41,7 @@ integration tests.
 ## Deterministic time
 
 ```ts
-import { advanceTime, useTestClock } from "@usehyper/testing"
+import { advanceTime, useTestClock } from "@hyper/testing"
 
 useTestClock()
 // `Date.now()` and `setTimeout` now step forward only when you say so.
@@ -51,7 +51,7 @@ advanceTime(5_000)
 ## Structured events
 
 ```ts
-import { captureEvents } from "@usehyper/testing"
+import { captureEvents } from "@hyper/testing"
 
 const events = captureEvents(app)
 await call(app, "POST", "/orders", { body: { id: "o1" } })
@@ -61,7 +61,7 @@ expect(events.find((e) => e.name === "order.placed")).toBeDefined()
 ## Type-level tests
 
 ```ts
-import { expectTypeOf } from "@usehyper/testing"
+import { expectTypeOf } from "@hyper/testing"
 
 expectTypeOf<Input<typeof users.list>>().toEqualTypeOf<void>()
 ```
@@ -69,7 +69,7 @@ expectTypeOf<Input<typeof users.list>>().toEqualTypeOf<void>()
 ## Fuzzing
 
 ```ts
-import { fuzzRoute } from "@usehyper/testing/fuzz"
+import { fuzzRoute } from "@hyper/testing/fuzz"
 
 const report = await fuzzRoute(app, "POST /users")
 expect(report.ok).toBe(true)

@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test"
-import { app, route } from "@usehyper/core"
+import { app, route } from "@hyper/core"
 import { cspPlugin } from "../index.ts"
 
-describe("@usehyper/csp", () => {
+describe("@hyper/csp", () => {
   test("emits strict default-src 'none' CSP for JSON APIs", async () => {
     const a = app({
       routes: [route.get("/").handle(() => ({ ok: true }))],

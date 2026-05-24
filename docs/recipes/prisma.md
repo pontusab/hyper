@@ -2,8 +2,8 @@
 
 ```ts
 import { PrismaClient } from "@prisma/client"
-import { log } from "@usehyper/log"
-import { wrapQueries } from "@usehyper/log/wrap-queries"
+import { log } from "@hyper/log"
+import { wrapQueries } from "@hyper/log/wrap-queries"
 
 const prismaRaw = new PrismaClient()
 export const prisma = wrapQueries(prismaRaw, {
@@ -15,7 +15,7 @@ export const prisma = wrapQueries(prismaRaw, {
 Wire it into `.decorate()`:
 
 ```ts
-import { Hyper } from "@usehyper/core"
+import { Hyper } from "@hyper/core"
 import { prisma } from "./prisma.ts"
 
 export default new Hyper()
@@ -32,7 +32,7 @@ Prisma holds connections. Hyper's `Symbol.asyncDispose` pattern makes
 shutdown tidy:
 
 ```ts
-import { Hyper } from "@usehyper/core"
+import { Hyper } from "@hyper/core"
 
 export default new Hyper().decorate(() => ({
   prisma,

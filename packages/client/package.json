@@ -1,5 +1,5 @@
 {
-  "name": "@usehyper/client",
+  "name": "@hyper/client",
   "version": "0.1.0",
   "type": "module",
   "description": "Typed RPC client + codegen for Hyper.",
@@ -29,16 +29,14 @@
     "test": "bun test"
   },
   "peerDependencies": {
-    "@usehyper/core": "workspace:*"
+    "@hyper/core": "workspace:*"
   },
   "devDependencies": {
-    "@usehyper/core": "workspace:*",
+    "@hyper/core": "workspace:*",
     "@types/bun": "1.3.1"
   },
   "engines": {
     "bun": ">=1.3.0"
   },
-  "publishConfig": {
-    "access": "public"
-  }
+  "private": true
 }

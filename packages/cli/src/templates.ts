@@ -1,37 +1,30 @@
 /**
- * Built-in templates (inline strings so the CLI stays zero-asset).
+ * Built-in scaffolding templates.
  *
- * - minimal: one app file + adapter + tests scaffolding.
- * - api: minimal + @usehyper/log wired + /health + example CRUD route.
+ * After `hyper init`, the CLI runs `hyper add core` to copy the framework
+ * source into `<baseDir>/core/`. Templates therefore have NO `@usehyper/*`
+ * runtime deps — imports use `@hyper/core` and resolve via tsconfig paths.
  */
 
 export interface Template {
   readonly name: string
+  /** Files emitted by `hyper init`. Paths are relative to the project root. */
   readonly files: Readonly<Record<string, string>>
+  /** Components installed via `hyper add` after the files are written. */
+  readonly components: readonly string[]
+  /**
+   * Peer deps that should land in `package.json` immediately. The CLI prints
+   * a one-liner suggesting `bun add` for these.
+   */
+  readonly extraPeerDeps?: Readonly<Record<string, string>>
 }
 
-const MINIMAL_APP = `import { app, ok, route } from "@usehyper/core"
+const MINIMAL_APP = `import { Hyper, ok } from "@hyper/core"
 
-export default app({
-  routes: [
-    route.get("/health").handle(() => ok({ ok: true })),
-    route.get("/hello/:name").handle(({ params }) => ok({ hello: params.name })),
-  ],
-})
-`
-
-const MINIMAL_ADAPTER = `import app from "./app.ts"
-
-const server = Bun.serve({
-  port: Number(process.env.PORT ?? 3000),
-  routes: app.routes,
-  fetch: app.fetch,
-})
-
-process.on("SIGTERM", () => server.stop(false))
-process.on("SIGINT", () => server.stop(false))
-
-console.log(\`listening on http://localhost:\${server.port}\`)
+export default new Hyper()
+  .get("/health", () => ok({ ok: true }))
+  .get("/hello/:name", ({ params }) => ok({ hello: params.name }))
+  .listen(Number(process.env.PORT ?? 3000))
 `
 
 const MINIMAL_TSCONFIG = `{
@@ -43,48 +36,83 @@ const MINIMAL_TSCONFIG = `{
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
+    "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
     "skipLibCheck": true,
-    "types": ["bun-types"]
+    "types": ["@types/bun"],
+    "paths": {
+      "@hyper/*": ["./src/hyper/*", "./src/hyper/*/index.ts"]
+    }
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts", "test/**/*.ts"]
 }
 `
 
 const MINIMAL_PKG = `{
   "name": "my-hyper-app",
   "type": "module",
+  "private": true,
   "scripts": {
-    "dev": "hyper dev",
-    "build": "hyper build",
-    "typecheck": "hyper typecheck",
-    "start": "bun src/adapter.ts",
-    "test": "bun test"
-  },
-  "dependencies": {
-    "@usehyper/core": "latest"
+    "dev": "bun --hot src/app.ts",
+    "start": "bun src/app.ts",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@usehyper/cli": "latest",
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "typescript": "^5.6.0"
   }
 }
 `
 
-const API_APP = `import { app, ok, route } from "@usehyper/core"
-import { hyperLog } from "@usehyper/log"
+const API_APP = `import { Hyper, ok, route } from "@hyper/core"
+import { hyperLog } from "@hyper/log"
 
 const health = route.get("/health").handle(() => ok({ ok: true }))
-
 const listUsers = route.get("/users").handle(() => ok([{ id: "u1", name: "Ada" }]))
-
 const getUser = route
   .get("/users/:id")
   .handle(({ params }) => ok({ id: params.id, name: "Ada" }))
 
-export default app({
-  routes: [health, listUsers, getUser],
-  plugins: [hyperLog({ service: "my-hyper-app" })],
+export default new Hyper()
+  .use(hyperLog({ service: "my-hyper-app" }))
+  .use([health, listUsers, getUser])
+  .listen(Number(process.env.PORT ?? 3000))
+`
+
+const HEALTH_TEST = `import { describe, expect, test } from "bun:test"
+import app from "../src/app.ts"
+
+describe("app", () => {
+  test("GET /health returns ok", async () => {
+    const res = await app.fetch(new Request("http://localhost/health"))
+    expect(res.status).toBe(200)
+    expect(await res.json()).toEqual({ ok: true })
+  })
 })
+`
+
+const README = `# my-hyper-app
+
+A Hyper app. The framework source lives under \`src/hyper/<component>/\` —
+managed by the \`hyper\` CLI.
+
+## Develop
+
+\`\`\`bash
+bun install
+bun run dev
+\`\`\`
+
+## Manage components
+
+\`\`\`bash
+hyper list                 # browse the registry
+hyper add cors             # add a component
+hyper diff log             # inspect drift on an installed component
+hyper update               # pull the latest registry versions
+\`\`\`
 `
 
 export const TEMPLATES: Record<string, Template> = {
@@ -92,21 +120,22 @@ export const TEMPLATES: Record<string, Template> = {
     name: "minimal",
     files: {
       "src/app.ts": MINIMAL_APP,
-      "src/adapter.ts": MINIMAL_ADAPTER,
       "tsconfig.json": MINIMAL_TSCONFIG,
       "package.json": MINIMAL_PKG,
+      "test/app.test.ts": HEALTH_TEST,
+      "README.md": README,
     },
+    components: ["core"],
   },
   api: {
     name: "api",
     files: {
       "src/app.ts": API_APP,
-      "src/adapter.ts": MINIMAL_ADAPTER,
       "tsconfig.json": MINIMAL_TSCONFIG,
-      "package.json": MINIMAL_PKG.replace(
-        '"@usehyper/core": "latest"',
-        '"@usehyper/core": "latest",\n    "@usehyper/log": "latest"',
-      ),
+      "package.json": MINIMAL_PKG,
+      "test/app.test.ts": HEALTH_TEST,
+      "README.md": README,
     },
+    components: ["core", "log"],
   },
 }

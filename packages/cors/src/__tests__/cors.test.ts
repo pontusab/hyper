@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test"
-import { app, route } from "@usehyper/core"
+import { app, route } from "@hyper/core"
 import { corsPlugin } from "../index.ts"
 
-describe("@usehyper/cors", () => {
+describe("@hyper/cors", () => {
   const r = route.get("/").handle(() => "ok")
   const a = app({
     routes: [r],

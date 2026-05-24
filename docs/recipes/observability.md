@@ -2,13 +2,13 @@
 
 ## Structured logging (built in)
 
-`@usehyper/log` is the observability backbone. Every log call becomes a
+`@hyper/log` is the observability backbone. Every log call becomes a
 typed event with a stable shape. Secrets marked via
 `env.secrets = [...]` never leak, even in error responses.
 
 ```ts
-import { Hyper, created } from "@usehyper/core"
-import { hyperLog } from "@usehyper/log"
+import { Hyper, created } from "@hyper/core"
+import { hyperLog } from "@hyper/log"
 import { z } from "zod"
 
 const OrderSchema = z.object({ id: z.string(), total: z.number() })
@@ -27,8 +27,8 @@ export default new Hyper()
 
 ```ts
 import { NodeSDK } from "@opentelemetry/sdk-node"
-import { Hyper } from "@usehyper/core"
-import { otelMiddleware, sloRecorder } from "@usehyper/otel"
+import { Hyper } from "@hyper/core"
+import { otelMiddleware, sloRecorder } from "@hyper/otel"
 
 const sdk = new NodeSDK({ serviceName: "my-api" })
 await sdk.start()

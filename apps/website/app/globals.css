@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+/* Old-school text-document aesthetic — pure monospace, sharp edges,
+   no shadows, no gradients, no animations beyond a single ticker
+   marquee at the very top. */
+@theme {
+  --color-bg: #ffffff;
+  --color-fg: #111111;
+  --color-fg-muted: #666666;
+  --color-fg-subtle: #999999;
+  --color-line: #cccccc;
+  --color-line-soft: #e5e5e5;
+  --color-mark: #fff5b1;
+
+  --font-mono: var(--font-jetbrains), ui-monospace, "SF Mono", SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+* {
+  border-color: var(--color-line);
+  border-radius: 0 !important;
+}
+
+html,
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
+}
+
+::selection {
+  background: var(--color-mark);
+  color: var(--color-fg);
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+a:hover {
+  background: var(--color-mark);
+}
+
+/* Single ticker marquee at the very top of the page. */
+@keyframes hyper-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: hyper-marquee 60s linear infinite;
+}
+
+/* Document headings — markdown-style "# HEADER" rendering. */
+.h-doc {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.h-doc-1::before {
+  content: "# ";
+  color: var(--color-fg-muted);
+}
+.h-doc-2::before {
+  content: "## ~ ";
+  color: var(--color-fg-muted);
+}
+
+/* Plain bordered code block. No syntax highlighting, no shadows. */
+.code-block {
+  border: 1px solid var(--color-line);
+  background: var(--color-bg);
+  padding: 12px 16px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.55;
+  overflow-x: auto;
+  white-space: pre;
+  color: var(--color-fg);
+}
+.code-block .com {
+  color: var(--color-fg-subtle);
+}
+.code-block .kw {
+  color: var(--color-fg);
+  font-weight: 600;
+}
+
+/* Bordered note / callout — for the "running" status hints. */
+.callout {
+  border: 1px solid var(--color-line);
+  border-top: none;
+  padding: 6px 16px;
+  font-size: 11px;
+  color: var(--color-fg-muted);
+  background: var(--color-bg);
+}
+
+/* "Cursor" block — the blinking █ next to the company name. */
+@keyframes hyper-blink {
+  0%, 49% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+.caret {
+  display: inline-block;
+  width: 0.6em;
+  height: 1em;
+  background: var(--color-fg);
+  vertical-align: text-bottom;
+  margin-left: 0.25em;
+  animation: hyper-blink 1.1s steps(1, end) infinite;
+}
+
+/* Inline `<code>` — slightly inverted highlight. */
+.ic {
+  background: var(--color-line-soft);
+  padding: 0 4px;
+}

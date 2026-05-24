@@ -1,0 +1,15 @@
+{
+  "name": "agent-rules",
+  "version": "0.1.0",
+  "title": "Agent rules",
+  "description": "Cursor / Claude Code rules teaching AI assistants how to compose Hyper routes, plugins, and middleware correctly.",
+  "registryDeps": [],
+  "peerDeps": {},
+  "optionalPeerDeps": {},
+  "subpaths": {},
+  "files": [
+    { "path": "AGENTS.md", "target": "@root/AGENTS.md" },
+    { "path": ".cursor/rules/hyper.md", "target": "@root/.cursor/rules/hyper.md" }
+  ],
+  "docs": "Files installed:\n  - AGENTS.md (project root)\n  - .cursor/rules/hyper.md\n\nKeep these committed so AI assistants pick up Hyper's conventions automatically. Re-run `hyper add agent-rules` after upgrading Hyper to refresh."
+}

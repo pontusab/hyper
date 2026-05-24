@@ -1,5 +1,5 @@
 {
-  "name": "@usehyper/log",
+  "name": "@hyper/log",
   "version": "0.1.0",
   "type": "module",
   "description": "Wide-event structured logger for Hyper — the reference plugin.",
@@ -37,16 +37,14 @@
     "test": "bun test"
   },
   "peerDependencies": {
-    "@usehyper/core": "workspace:*"
+    "@hyper/core": "workspace:*"
   },
   "devDependencies": {
-    "@usehyper/core": "workspace:*",
+    "@hyper/core": "workspace:*",
     "@types/bun": "1.3.1"
   },
   "engines": {
     "bun": ">=1.3.0"
   },
-  "publishConfig": {
-    "access": "public"
-  }
+  "private": true
 }

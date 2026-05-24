@@ -1,7 +1,7 @@
 /**
  * `hyper openapi [out]` — emits openapi.json for the current app.
  *
- * Dynamically imports @usehyper/openapi so consumers without it installed
+ * Dynamically imports @hyper/openapi so consumers without it installed
  * don't incur the dependency. Falls back to `app.toOpenAPI()` (core).
  */
 
@@ -10,7 +10,7 @@ import { dirname, resolve } from "node:path"
 import type { ParsedArgs } from "../args.ts"
 import { isJson } from "../args.ts"
 import { resolveEntry } from "../entry.ts"
-import { loadApp } from "../load-app.ts"
+import { loadApp, loadComponentModule } from "../load-app.ts"
 
 export async function runOpenapi(args: ParsedArgs): Promise<number> {
   const entry = await resolveEntry(args.positional.slice(1))
@@ -24,14 +24,16 @@ export async function runOpenapi(args: ParsedArgs): Promise<number> {
     return 2
   }
 
+  // Prefer the @hyper/openapi component if installed (richer schema converters);
+  // fall back to core's built-in projector otherwise.
   let doc: unknown
-  try {
-    const m = (await import("@usehyper/openapi")) as typeof import("../../../openapi/src/index.ts")
+  const m = await loadComponentModule<typeof import("@hyper/openapi")>("openapi")
+  if (m) {
     doc = m.generate(app, {
       ...(typeof args.flags.title === "string" && { title: args.flags.title }),
       ...(typeof args.flags.version === "string" && { version: args.flags.version }),
     })
-  } catch {
+  } else {
     doc = app.toOpenAPI()
   }
 

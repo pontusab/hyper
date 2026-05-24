@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "bun install --frozen-lockfile",
+  "buildCommand": "bun run vercel-build",
+  "framework": null,
+  "rewrites": [{ "source": "/(.*)", "destination": "/api/$1" }]
+}

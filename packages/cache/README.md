@@ -1,18 +1,18 @@
-# @usehyper/cache
+# @hyper/cache
 
 SWR + ETag + stampede protection for Hyper routes.
 
 ## Install
 
 ```bash
-bun add @usehyper/cache
+bun add @hyper/cache
 ```
 
 ## Usage
 
 ```ts
-import { Hyper, ok } from "@usehyper/core"
-import { cache } from "@usehyper/cache"
+import { Hyper, ok } from "@hyper/core"
+import { cache } from "@hyper/cache"
 
 export default new Hyper()
   .use(cache({ maxAgeMs: 60_000 }))

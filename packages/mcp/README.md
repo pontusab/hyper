@@ -1,18 +1,18 @@
-# @usehyper/mcp
+# @hyper/mcp
 
 Model Context Protocol (MCP) adapter for Hyper — turn any Hyper app into an MCP server.
 
 ## Install
 
 ```bash
-bun add @usehyper/mcp
+bun add @hyper/mcp
 ```
 
 ## Usage
 
 ```ts
-import { Hyper, ok } from "@usehyper/core"
-import { mcpServer } from "@usehyper/mcp"
+import { Hyper, ok } from "@hyper/core"
+import { mcpServer } from "@hyper/mcp"
 
 const app = new Hyper().get("/ping", () => ok({ pong: true }))
 

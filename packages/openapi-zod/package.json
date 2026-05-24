@@ -1,8 +1,8 @@
 {
-  "name": "@usehyper/openapi-zod",
+  "name": "@hyper/openapi-zod",
   "version": "0.1.0",
   "type": "module",
-  "description": "SchemaConverter for Zod (v3 + v4) to @usehyper/openapi.",
+  "description": "SchemaConverter for Zod (v3 + v4) to @hyper/openapi.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -21,16 +21,14 @@
     "test": "bun test"
   },
   "peerDependencies": {
-    "@usehyper/openapi": "workspace:*"
+    "@hyper/openapi": "workspace:*"
   },
   "devDependencies": {
-    "@usehyper/openapi": "workspace:*",
+    "@hyper/openapi": "workspace:*",
     "@types/bun": "1.3.1"
   },
   "engines": {
     "bun": ">=1.3.0"
   },
-  "publishConfig": {
-    "access": "public"
-  }
+  "private": true
 }

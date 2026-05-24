@@ -1,4 +1,4 @@
-# @usehyper/log
+# @hyper/log
 
 Wide-event structured logger for Hyper — the reference plugin.
 
@@ -7,14 +7,14 @@ One log event per request, attached to `ctx.log`. Pluggable drains (stdout, file
 ## Install
 
 ```bash
-bun add @usehyper/log
+bun add @hyper/log
 ```
 
 ## Usage
 
 ```ts
-import { Hyper } from "@usehyper/core"
-import { hyperLog } from "@usehyper/log"
+import { Hyper } from "@hyper/core"
+import { hyperLog } from "@hyper/log"
 
 export default new Hyper()
   .use(hyperLog({ service: "orders" }))

@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test"
-import { app, route } from "@usehyper/core"
+import { app, route } from "@hyper/core"
 import { cache } from "../index.ts"
 
-describe("@usehyper/cache", () => {
+describe("@hyper/cache", () => {
   test("caches GET responses and serves 304 on matching etag", async () => {
     let calls = 0
     const r = route

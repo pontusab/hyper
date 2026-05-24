@@ -3,7 +3,7 @@
  * plus Hyper-shaped narrowing helpers.
  */
 
-import type { HttpMethod, HyperApp, Route } from "@usehyper/core"
+import type { HttpMethod, HyperApp, Route } from "@hyper/core"
 
 export { expectTypeOf } from "expect-type"
 

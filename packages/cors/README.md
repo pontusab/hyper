@@ -1,18 +1,18 @@
-# @usehyper/cors
+# @hyper/cors
 
 Minimal, strict CORS middleware for Hyper.
 
 ## Install
 
 ```bash
-bun add @usehyper/cors
+bun add @hyper/cors
 ```
 
 ## Usage
 
 ```ts
-import { Hyper } from "@usehyper/core"
-import { corsPlugin } from "@usehyper/cors"
+import { Hyper } from "@hyper/core"
+import { corsPlugin } from "@hyper/cors"
 
 export default new Hyper()
   .use(corsPlugin({ origin: ["https://example.com"] }))

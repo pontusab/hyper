@@ -13,9 +13,11 @@
 
 import { spawn } from "node:child_process"
 import { writeFile } from "node:fs/promises"
+import { resolve } from "node:path"
 import { type ParsedArgs, isJson } from "../args.ts"
+import { readConfig } from "../config/index.ts"
 import { resolveEntry } from "../entry.ts"
-import { loadApp } from "../load-app.ts"
+import { loadApp, loadComponentModule } from "../load-app.ts"
 
 export async function runTest(args: ParsedArgs): Promise<number> {
   const entry = await resolveEntry(args.positional)
@@ -38,7 +40,13 @@ export async function runTest(args: ParsedArgs): Promise<number> {
 
   const app = await loadApp(entry)
   if (app) {
-    const core = (await import("@usehyper/core")) as typeof import("../../../core/src/index.ts")
+    // `runExamples` lives in core. Try the user's installed copy first, fall
+    // back to the workspace package for monorepo dev.
+    const core = await loadComponentModule<typeof import("@hyper/core")>("core")
+    if (!core) {
+      console.error("error: core not loadable. Run `hyper add core` if you haven't already.")
+      return 2
+    }
     const t0 = performance.now()
     const results = await core.runExamples(app)
     const failing = results.filter((r) => !r.ok)
@@ -65,8 +73,22 @@ export async function runTest(args: ParsedArgs): Promise<number> {
     if (failing.length > 0) return 1
 
     if (runFuzz) {
-      // biome-ignore format: keep single-line for tsgo
-      const fuzz = (await import("@usehyper/testing/fuzz")) as typeof import("../../../testing/src/fuzz.ts")
+      // testing/fuzz lives at <baseDir>/testing/fuzz.ts after `hyper add testing`.
+      const config = await readConfig()
+      const local = resolve(process.cwd(), config.baseDir, "testing/fuzz.ts")
+      let fuzz: typeof import("@hyper/testing/fuzz") | null = null
+      for (const spec of [local, "@hyper/testing/fuzz", "@hyper/testing/fuzz"]) {
+        try {
+          fuzz = (await import(spec)) as typeof import("@hyper/testing/fuzz")
+          break
+        } catch {
+          // try next
+        }
+      }
+      if (!fuzz) {
+        console.error("error: @hyper/testing not installed. Run `hyper add testing` first.")
+        return 2
+      }
       const reports: string[] = []
       let totalFailed = 0
       for (const r of app.routeList) {

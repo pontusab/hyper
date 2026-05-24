@@ -1,18 +1,18 @@
-# @usehyper/subscribe
+# @hyper/subscribe
 
 `subscribe()` primitive — projects to SSE, MCP resource notifications, tRPC subscriptions.
 
 ## Install
 
 ```bash
-bun add @usehyper/subscribe
+bun add @hyper/subscribe
 ```
 
 ## Usage
 
 ```ts
-import { Hyper } from "@usehyper/core"
-import { subscribe } from "@usehyper/subscribe"
+import { Hyper } from "@hyper/core"
+import { subscribe } from "@hyper/subscribe"
 
 export default new Hyper()
   .use(

@@ -23,10 +23,28 @@ describe("cli args parser", () => {
 })
 
 describe("cli templates", () => {
-  test("minimal + api templates are well-formed", () => {
+  test("templates ship with @hyper/* (not @usehyper/*) imports", () => {
     expect(TEMPLATES.minimal).toBeDefined()
-    expect(TEMPLATES.minimal!.files["src/app.ts"]).toContain("@usehyper/core")
+    expect(TEMPLATES.minimal!.files["src/app.ts"]).toContain("@hyper/core")
+    expect(TEMPLATES.minimal!.files["src/app.ts"]).not.toContain("@usehyper/core")
     expect(TEMPLATES.api).toBeDefined()
-    expect(TEMPLATES.api!.files["src/app.ts"]).toContain("@usehyper/log")
+    expect(TEMPLATES.api!.files["src/app.ts"]).toContain("@hyper/log")
+    expect(TEMPLATES.api!.files["src/app.ts"]).not.toContain("@usehyper/log")
+  })
+
+  test("templates patch tsconfig with @hyper/* path mapping", () => {
+    expect(TEMPLATES.minimal!.files["tsconfig.json"]).toContain('"@hyper/*"')
+    expect(TEMPLATES.minimal!.files["tsconfig.json"]).toContain("./src/hyper/*")
+  })
+
+  test("templates have no @usehyper/* runtime deps", () => {
+    expect(TEMPLATES.minimal!.files["package.json"]).not.toContain("@usehyper/")
+    expect(TEMPLATES.api!.files["package.json"]).not.toContain("@usehyper/")
+  })
+
+  test("templates declare which components to install after init", () => {
+    expect(TEMPLATES.minimal!.components).toContain("core")
+    expect(TEMPLATES.api!.components).toContain("core")
+    expect(TEMPLATES.api!.components).toContain("log")
   })
 })

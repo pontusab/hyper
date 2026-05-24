@@ -6,7 +6,7 @@
 
 import { type ParsedArgs, isJson } from "../args.ts"
 import { resolveEntry } from "../entry.ts"
-import { loadApp } from "../load-app.ts"
+import { loadApp, loadComponentModule } from "../load-app.ts"
 
 export async function runMcp(args: ParsedArgs): Promise<number> {
   const entry = await resolveEntry(args.positional)
@@ -19,7 +19,11 @@ export async function runMcp(args: ParsedArgs): Promise<number> {
     console.error(`error: no default/named 'app' export in ${entry}`)
     return 2
   }
-  const mod = (await import("@usehyper/mcp")) as typeof import("../../../mcp/src/index.ts")
+  const mod = await loadComponentModule<typeof import("@hyper/mcp")>("mcp")
+  if (!mod) {
+    console.error("error: @hyper/mcp not installed in this project. Run `hyper add mcp` first.")
+    return 2
+  }
 
   if (args.flags.manifest === true) {
     const manifest = app.toMCPManifest()

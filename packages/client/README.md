@@ -1,11 +1,11 @@
-# @usehyper/client
+# @hyper/client
 
-Typed RPC client + codegen for Hyper apps. Optional TanStack Query bindings at `@usehyper/client/tanstack-query`.
+Typed RPC client + codegen for Hyper apps. Optional TanStack Query bindings at `@hyper/client/tanstack-query`.
 
 ## Install
 
 ```bash
-bun add @usehyper/client
+bun add @hyper/client
 ```
 
 ## Usage
@@ -13,7 +13,7 @@ bun add @usehyper/client
 Runtime client:
 
 ```ts
-import { createClient, fetchTransport } from "@usehyper/client"
+import { createClient, fetchTransport } from "@hyper/client"
 
 const c = createClient(fetchTransport({ baseUrl: "https://api.example.com" }))
 

@@ -1,60 +1,98 @@
 #!/usr/bin/env bun
 /**
- * `bun create hyper <name>` — scaffolder.
+ * `bun create hyper <name>` — thin shim that delegates to `@usehyper/cli`'s
+ * `init` command. The CLI is the source of truth for templates, registry
+ * resolution, and tsconfig patching.
  *
- *   bun create hyper my-app                  # minimal template
- *   bun create hyper my-app --template todo  # todo example
- *   bun create hyper my-app --template ai    # MCP-ready template
+ *   bun create hyper my-app
+ *   bun create hyper my-app --template api
+ *   bun create hyper my-app --agent-rules
+ *
+ * Implementation:
+ *   1. Parse the project name + flags.
+ *   2. mkdir the target.
+ *   3. spawn `bunx @usehyper/cli init <template> --dir <name>`, forwarding flags.
+ *
+ * No source duplication — when the CLI gains a new template, this shim picks
+ * it up automatically.
  */
 
+import { spawn } from "node:child_process"
 import { mkdir, readdir } from "node:fs/promises"
-import { writeFile } from "node:fs/promises"
 import { resolve } from "node:path"
-import { dirname } from "node:path"
-import { TEMPLATES, type TemplateName, scaffold } from "./scaffold.ts"
 
-async function main(): Promise<number> {
-  const argv = process.argv.slice(2)
+interface Argv {
+  readonly name: string | undefined
+  readonly template: string
+  readonly force: boolean
+  readonly help: boolean
+  readonly extraArgs: readonly string[]
+}
+
+function parse(argv: readonly string[]): Argv {
   const positional: string[] = []
-  const flags: Record<string, string | boolean> = {}
+  const extraArgs: string[] = []
+  let template = "minimal"
+  let force = false
+  let help = false
+
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i]!
+    if (a === "--help" || a === "-h") {
+      help = true
+      continue
+    }
+    if (a === "--force") {
+      force = true
+      continue
+    }
+    if (a === "--template") {
+      template = argv[++i] ?? template
+      continue
+    }
+    if (a.startsWith("--template=")) {
+      template = a.slice("--template=".length)
+      continue
+    }
     if (a.startsWith("--")) {
-      const k = a.slice(2)
+      extraArgs.push(a)
       const next = argv[i + 1]
-      if (next && !next.startsWith("-")) {
-        flags[k] = next
+      if (next !== undefined && !next.startsWith("-")) {
+        extraArgs.push(next)
         i++
-      } else flags[k] = true
-    } else positional.push(a)
+      }
+      continue
+    }
+    positional.push(a)
   }
-  const name = positional[0]
-  if (!name || flags.help === true) {
-    console.error("usage: bun create hyper <name> [--template minimal|todo|ai]")
-    return 2
+  return { name: positional[0], template, force, help, extraArgs }
+}
+
+async function main(): Promise<number> {
+  const args = parse(process.argv.slice(2))
+  if (args.help || !args.name) {
+    console.log("usage: bun create hyper <name> [--template minimal|api] [--agent-rules]")
+    console.log()
+    console.log("Equivalent to: bunx @usehyper/cli init <template> --dir <name>")
+    return args.help ? 0 : 2
   }
-  const template: TemplateName =
-    typeof flags.template === "string" && (TEMPLATES as readonly string[]).includes(flags.template)
-      ? (flags.template as TemplateName)
-      : "minimal"
-  const dir = resolve(process.cwd(), name)
+  const dir = resolve(process.cwd(), args.name)
   await mkdir(dir, { recursive: true })
   const existing = await readdir(dir).catch(() => [])
-  if (existing.length > 0 && flags.force !== true) {
+  if (existing.length > 0 && !args.force) {
     console.error(`error: ${dir} is not empty. Pass --force to overwrite.`)
     return 1
   }
-  const files = scaffold({ dir, name, template })
-  for (const f of files) {
-    const abs = resolve(dir, f.path)
-    await mkdir(dirname(abs), { recursive: true })
-    await writeFile(abs, f.contents)
-  }
-  console.log(`scaffolded ${name} (${template}) → ${dir}`)
-  console.log(`  cd ${name}`)
-  console.log("  bun install")
-  console.log("  bun dev")
-  return 0
+
+  const cliArgs = ["@usehyper/cli", "init", args.template, "--dir", dir, ...args.extraArgs]
+  return await new Promise<number>((res) => {
+    const child = spawn("bunx", cliArgs, { stdio: "inherit" })
+    child.on("exit", (code) => res(code ?? 1))
+    child.on("error", (err) => {
+      console.error(`error: failed to run @usehyper/cli init — ${err.message}`)
+      res(1)
+    })
+  })
 }
 
 main().then((code) => process.exit(code))

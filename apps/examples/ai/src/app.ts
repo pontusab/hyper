@@ -5,12 +5,12 @@
  * `.example()` contract tests so the agent can discover how to call it.
  */
 
-import { type HyperApp, app, created, ok, route } from "@usehyper/core"
-import { hyperLog } from "@usehyper/log"
+import { type HyperApp, app, created, ok, route } from "@hyper/core"
+import { hyperLog } from "@hyper/log"
 import { CreateNote, SearchQuery } from "./schemas.ts"
 import { type NoteStore, memoryNotes } from "./tools.ts"
 
-declare module "@usehyper/core" {
+declare module "@hyper/core" {
   interface AppContext {
     readonly notes: NoteStore
   }

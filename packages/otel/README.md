@@ -1,18 +1,18 @@
-# @usehyper/otel
+# @hyper/otel
 
 OpenTelemetry tracing + SLO histograms for Hyper.
 
 ## Install
 
 ```bash
-bun add @usehyper/otel
+bun add @hyper/otel
 ```
 
 ## Usage
 
 ```ts
-import { Hyper } from "@usehyper/core"
-import { otelMiddleware } from "@usehyper/otel"
+import { Hyper } from "@hyper/core"
+import { otelMiddleware } from "@hyper/otel"
 
 export default new Hyper()
   .use(otelMiddleware())

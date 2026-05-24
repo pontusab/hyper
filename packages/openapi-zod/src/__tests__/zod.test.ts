@@ -9,7 +9,7 @@ function makeObject(shape: Record<string, unknown>) {
   }
 }
 
-describe("@usehyper/openapi-zod", () => {
+describe("@hyper/openapi-zod", () => {
   test("detects zod-shaped schemas via _def + parse", () => {
     const s = makeObject({
       name: { _def: { typeName: "ZodString" }, parse: () => "" },

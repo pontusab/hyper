@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { app, route } from "@usehyper/core"
+import { app, route } from "@hyper/core"
 import {
   MIN_JWT_SECRET_BYTES,
   authJwt,
@@ -29,7 +29,7 @@ async function signJwt(payload: Record<string, unknown>): Promise<string> {
   return `${body}.${b64}`
 }
 
-describe("@usehyper/auth-jwt", () => {
+describe("@hyper/auth-jwt", () => {
   const mw = authJwt({ secret: SECRET, algorithms: ["HS256"] })
   installAuthMethod(mw)
   const protectedRoute = route

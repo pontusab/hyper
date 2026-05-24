@@ -1,4 +1,4 @@
-# @usehyper/core
+# @hyper/core
 
 Hyper core — the only hard dependency across the Hyper ecosystem. Zero runtime
 dependencies. Bun-native.
@@ -6,13 +6,13 @@ dependencies. Bun-native.
 ## Install
 
 ```bash
-bun add @usehyper/core
+bun add @hyper/core
 ```
 
 ## Usage
 
 ```ts
-import { Hyper, ok } from "@usehyper/core"
+import { Hyper, ok } from "@hyper/core"
 
 export default new Hyper()
   .get("/", () => ok({ hello: "world" }))
@@ -23,7 +23,7 @@ Compose sub-apps, plugins, middleware, or raw `Route` values through a single
 polymorphic `.use()`:
 
 ```ts
-import { Hyper } from "@usehyper/core"
+import { Hyper } from "@hyper/core"
 import users from "./routes/users.ts"
 
 export default new Hyper()

@@ -1,10 +1,10 @@
 import { describe, expect, test } from "bun:test"
-import { app, route } from "@usehyper/core"
+import { app, route } from "@hyper/core"
 import { csrfGuard, memorySessions, session, validateSessionSecret } from "../index.ts"
 
 const SECRET = "s".repeat(32)
 
-describe("@usehyper/session", () => {
+describe("@hyper/session", () => {
   const store = memorySessions()
   const mw = session({ secret: SECRET, secure: false, store })
   const login = route
@@ -48,7 +48,7 @@ describe("@usehyper/session", () => {
   })
 })
 
-describe("@usehyper/session CSRF double-submit", () => {
+describe("@hyper/session CSRF double-submit", () => {
   const store = memorySessions()
   const mw = session({ secret: SECRET, secure: false, store })
   const csrf = csrfGuard({ secure: false })

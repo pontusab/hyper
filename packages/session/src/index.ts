@@ -1,5 +1,5 @@
 /**
- * @usehyper/session — encrypted, signed-cookie session middleware.
+ * @hyper/session — encrypted, signed-cookie session middleware.
  *
  * - Cookie stores a short opaque id; payload lives in the pluggable
  *   `SessionStore` (in-memory by default).
@@ -9,7 +9,7 @@
  */
 
 import { timingSafeEqual } from "node:crypto"
-import { type Middleware, coerce } from "@usehyper/core"
+import { type Middleware, coerce } from "@hyper/core"
 
 export { csrfGuard, type CsrfConfig } from "./csrf.ts"
 
@@ -65,7 +65,7 @@ export function validateSessionSecret(
   const bytes = new TextEncoder().encode(secret).byteLength
   if (bytes < MIN_SESSION_SECRET_BYTES) {
     throw new Error(
-      `@usehyper/session: secret is ${bytes} bytes; minimum is ${MIN_SESSION_SECRET_BYTES}. Why: short HMAC secrets let an attacker forge session ids with modest compute. Fix: generate a 32+ byte secret (e.g., \`openssl rand -base64 48\`) or pass \`allowShortSecret: true\` to opt out.`,
+      `@hyper/session: secret is ${bytes} bytes; minimum is ${MIN_SESSION_SECRET_BYTES}. Why: short HMAC secrets let an attacker forge session ids with modest compute. Fix: generate a 32+ byte secret (e.g., \`openssl rand -base64 48\`) or pass \`allowShortSecret: true\` to opt out.`,
     )
   }
 }
@@ -79,7 +79,7 @@ export interface SessionHandle {
   readonly dirty: boolean
 }
 
-declare module "@usehyper/core" {
+declare module "@hyper/core" {
   interface AppContext {
     readonly session?: SessionHandle
   }
@@ -159,7 +159,7 @@ export function session(config: SessionConfig): Middleware {
     }
     return res
   }
-  ;(mw as unknown as { __hyperTag: string }).__hyperTag = "@usehyper/session"
+  ;(mw as unknown as { __hyperTag: string }).__hyperTag = "@hyper/session"
   return mw
 }
 

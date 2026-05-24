@@ -2,11 +2,11 @@
   "name": "create-hyper",
   "version": "0.1.0",
   "type": "module",
-  "description": "Scaffolder for Hyper apps — `bun create hyper my-app`.",
+  "description": "Scaffolder for Hyper apps — thin shim over `@usehyper/cli init`.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-org/hyper.git"
+    "url": "https://github.com/usehyper/hyper.git"
   },
   "files": ["src", "LICENSE", "README.md"],
   "exports": {

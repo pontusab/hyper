@@ -1,0 +1,6 @@
+{
+  "$schema": "https://hyperjs.ai/schema.json",
+  "registryUrl": "https://hyperjs.ai",
+  "baseDir": "src/hyper",
+  "alias": "@hyper"
+}

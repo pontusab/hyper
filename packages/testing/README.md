@@ -1,18 +1,18 @@
-# @usehyper/testing
+# @hyper/testing
 
 Testing helpers for Hyper apps — `call`, matchers, memory stores, fuzz.
 
 ## Install
 
 ```bash
-bun add -d @usehyper/testing
+bun add -d @hyper/testing
 ```
 
 ## Usage
 
 ```ts
-import { Hyper, ok } from "@usehyper/core"
-import { assertResponse, call } from "@usehyper/testing"
+import { Hyper, ok } from "@hyper/core"
+import { assertResponse, call } from "@hyper/testing"
 
 const app = new Hyper().get("/", () => ok({ hello: "world" }))
 

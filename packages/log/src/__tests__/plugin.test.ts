@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test"
-import { app, ok, route } from "@usehyper/core"
+import { app, ok, route } from "@hyper/core"
 import { hyperLog, memoryDrain } from "../index.ts"
 
-describe("@usehyper/log plugin", () => {
+describe("@hyper/log plugin", () => {
   test("emits one wide event per request with status + duration", async () => {
     const drain = memoryDrain()
     const r = route.get("/ping").handle(() => ok({ ok: true }))

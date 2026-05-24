@@ -15,7 +15,7 @@ requires configuration — it's the default for every `new Hyper()`.
 | `Strict-Transport-Security` | `max-age=31536000; includeSubDomains` on HTTPS when `NODE_ENV=production` | HSTS never leaks on localhost/dev |
 | `Server` | suppressed | Zero footprinting |
 
-Content Security Policy is opt-in via `@usehyper/csp` (sensible strict
+Content Security Policy is opt-in via `@hyper/csp` (sensible strict
 API defaults + nonce support for HTML-serving apps).
 
 ## Request hardening
@@ -29,15 +29,15 @@ API defaults + nonce support for HTML-serving apps).
   `400 method_override_rejected`. Nothing rewrites the verb.
 - **Request timeout** — global `30s` default; override per-route via
   `meta.timeoutMs`.
-- **Explicit CORS** — never `*` by accident. `@usehyper/cors` refuses
+- **Explicit CORS** — never `*` by accident. `@hyper/cors` refuses
   any config that would emit `*` + `credentials: true`, and rejects
   bare `*` unless you set `allowAnyOrigin: true`.
 
 ## Secrets & auth
 
-- **JWT secrets** must be ≥32 bytes (`@usehyper/auth-jwt`). Pass
+- **JWT secrets** must be ≥32 bytes (`@hyper/auth-jwt`). Pass
   `allowShortSecret: true` only in tests.
-- **Session secrets** must be ≥32 bytes (`@usehyper/session`). Same
+- **Session secrets** must be ≥32 bytes (`@hyper/session`). Same
   escape hatch exists for tests.
 - **CSRF double-submit** via `csrfGuard` middleware — only enforced on
   already-established sessions, so logins still work. Token lives in a
@@ -65,7 +65,7 @@ Defaults are chosen so that you don't have to think about them. Every
 override exists, but it's off the happy path:
 
 ```ts
-import { Hyper } from "@usehyper/core"
+import { Hyper } from "@hyper/core"
 
 export default new Hyper({
   security: {

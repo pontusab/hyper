@@ -1,18 +1,18 @@
-# @usehyper/compress
+# @hyper/compress
 
 Content-negotiated gzip/brotli compression plugin for Hyper.
 
 ## Install
 
 ```bash
-bun add @usehyper/compress
+bun add @hyper/compress
 ```
 
 ## Usage
 
 ```ts
-import { Hyper } from "@usehyper/core"
-import { compress } from "@usehyper/compress"
+import { Hyper } from "@hyper/core"
+import { compress } from "@hyper/compress"
 
 export default new Hyper()
   .use(compress())

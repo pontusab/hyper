@@ -11,7 +11,7 @@ bun create hyper my-app
 Pick a template:
 
 - `minimal` — one route, zero plugins. Perfect for learning.
-- `todo` — CRUD with Zod validation + `@usehyper/log`.
+- `todo` — CRUD with Zod validation + `@hyper/log`.
 - `ai` — MCP-exposed routes with `meta.mcp` annotations.
 
 ```bash

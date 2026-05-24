@@ -8,10 +8,10 @@ install path; Hyper just decorates `ctx` with an instrumented handle.
 ```ts
 import Database from "bun:sqlite"
 import { drizzle } from "drizzle-orm/bun-sqlite"
-import { Hyper } from "@usehyper/core"
-import { wrapDrizzle } from "@usehyper/log/drizzle"
+import { Hyper } from "@hyper/core"
+import { wrapDrizzle } from "@hyper/log/drizzle"
 
-declare module "@usehyper/core" {
+declare module "@hyper/core" {
   interface AppContext {
     db: ReturnType<typeof drizzle>
   }
@@ -31,7 +31,7 @@ Detailed guide: see [drizzle.md](./drizzle.md).
 
 ```ts
 import { PrismaClient } from "@prisma/client"
-import { prismaLogExtension } from "@usehyper/log/prisma"
+import { prismaLogExtension } from "@hyper/log/prisma"
 
 const prisma = new PrismaClient().$extends(prismaLogExtension())
 ```
@@ -42,7 +42,7 @@ Detailed guide: see [prisma.md](./prisma.md).
 
 ```ts
 import { sql as raw } from "bun"
-import { wrapBunSql } from "@usehyper/log/bun-sql"
+import { wrapBunSql } from "@hyper/log/bun-sql"
 
 export const sql = wrapBunSql(raw)
 ```
@@ -52,7 +52,7 @@ Detailed guide: see [bun-sql.md](./bun-sql.md).
 ## Generic repository
 
 ```ts
-import { wrapQueries } from "@usehyper/log"
+import { wrapQueries } from "@hyper/log"
 
 const repo = wrapQueries({ findUser, createUser /* … */ }, { name: "repo" })
 ```

@@ -1,16 +1,21 @@
 /**
- * `hyper diff <component>` — three-way drift inspection.
+ * `hyper diff <component>` — inspect drift between local files and the
+ * registry version of a component.
  *
- * Shows, for each file in a component:
- *   - unchanged      hash matches registry
- *   - local-changed  sha differs; prints a unified-style line diff
- *   - missing        the file wasn't installed (run `hyper add`)
+ * Output per file:
+ *   ok        local sha matches registry (after applying the user's alias)
+ *   drift     local sha differs from registry — print line-diff
+ *   missing   the file isn't installed (run `hyper add` first)
  */
 
-import { readFile } from "node:fs/promises"
-import { resolve } from "node:path"
 import type { ParsedArgs } from "../args.ts"
-import { findComponent } from "./add.ts"
+import { readConfig } from "../config/index.ts"
+import {
+  createRegistryClient,
+  readLocalFile,
+  resolveTarget,
+  rewriteFile,
+} from "../registry/index.ts"
 
 export async function runDiff(args: ParsedArgs): Promise<number> {
   const name = args.positional[0]
@@ -18,47 +23,47 @@ export async function runDiff(args: ParsedArgs): Promise<number> {
     console.error("usage: hyper diff <component>")
     return 2
   }
-  const component = await findComponent(name)
+  const config = await readConfig()
+  const client = createRegistryClient({ url: config.registryUrl })
+  const component = await client.getComponent(name).catch(() => null)
   if (!component) {
     console.error(`unknown component: ${name}`)
     return 2
   }
-  const root = process.cwd()
+
+  const subpathsByComponent = new Map<string, Readonly<Record<string, string>>>([
+    [component.name, component.subpaths],
+  ])
+
   let drift = 0
   for (const f of component.files) {
-    const target = resolve(root, f.path)
-    const local = await readIfExists(target)
-    if (!local) {
-      console.log(`missing  ${f.path}`)
+    const resolved = resolveTarget(f, component.name, config.baseDir)
+    const relPath = resolved.relPath
+    const local = await readLocalFile(process.cwd(), config, component.name, f)
+    if (local === null) {
+      console.log(`missing  ${relPath}`)
       drift += 1
       continue
     }
-    const hash = await sha256(local)
-    if (hash === f.sha256) {
-      console.log(`ok       ${f.path}`)
+    const expected = resolved.rewriteImports
+      ? rewriteFile(f.contents, {
+          alias: config.alias,
+          targetPath: relPath,
+          baseDir: config.baseDir,
+          subpathsByComponent,
+        })
+      : f.contents
+    if (local === expected) {
+      console.log(`ok       ${relPath}`)
       continue
     }
     drift += 1
-    console.log(`drift    ${f.path}`)
-    const changes = lineDiff(f.contents, local)
+    console.log(`drift    ${relPath}`)
+    const changes = lineDiff(expected, local)
     for (const c of changes.slice(0, 20)) console.log(`   ${c}`)
     if (changes.length > 20) console.log(`   … (${changes.length - 20} more)`)
   }
   return drift > 0 ? 1 : 0
-}
-
-async function readIfExists(path: string): Promise<string | null> {
-  try {
-    return await readFile(path, "utf8")
-  } catch {
-    return null
-  }
-}
-async function sha256(s: string): Promise<string> {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s))
-  return Array.from(new Uint8Array(buf))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("")
 }
 
 function lineDiff(a: string, b: string): string[] {

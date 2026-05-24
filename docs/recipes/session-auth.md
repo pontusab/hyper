@@ -1,14 +1,14 @@
 # Recipe: Session-based auth
 
-`@usehyper/session` implements encrypted, signed-cookie sessions with CSRF
+`@hyper/session` implements encrypted, signed-cookie sessions with CSRF
 double-submit protection. Works for any classical web app.
 
 ## Setup
 
 ```ts
 import { Database } from "bun:sqlite"
-import { Hyper } from "@usehyper/core"
-import { csrfGuard, session, sqliteSessions } from "@usehyper/session"
+import { Hyper } from "@hyper/core"
+import { csrfGuard, session, sqliteSessions } from "@hyper/session"
 
 const sessions = sqliteSessions(new Database("sessions.db"))
 
@@ -24,7 +24,7 @@ shorter secrets at boot.
 ## Login
 
 ```ts
-import { Hyper, ok, unauthorized } from "@usehyper/core"
+import { Hyper, ok, unauthorized } from "@hyper/core"
 import { z } from "zod"
 
 const LoginSchema = z.object({ email: z.string().email(), password: z.string() })
@@ -61,11 +61,11 @@ cookie is issued automatically the first time a session exists.
 
 ## Rate-limit auth routes
 
-Add `@usehyper/rate-limit`'s `authRateLimitPlugin` and mark any route
+Add `@hyper/rate-limit`'s `authRateLimitPlugin` and mark any route
 with `meta.authEndpoint: true`:
 
 ```ts
-import { authRateLimitPlugin } from "@usehyper/rate-limit"
+import { authRateLimitPlugin } from "@hyper/rate-limit"
 
 new Hyper().use(authRateLimitPlugin({ max: 5, windowMs: 60_000 }))
 ```

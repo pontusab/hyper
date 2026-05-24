@@ -9,12 +9,14 @@ import { runDiff } from "./commands/diff.ts"
 import { runEnvCheck } from "./commands/env.ts"
 import { HELP_TEXT, runHelp } from "./commands/help.ts"
 import { runInit } from "./commands/init.ts"
+import { runList } from "./commands/list.ts"
 import { runMcp } from "./commands/mcp.ts"
 import { runOpenapi } from "./commands/openapi.ts"
 import { runRoutes } from "./commands/routes.ts"
 import { runSecurity } from "./commands/security.ts"
 import { runTest } from "./commands/test.ts"
 import { runTypecheck } from "./commands/typecheck.ts"
+import { runUpdate } from "./commands/update.ts"
 import { runVersion } from "./commands/version.ts"
 
 async function main(): Promise<number> {
@@ -47,6 +49,12 @@ async function main(): Promise<number> {
       return runAdd(args)
     case "diff":
       return runDiff(args)
+    case "update":
+      return runUpdate(args)
+    case "list":
+    case "search":
+    case "ls":
+      return runList(args)
     case "bench":
       return runBench(args)
     case "security":

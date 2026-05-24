@@ -1,12 +1,12 @@
 # Recipe: JWT auth
 
-Use `@usehyper/auth-jwt` for bearer-token APIs. HS256 or RS256.
+Use `@hyper/auth-jwt` for bearer-token APIs. HS256 or RS256.
 
 ## Setup
 
 ```ts
-import { Hyper, ok } from "@usehyper/core"
-import { authJwtPlugin } from "@usehyper/auth-jwt"
+import { Hyper, ok } from "@hyper/core"
+import { authJwtPlugin } from "@hyper/auth-jwt"
 
 export default new Hyper()
   .use(authJwtPlugin({ secretEnv: "JWT_SECRET", alg: "HS256" }))
@@ -20,8 +20,8 @@ your env schema so the secret guard catches bad config at boot.
 ## Route-level opt-in (no plugin)
 
 ```ts
-import { Hyper, ok } from "@usehyper/core"
-import { authJwt } from "@usehyper/auth-jwt"
+import { Hyper, ok } from "@hyper/core"
+import { authJwt } from "@hyper/auth-jwt"
 
 export default new Hyper()
   .use("/private", new Hyper().use(authJwt({ secretEnv: "JWT_SECRET" }))
@@ -31,10 +31,10 @@ export default new Hyper()
 
 ## Issuing tokens in tests
 
-`@usehyper/testing` ships `signJwtHS256`:
+`@hyper/testing` ships `signJwtHS256`:
 
 ```ts
-import { bearerAsUser, signJwtHS256 } from "@usehyper/testing"
+import { bearerAsUser, signJwtHS256 } from "@hyper/testing"
 
 const token = await signJwtHS256({ sub: "u1", scope: ["admin"] }, SECRET_32_BYTES)
 const res = await app.fetch(
@@ -45,8 +45,8 @@ const res = await app.fetch(
 Or skip the JWT entirely and stub the user via a test-only decorator:
 
 ```ts
-import { Hyper } from "@usehyper/core"
-import { bearerAsUser } from "@usehyper/testing"
+import { Hyper } from "@hyper/core"
+import { bearerAsUser } from "@hyper/testing"
 
 const testApp = new Hyper().decorate(() => bearerAsUser({ sub: "u1", scope: ["admin"] }))
 ```

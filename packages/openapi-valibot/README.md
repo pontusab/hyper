@@ -1,19 +1,19 @@
-# @usehyper/openapi-valibot
+# @hyper/openapi-valibot
 
-Valibot `SchemaConverter` for `@usehyper/openapi`.
+Valibot `SchemaConverter` for `@hyper/openapi`.
 
 ## Install
 
 ```bash
-bun add @usehyper/openapi @usehyper/openapi-valibot valibot
+bun add @hyper/openapi @hyper/openapi-valibot valibot
 ```
 
 ## Usage
 
 ```ts
-import { Hyper } from "@usehyper/core"
-import { openapiPlugin } from "@usehyper/openapi"
-import { valibotConverter } from "@usehyper/openapi-valibot"
+import { Hyper } from "@hyper/core"
+import { openapiPlugin } from "@hyper/openapi"
+import { valibotConverter } from "@hyper/openapi-valibot"
 
 export default new Hyper()
   .use(openapiPlugin({ converter: valibotConverter }))

@@ -1,12 +1,13 @@
 /**
  * `hyper client <outDir> [entry]` — emits client.ts + client.d.ts from the
- * app's `toClientManifest()`. Codegen lives in @usehyper/client; the CLI is
+ * app's `toClientManifest()`. Codegen lives in @hyper/client; the CLI is
  * responsible for loading the app and writing files.
  */
 
 import { mkdir, writeFile } from "node:fs/promises"
 import { resolve } from "node:path"
 import { type ParsedArgs, isJson } from "../args.ts"
+import { readConfig } from "../config/index.ts"
 import { resolveEntry } from "../entry.ts"
 import { loadApp } from "../load-app.ts"
 
@@ -28,9 +29,25 @@ export async function runClient(args: ParsedArgs): Promise<number> {
     return 2
   }
 
-  // Dynamic import keeps @usehyper/client as a CLI-dev dep, not a runtime dep.
-  // biome-ignore format: keep single-line for tsgo
-  const mod = (await import("@usehyper/client/codegen")) as typeof import("../../../client/src/codegen.ts")
+  // The codegen lives at <baseDir>/client/codegen.ts after `hyper add client`.
+  // We resolve it locally first, with @hyper/client and @hyper/client as fallbacks.
+  const config = await readConfig()
+  const local = resolve(process.cwd(), config.baseDir, "client/codegen.ts")
+  let mod: typeof import("@hyper/client/codegen") | null = null
+  for (const spec of [local, "@hyper/client/codegen", "@hyper/client/codegen"]) {
+    try {
+      mod = (await import(spec)) as typeof import("@hyper/client/codegen")
+      break
+    } catch {
+      // try next
+    }
+  }
+  if (!mod) {
+    console.error(
+      "error: @hyper/client not installed in this project. Run `hyper add client` first.",
+    )
+    return 2
+  }
   const baseUrl = typeof args.flags.baseUrl === "string" ? args.flags.baseUrl : ""
   const result = mod.generateClient({
     manifest: app.toClientManifest(),
