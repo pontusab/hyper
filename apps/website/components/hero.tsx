@@ -32,7 +32,6 @@ export function Hero() {
       </div>
 
       <CodePanel
-        caption="// get started"
         code={`> bun create hyper my-app
 > bun run dev`}
         running="Hyper listening on http://localhost:3000"

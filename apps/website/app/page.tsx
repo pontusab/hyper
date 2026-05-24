@@ -31,7 +31,6 @@ export default function HomePage() {
         }
         code={
           <CodePanel
-            caption="// terminal"
             code={`> bun create hyper my-app --template api
 
 > hyper add cors auth-jwt session
@@ -74,7 +73,6 @@ run:  bun add zod jose
         code={
           <>
             <CodePanel
-              caption="// src/app.ts"
               code={`import { Hyper, ok } from "@hyper/core"
 import { z } from "zod"
 
@@ -96,7 +94,6 @@ export default new Hyper()
   .listen(3000)`}
             />
             <CodePanel
-              caption="// terminal"
               code={`> hyper openapi > openapi.json     # 3.1 spec
 > hyper client ./client.gen.ts     # typed RPC client
 > hyper mcp                        # MCP server, no extra config`}
@@ -161,7 +158,6 @@ export default new Hyper()
         }
         code={
           <CodePanel
-            caption="// src/app.ts"
             code={`import { Hyper } from "@hyper/core"
 import { corsPlugin } from "@hyper/cors"
 import { logPlugin } from "@hyper/log"
@@ -204,7 +200,6 @@ export default new Hyper()
         }
         code={
           <CodePanel
-            caption="// terminal"
             code={`> hyper security --check
 
   ok  HSTS enabled in production
@@ -243,7 +238,6 @@ export default new Hyper()
         }
         code={
           <CodePanel
-            caption="// hyper --help"
             code={`hyper init [template]      scaffold + auto-install core
 hyper dev  [entry]         hot reload + tsgo --watch
 hyper build [entry]        bundle + route graph
@@ -285,7 +279,6 @@ hyper list  [query]        browse the catalog`}
         code={
           <>
             <CodePanel
-              caption="// src/routes/users.ts"
               code={`import { Hyper, ok } from "@hyper/core"
 import { z } from "zod"
 
@@ -303,7 +296,6 @@ export default new Hyper({ prefix: "/users" })
   )`}
             />
             <CodePanel
-              caption="// ~/.cursor/mcp.json"
               code={`{
   "mcpServers": {
     "my-api":  { "url": "http://localhost:3000/mcp" },
