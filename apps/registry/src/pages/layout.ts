@@ -140,7 +140,7 @@ ${opts.canonical ? `<link rel="canonical" href="${escapeHtml(opts.canonical)}" /
   <div class="brand"><span class="accent">hyper</span>js.ai</div>
   <nav>
     <a href="/">registry</a>
-    <a href="https://github.com/usehyper/hyper">github</a>
+    <a href="https://github.com/pontusab/hyper">github</a>
     <a href="/mcp">mcp</a>
   </nav>
 </header>

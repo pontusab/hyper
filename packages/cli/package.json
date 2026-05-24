@@ -1,12 +1,17 @@
 {
   "name": "@usehyper/cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "Hyper CLI — registry-driven scaffolding (init/add/diff/update) plus dev/build/test/openapi/mcp.",
   "license": "MIT",
+  "homepage": "https://hyperjs.ai",
   "repository": {
     "type": "git",
-    "url": "https://github.com/usehyper/hyper.git"
+    "url": "git+https://github.com/pontusab/hyper.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/pontusab/hyper/issues"
   },
   "files": ["src", "registry-sources", "LICENSE", "README.md"],
   "exports": {

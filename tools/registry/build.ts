@@ -379,7 +379,7 @@ export function buildIndex(components: readonly RegistryComponent[]): RegistryIn
   return {
     schema: 1,
     generatedAt: new Date().toISOString(),
-    source: "https://github.com/usehyper/hyper",
+    source: "https://github.com/pontusab/hyper",
     components: components.map((c) => ({
       name: c.name,
       version: c.version,

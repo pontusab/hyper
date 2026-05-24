@@ -21,13 +21,20 @@
  */
 
 import { spawn } from "node:child_process"
-import { mkdir, mkdtemp, rm, stat } from "node:fs/promises"
+import { mkdir, mkdtemp, readFile, rm, stat } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { join, resolve } from "node:path"
 
 const ROOT = resolve(import.meta.dir, "..")
 const CLI_DIR = join(ROOT, "packages/cli")
 const CREATE_DIR = join(ROOT, "packages/create-hyper")
+
+async function pkgVersion(dir: string): Promise<string> {
+  const raw = await readFile(join(dir, "package.json"), "utf8")
+  const v = (JSON.parse(raw) as { version?: string }).version
+  if (!v) throw new Error(`missing version in ${dir}/package.json`)
+  return v
+}
 
 interface RunResult {
   readonly stdout: string
@@ -107,8 +114,10 @@ async function main(): Promise<number> {
       if (r.code !== 0) throw new Error(`pack @usehyper/cli failed:\n${r.stderr}`)
     })
 
-    const cliTgz = join(tarballs, "usehyper-cli-0.1.0.tgz")
-    const createTgz = join(tarballs, "create-hyper-0.1.0.tgz")
+    const cliVersion = await pkgVersion(CLI_DIR)
+    const createVersion = await pkgVersion(CREATE_DIR)
+    const cliTgz = join(tarballs, `usehyper-cli-${cliVersion}.tgz`)
+    const createTgz = join(tarballs, `create-hyper-${createVersion}.tgz`)
     if (!(await pathExists(cliTgz))) throw new Error(`missing ${cliTgz}`)
     if (!(await pathExists(createTgz))) throw new Error(`missing ${createTgz}`)
 

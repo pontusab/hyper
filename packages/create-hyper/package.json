@@ -1,12 +1,17 @@
 {
   "name": "create-hyper",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "Scaffolder for Hyper apps — thin shim over `@usehyper/cli init`.",
   "license": "MIT",
+  "homepage": "https://hyperjs.ai",
   "repository": {
     "type": "git",
-    "url": "https://github.com/usehyper/hyper.git"
+    "url": "git+https://github.com/pontusab/hyper.git",
+    "directory": "packages/create-hyper"
+  },
+  "bugs": {
+    "url": "https://github.com/pontusab/hyper/issues"
   },
   "files": ["src", "LICENSE", "README.md"],
   "exports": {

@@ -17,7 +17,7 @@ export function Letterhead() {
       <div className="flex flex-col items-end">
         <Bracket href="/docs">DOCS / GET STARTED</Bracket>
         <Bracket href="https://hyperjs.ai">REGISTRY</Bracket>
-        <Bracket href="https://github.com/usehyper/hyper">GITHUB</Bracket>
+        <Bracket href="https://github.com/pontusab/hyper">GITHUB</Bracket>
       </div>
     </header>
   )

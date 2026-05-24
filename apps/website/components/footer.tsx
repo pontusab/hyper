@@ -5,8 +5,8 @@ const PRIMARY = [
   { href: "https://hyperjs.ai", label: "REGISTRY" },
   { href: "https://hyperjs.ai/mcp", label: "MCP" },
   { href: "/changelog", label: "CHANGELOG" },
-  { href: "https://github.com/usehyper/hyper", label: "GITHUB" },
-  { href: "https://github.com/usehyper/hyper/issues", label: "ISSUES" },
+  { href: "https://github.com/pontusab/hyper", label: "GITHUB" },
+  { href: "https://github.com/pontusab/hyper/issues", label: "ISSUES" },
 ] as const
 
 /**
