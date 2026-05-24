@@ -4,7 +4,7 @@
   "components": {
     "core": {
       "version": "0.1.0",
-      "installedAt": "2026-05-24T09:11:07.435Z",
+      "installedAt": "2026-05-24T12:57:22.875Z",
       "alias": "@hyper",
       "files": [
         {
@@ -45,7 +45,7 @@
         },
         {
           "path": "src/hyper/core/hyper.ts",
-          "sha256": "98154747e340f0808ebd860339b75631ea47e7918c8343aef92c39aba7ded8cb"
+          "sha256": "bdb9dd67d460432c1f7b4ad5dda0a9bfde6d035109cb9a985f613bd517d9c38b"
         },
         {
           "path": "src/hyper/core/index.ts",
@@ -81,7 +81,7 @@
         },
         {
           "path": "src/hyper/core/router.ts",
-          "sha256": "6980920bd299e1e370a04428d5907454824483fe8cf08d288fd3f19fe111ab93"
+          "sha256": "f81563c103792e1b30d75349453368bf4cb5d6c92b5443c4b661e2ab2526784e"
         },
         {
           "path": "src/hyper/core/security.ts",
@@ -99,7 +99,7 @@
     },
     "log": {
       "version": "0.1.0",
-      "installedAt": "2026-05-24T09:11:07.436Z",
+      "installedAt": "2026-05-24T12:57:22.881Z",
       "alias": "@hyper",
       "files": [
         {

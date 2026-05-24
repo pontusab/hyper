@@ -26,3 +26,8 @@ apps/website/lib/registry-data.ts
 .next/
 next-env.d.ts
 
+# Vendored registry components in examples — bootstrapped by each example's
+# postinstall (which calls `hyper add`). Treat them as build output, not
+# source.
+apps/examples/*/src/hyper/
+

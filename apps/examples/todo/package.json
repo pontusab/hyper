@@ -6,12 +6,14 @@
     "dev": "bun --hot src/adapter.ts",
     "start": "bun src/adapter.ts",
     "test": "bun test",
-    "bench": "bun run bench/baseline.ts"
+    "bench": "bun run bench/baseline.ts",
+    "setup": "bun ../../../packages/cli/src/bin.ts add core log --force"
   },
   "dependencies": {
     "zod": "4.3.6"
   },
   "devDependencies": {
-    "@types/bun": "1.3.1"
+    "@types/bun": "1.3.1",
+    "@usehyper/cli": "workspace:*"
   }
 }

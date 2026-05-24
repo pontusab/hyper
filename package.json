@@ -18,7 +18,8 @@
     "registry:check": "bun run ./tools/build-registry.ts",
     "build:snapshots": "bun run ./tools/build-snapshots.ts",
     "release:smoke": "bun run ./tools/smoke-release.ts",
-    "postinstall": "bun run ./tools/build-snapshots.ts"
+    "bootstrap:examples": "bun run ./tools/bootstrap-examples.ts",
+    "postinstall": "bun run ./tools/build-snapshots.ts && bun run ./tools/bootstrap-examples.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
