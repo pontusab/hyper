@@ -26,6 +26,7 @@ import { spawn } from "node:child_process"
 import { mkdir, readFile, stat, writeFile } from "node:fs/promises"
 import { dirname, resolve } from "node:path"
 import { type ParsedArgs, isJson } from "../args.ts"
+import { printBanner } from "../banner.ts"
 import { defaultConfig, patchTsConfig, readLock, writeConfig, writeLock } from "../config/index.ts"
 import { applyComponents, createRegistryClient } from "../registry/index.ts"
 import { TEMPLATES } from "../templates.ts"
@@ -61,6 +62,7 @@ export async function runInit(args: ParsedArgs): Promise<number> {
   await mkdir(cwd, { recursive: true })
 
   const cliVersion = await readOwnVersion()
+  printBanner(cliVersion, { json: isJson(args.flags) })
 
   const writtenFiles: string[] = []
   for (const [rel, contents] of Object.entries(template.files)) {
