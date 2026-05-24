@@ -4,9 +4,13 @@
 
 ## Install
 
+Components are installed as source into your repo, not pulled from npm:
+
 ```bash
-bun add @hyper/idempotency
+bunx hyper add idempotency
 ```
+
+Wires the alias `@hyper/idempotency` to `src/hyper/idempotency/` (configurable in `hyper.config.json`). See [hyperjs.ai](https://hyperjs.ai) for the full registry.
 
 ## Usage
 

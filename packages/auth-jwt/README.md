@@ -4,9 +4,13 @@ JWT auth plugin for Hyper — bearer-token verification, typed `ctx.user`, role/
 
 ## Install
 
+Components are installed as source into your repo, not pulled from npm:
+
 ```bash
-bun add @hyper/auth-jwt
+bunx hyper add auth-jwt
 ```
+
+Wires the alias `@hyper/auth-jwt` to `src/hyper/auth-jwt/` (configurable in `hyper.config.json`). See [hyperjs.ai](https://hyperjs.ai) for the full registry.
 
 ## Usage
 

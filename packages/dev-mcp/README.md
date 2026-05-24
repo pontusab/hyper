@@ -4,9 +4,13 @@ Dev-mode app-as-MCP server — exposes `/.hyper/mcp` with introspection + replay
 
 ## Install
 
+Components are installed as source into your repo, not pulled from npm:
+
 ```bash
-bun add @hyper/dev-mcp
+bunx hyper add dev-mcp
 ```
+
+Wires the alias `@hyper/dev-mcp` to `src/hyper/dev-mcp/` (configurable in `hyper.config.json`). See [hyperjs.ai](https://hyperjs.ai) for the full registry.
 
 ## Usage
 

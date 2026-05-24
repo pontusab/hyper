@@ -4,9 +4,13 @@
 
 ## Install
 
+Components are installed as source into your repo, not pulled from npm:
+
 ```bash
-bun add @hyper/subscribe
+bunx hyper add subscribe
 ```
+
+Wires the alias `@hyper/subscribe` to `src/hyper/subscribe/` (configurable in `hyper.config.json`). See [hyperjs.ai](https://hyperjs.ai) for the full registry.
 
 ## Usage
 

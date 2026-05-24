@@ -5,9 +5,13 @@ dependencies. Bun-native.
 
 ## Install
 
+Components are installed as source into your repo, not pulled from npm:
+
 ```bash
-bun add @hyper/core
+bunx hyper add core
 ```
+
+Wires the alias `@hyper/core` to `src/hyper/core/` (configurable in `hyper.config.json`). See [hyperjs.ai](https://hyperjs.ai) for the full registry.
 
 ## Usage
 

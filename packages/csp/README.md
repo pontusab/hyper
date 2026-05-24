@@ -4,9 +4,13 @@ Content-Security-Policy + sibling headers (CSP, CORP, COEP, COOP, Report-To) for
 
 ## Install
 
+Components are installed as source into your repo, not pulled from npm:
+
 ```bash
-bun add @hyper/csp
+bunx hyper add csp
 ```
+
+Wires the alias `@hyper/csp` to `src/hyper/csp/` (configurable in `hyper.config.json`). See [hyperjs.ai](https://hyperjs.ai) for the full registry.
 
 ## Usage
 

@@ -4,9 +4,13 @@ Content-negotiated gzip/brotli compression plugin for Hyper.
 
 ## Install
 
+Components are installed as source into your repo, not pulled from npm:
+
 ```bash
-bun add @hyper/compress
+bunx hyper add compress
 ```
+
+Wires the alias `@hyper/compress` to `src/hyper/compress/` (configurable in `hyper.config.json`). See [hyperjs.ai](https://hyperjs.ai) for the full registry.
 
 ## Usage
 

@@ -4,9 +4,13 @@ Testing helpers for Hyper apps — `call`, matchers, memory stores, fuzz.
 
 ## Install
 
+Components are installed as source into your repo, not pulled from npm:
+
 ```bash
-bun add -d @hyper/testing
+bunx hyper add testing
 ```
+
+Wires the alias `@hyper/testing` to `src/hyper/testing/` (configurable in `hyper.config.json`). See [hyperjs.ai](https://hyperjs.ai) for the full registry.
 
 ## Usage
 

@@ -4,8 +4,10 @@ Valibot `SchemaConverter` for `@hyper/openapi`.
 
 ## Install
 
+Components are installed as source into your repo, not pulled from npm. `valibot` is added to your `package.json` automatically as a peer dependency.
+
 ```bash
-bun add @hyper/openapi @hyper/openapi-valibot valibot
+bunx hyper add openapi openapi-valibot
 ```
 
 ## Usage

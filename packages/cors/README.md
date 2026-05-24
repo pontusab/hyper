@@ -4,9 +4,13 @@ Minimal, strict CORS middleware for Hyper.
 
 ## Install
 
+Components are installed as source into your repo, not pulled from npm:
+
 ```bash
-bun add @hyper/cors
+bunx hyper add cors
 ```
+
+Wires the alias `@hyper/cors` to `src/hyper/cors/` (configurable in `hyper.config.json`). See [hyperjs.ai](https://hyperjs.ai) for the full registry.
 
 ## Usage
 

@@ -4,9 +4,13 @@ Signed-cookie session middleware for Hyper. Pluggable stores.
 
 ## Install
 
+Components are installed as source into your repo, not pulled from npm:
+
 ```bash
-bun add @hyper/session
+bunx hyper add session
 ```
+
+Wires the alias `@hyper/session` to `src/hyper/session/` (configurable in `hyper.config.json`). See [hyperjs.ai](https://hyperjs.ai) for the full registry.
 
 ## Usage
 

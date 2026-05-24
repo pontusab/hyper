@@ -4,9 +4,13 @@ OpenTelemetry tracing + SLO histograms for Hyper.
 
 ## Install
 
+Components are installed as source into your repo, not pulled from npm:
+
 ```bash
-bun add @hyper/otel
+bunx hyper add otel
 ```
+
+Wires the alias `@hyper/otel` to `src/hyper/otel/` (configurable in `hyper.config.json`). See [hyperjs.ai](https://hyperjs.ai) for the full registry.
 
 ## Usage
 

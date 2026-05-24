@@ -4,9 +4,13 @@ Model Context Protocol (MCP) adapter for Hyper — turn any Hyper app into an MC
 
 ## Install
 
+Components are installed as source into your repo, not pulled from npm:
+
 ```bash
-bun add @hyper/mcp
+bunx hyper add mcp
 ```
+
+Wires the alias `@hyper/mcp` to `src/hyper/mcp/` (configurable in `hyper.config.json`). See [hyperjs.ai](https://hyperjs.ai) for the full registry.
 
 ## Usage
 

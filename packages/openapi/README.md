@@ -4,9 +4,15 @@ OpenAPI 3.1 serializer + Swagger UI for Hyper. Pluggable `SchemaConverter`.
 
 ## Install
 
+Components are installed as source into your repo, not pulled from npm. Pair `openapi` with a converter for your validation library:
+
 ```bash
-bun add @hyper/openapi @hyper/openapi-zod
+bunx hyper add openapi openapi-zod
+# or: bunx hyper add openapi openapi-arktype
+# or: bunx hyper add openapi openapi-valibot
 ```
+
+See [hyperjs.ai](https://hyperjs.ai) for the full registry.
 
 ## Usage
 

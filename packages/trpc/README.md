@@ -4,9 +4,13 @@ tRPC bridge — mount tRPC into Hyper, or convert a tRPC router into Hyper route
 
 ## Install
 
+Components are installed as source into your repo, not pulled from npm:
+
 ```bash
-bun add @hyper/trpc
+bunx hyper add trpc
 ```
+
+Wires the alias `@hyper/trpc` to `src/hyper/trpc/` (configurable in `hyper.config.json`). See [hyperjs.ai](https://hyperjs.ai) for the full registry.
 
 ## Usage
 

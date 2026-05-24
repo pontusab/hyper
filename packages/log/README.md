@@ -6,9 +6,13 @@ One log event per request, attached to `ctx.log`. Pluggable drains (stdout, file
 
 ## Install
 
+Components are installed as source into your repo, not pulled from npm:
+
 ```bash
-bun add @hyper/log
+bunx hyper add log
 ```
+
+Wires the alias `@hyper/log` to `src/hyper/log/` (configurable in `hyper.config.json`). See [hyperjs.ai](https://hyperjs.ai) for the full registry.
 
 ## Usage
 

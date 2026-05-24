@@ -4,8 +4,10 @@ ArkType `SchemaConverter` for `@hyper/openapi`.
 
 ## Install
 
+Components are installed as source into your repo, not pulled from npm. `arktype` is added to your `package.json` automatically as a peer dependency.
+
 ```bash
-bun add @hyper/openapi @hyper/openapi-arktype arktype
+bunx hyper add openapi openapi-arktype
 ```
 
 ## Usage

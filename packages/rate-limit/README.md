@@ -4,9 +4,13 @@ Token-bucket rate limiting for Hyper. In-memory + pluggable stores.
 
 ## Install
 
+Components are installed as source into your repo, not pulled from npm:
+
 ```bash
-bun add @hyper/rate-limit
+bunx hyper add rate-limit
 ```
+
+Wires the alias `@hyper/rate-limit` to `src/hyper/rate-limit/` (configurable in `hyper.config.json`). See [hyperjs.ai](https://hyperjs.ai) for the full registry.
 
 ## Usage
 

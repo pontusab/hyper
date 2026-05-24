@@ -4,9 +4,13 @@ SWR + ETag + stampede protection for Hyper routes.
 
 ## Install
 
+Components are installed as source into your repo, not pulled from npm:
+
 ```bash
-bun add @hyper/cache
+bunx hyper add cache
 ```
+
+Wires the alias `@hyper/cache` to `src/hyper/cache/` (configurable in `hyper.config.json`). See [hyperjs.ai](https://hyperjs.ai) for the full registry.
 
 ## Usage
 
