@@ -125,10 +125,12 @@ async function main(): Promise<number> {
       // Bypass `bun create` (which insists on the public registry) and run the
       // CLI's `init` command directly out of the freshly-packed tarball — the
       // exact same code path `create-hyper` would invoke after npm propagation.
+      // `--no-install` keeps the smoke offline-friendly; we boot `hyper dev`
+      // afterwards which doesn't need node_modules.
       await mkdir(target, { recursive: true })
       const r = await run(
         "bunx",
-        [`--package=${cliTgz}`, "hyper", "init", "api", "--dir", target],
+        [`--package=${cliTgz}`, "hyper", "init", "api", "--dir", target, "--no-install"],
         { cwd: work, timeoutMs: 60_000 },
       )
       if (r.code !== 0) {

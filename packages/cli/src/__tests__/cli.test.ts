@@ -38,8 +38,21 @@ describe("cli templates", () => {
   })
 
   test("templates have no @usehyper/* runtime deps", () => {
-    expect(TEMPLATES.minimal!.files["package.json"]).not.toContain("@usehyper/")
-    expect(TEMPLATES.api!.files["package.json"]).not.toContain("@usehyper/")
+    for (const name of ["minimal", "api"] as const) {
+      const pkg = JSON.parse(TEMPLATES[name]!.files["package.json"]!) as {
+        dependencies?: Record<string, string>
+      }
+      expect(pkg.dependencies ?? {}).toEqual({})
+    }
+  })
+
+  test("templates pin @usehyper/cli as a devDependency", () => {
+    for (const name of ["minimal", "api"] as const) {
+      const pkg = JSON.parse(TEMPLATES[name]!.files["package.json"]!) as {
+        devDependencies?: Record<string, string>
+      }
+      expect(pkg.devDependencies?.["@usehyper/cli"]).toBeDefined()
+    }
   })
 
   test("templates declare which components to install after init", () => {

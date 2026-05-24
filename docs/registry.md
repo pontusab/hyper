@@ -101,7 +101,8 @@ component set.
 Flags:
 
 - `--dir <path>` — target directory (default `.`)
-- `--no-install` — skip auto-installing components
+- `--no-install` — skip the final `bun install`
+- `--no-components` — skip auto-installing the template's components
 - `--agent-rules` — also install the `agent-rules` component
 - `--json`
 

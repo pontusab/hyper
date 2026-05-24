@@ -49,6 +49,13 @@ const MINIMAL_TSCONFIG = `{
 }
 `
 
+/**
+ * Template `package.json`. `__HYPER_CLI_VERSION__` is replaced by `init` with
+ * the version of the running CLI so freshly-scaffolded projects pin against
+ * the same release that scaffolded them. Once `bun install` runs, the
+ * `hyper` binary lands in `node_modules/.bin/` and is available as
+ * `bun run hyper …` (or `bunx hyper …`).
+ */
 const MINIMAL_PKG = `{
   "name": "my-hyper-app",
   "type": "module",
@@ -61,6 +68,7 @@ const MINIMAL_PKG = `{
   },
   "devDependencies": {
     "@types/bun": "latest",
+    "@usehyper/cli": "^__HYPER_CLI_VERSION__",
     "typescript": "^5.6.0"
   }
 }
@@ -107,11 +115,13 @@ bun run dev
 
 ## Manage components
 
+The \`hyper\` CLI is a devDependency. Run it via \`bunx\` or \`bun run\`:
+
 \`\`\`bash
-hyper list                 # browse the registry
-hyper add cors             # add a component
-hyper diff log             # inspect drift on an installed component
-hyper update               # pull the latest registry versions
+bunx hyper list            # browse the registry
+bunx hyper add cors        # add a component
+bunx hyper diff log        # inspect drift on an installed component
+bunx hyper update          # pull the latest registry versions
 \`\`\`
 `
 
