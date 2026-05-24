@@ -1,16 +1,13 @@
-import { Closing } from "@/components/closing"
 import { CodePanel } from "@/components/code-panel"
 import { Footer } from "@/components/footer"
 import { Hero } from "@/components/hero"
 import { Letterhead } from "@/components/letterhead"
-import { TrustedBy } from "@/components/trusted-by"
 
 export default function HomePage() {
   return (
     <main>
       <Letterhead />
       <Hero />
-      <TrustedBy />
 
       <DocSection
         id="registry"
@@ -18,26 +15,17 @@ export default function HomePage() {
         body={
           <>
             <p>
-              The registry is the framework. Each component — the router,
-              every plugin, the testing helpers, the OpenAPI and MCP adapters
-              — is a folder of source files you install, read, and edit in
-              place. The framework lives in{" "}
-              <span className="ic">src/hyper/</span>, not in{" "}
-              <span className="ic">node_modules</span>.
+              The framework is the registry. Every part — router, plugins,
+              test helpers, OpenAPI and MCP adapters — is a folder of source
+              files. Install what you need; the rest never enters your repo.
+              The registry stays an installer, not a runtime dependency.
             </p>
             <p>
-              Most frameworks force a choice: depend on the package and accept
-              whatever the maintainer ships, or fork it and lose the upgrade
-              path. Hyper keeps both. A per-file lockfile records what was
-              installed; <span className="ic">hyper diff</span> shows local
-              edits and upstream changes side by side;{" "}
-              <span className="ic">hyper update</span> merges only the deltas
-              you want.
-            </p>
-            <p>
-              Edit the rate limiter for your infrastructure. Fork the JWT
-              plugin for a key store you already operate. Delete the parts of
-              the router you don't need. The upgrade path stays intact.
+              Each install is recorded per-file in{" "}
+              <span className="ic">hyper.lock.json</span>. Local edits don't
+              block upgrades — <span className="ic">hyper update</span>{" "}
+              merges only the deltas you accept, the rest of the file stays
+              exactly as you wrote it.
             </p>
           </>
         }
@@ -69,19 +57,17 @@ run:  bun add zod jose
         body={
           <>
             <p>
-              A route is one declaration: path, schemas, error shapes,
-              handler. From it Hyper emits the OpenAPI document, the typed
-              client your frontend imports, the MCP server an agent calls,
-              and the route graph the bench walks. No parallel schema file,
+              A route is one declaration: path, schemas, errors, handler.
+              From it Hyper emits the runtime, an OpenAPI 3.1 document, a
+              typed RPC client, and an MCP server. No parallel schema file,
               no decorator metadata, no second source of types.
             </p>
             <p>
-              Schemas come from any{" "}
+              Schemas use any{" "}
               <a href="https://standardschema.dev">Standard Schema</a> library
-              — Zod, Valibot, Arktype — without an adapter layer. Errors are
-              declared on the route, not raised by surprise at runtime: they
-              show up in OpenAPI as response codes, in the client as a
-              discriminated union, and in the test runner as assertions.
+              — Zod, Valibot, Arktype — directly. Errors declared on the
+              route appear as response codes in OpenAPI, a discriminated
+              union in the client, and assertions in the test runner.
             </p>
           </>
         }
@@ -126,14 +112,13 @@ export default new Hyper()
         body={
           <>
             <p>
-              One way to compose: <span className="ic">.use()</span>. It takes
-              a plugin, a sub-app with its own prefix, a router file imported
-              as an ESM namespace, or a function that decorates the request.
-              You grow from one file to a folder of routers without learning
-              a new wiring primitive. The router flattens at build time, so
-              nesting is organisational — it costs nothing at runtime.
+              One composition primitive: <span className="ic">.use()</span>.
+              It takes a plugin, a sub-app with its own prefix, an imported
+              route file, or a function that decorates the request. The
+              router flattens at build time — nesting is organisational, free
+              at runtime.
             </p>
-            <p>What's in the registry today:</p>
+            <p>In the registry today:</p>
             <ul className="list-none space-y-1 pl-0">
               <li>
                 <span className="ic">cors</span> — CORS, with strict wildcard
@@ -204,25 +189,16 @@ export default new Hyper()
         body={
           <>
             <p>
-              Built for Bun, not adapted to it. Hyper uses Bun's primitives
-              directly — HTTP server, cookie map, password and hashing APIs,
-              file primitives. A thin layer on a fast runtime, not a thick
-              layer abstracting over runtimes you don't ship to.
+              Built for Bun directly — HTTP server, cookie map, password and
+              hash APIs, file primitives. A thin layer on a fast runtime, not
+              an abstraction over runtimes you don't ship to.
             </p>
             <p>
-              Handlers pay only for what they use. A route that doesn't read
-              the body never parses it. A static response is mounted on the
-              runtime and never enters the handler path.
-            </p>
-            <p>
-              Security is opinionated and audited. HSTS in production, body
-              limits, prototype-pollution guards, strict CORS for credentialed
-              requests, secret-length floors on auth, CSRF double-submit on
-              state-changing methods, rate-limited auth endpoints.{" "}
-              <span className="ic">hyper security --check</span> runs the
-              checklist in CI. The checklist is a contract: you see exactly
-              what defaults you're getting and opt out per-check when you
-              genuinely need to.
+              Handlers pay only for what they read. Static responses bypass
+              the handler path. Security defaults — HSTS, body limits,
+              strict CORS, secret-length floors, CSRF double-submit — are
+              audited by <span className="ic">hyper security --check</span>{" "}
+              in CI.
             </p>
           </>
         }
@@ -250,22 +226,18 @@ export default new Hyper()
         body={
           <>
             <p>
-              One CLI. It scaffolds projects, runs the dev loop with hot
-              reload and incremental type-checking, runs your{" "}
-              <span className="ic">.example()</span> contracts alongside{" "}
-              <span className="ic">bun:test</span>, and benches every
-              endpoint. The same binary handles the registry —{" "}
-              <span className="ic">add</span>,{" "}
+              One CLI for the whole loop: scaffold, dev (hot reload +
+              type-check), test (<span className="ic">.example()</span>{" "}
+              contracts + <span className="ic">bun:test</span>), bench,
+              build, and the registry (<span className="ic">add</span>,{" "}
               <span className="ic">diff</span>,{" "}
               <span className="ic">update</span>,{" "}
-              <span className="ic">list</span>. No second tool, no second
-              auth flow.
+              <span className="ic">list</span>).
             </p>
             <p>
               Every command emits JSON with{" "}
-              <span className="ic">--json</span>. Editor integrations, CI
-              checks, deployment scripts, and other agents consume the same
-              surface you do at the prompt.
+              <span className="ic">--json</span>. Editor integrations, CI,
+              and agents read the same surface you do.
             </p>
           </>
         }
@@ -298,19 +270,15 @@ hyper list  [query]        browse the catalog`}
         body={
           <>
             <p>
-              The{" "}
-              <a href="https://modelcontextprotocol.io">Model Context Protocol</a>{" "}
-              is how agents talk to live systems. Hyper treats it as a peer
-              of HTTP, not an add-on. Any route can opt into MCP exposure;
-              the same schema, validation, and error path runs whether the
-              call arrives over HTTP or MCP. No second layer of glue, no
-              second set of tools.
+              Any route can opt into{" "}
+              <a href="https://modelcontextprotocol.io">MCP</a> exposure. The
+              same schema, validation, and errors run whether the call
+              arrives over HTTP or MCP — no second layer of glue.
             </p>
             <p>
-              The registry runs an MCP endpoint too. The same client that
-              calls your app can browse and install Hyper components. From
-              an editor that speaks MCP, scaffolding the framework is the
-              same operation as calling a route.
+              The registry runs an MCP endpoint too. From an editor that
+              speaks MCP, installing a Hyper component is the same operation
+              as calling a route.
             </p>
           </>
         }
@@ -347,7 +315,6 @@ export default new Hyper({ prefix: "/users" })
         }
       />
 
-      <Closing />
       <Footer />
     </main>
   )

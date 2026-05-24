@@ -2,15 +2,17 @@
 
 /* Old-school text-document aesthetic — pure monospace, sharp edges,
    no shadows, no gradients, no animations beyond a single ticker
-   marquee at the very top. */
+   marquee at the very top. Vivid royal-indigo background with white
+   text — matches the Notion dev brand blue. */
 @theme {
-  --color-bg: #ffffff;
-  --color-fg: #111111;
-  --color-fg-muted: #666666;
-  --color-fg-subtle: #999999;
-  --color-line: #cccccc;
-  --color-line-soft: #e5e5e5;
-  --color-mark: #fff5b1;
+  --color-bg: #2a2bd5;
+  --color-bg-deep: #2020b8;
+  --color-fg: #ffffff;
+  --color-fg-muted: #c0c0ec;
+  --color-fg-subtle: #8b8bcb;
+  --color-line: #5151e3;
+  --color-line-soft: #3a3adc;
+  --color-mark: #ffe066;
 
   --font-mono: var(--font-jetbrains), ui-monospace, "SF Mono", SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
@@ -45,6 +47,7 @@ a {
 }
 a:hover {
   background: var(--color-mark);
+  color: var(--color-bg);
 }
 
 /* Single ticker marquee at the very top of the page. */
@@ -78,10 +81,11 @@ a:hover {
   color: var(--color-fg-muted);
 }
 
-/* Plain bordered code block. No syntax highlighting, no shadows. */
+/* Plain bordered code block. No syntax highlighting, no shadows.
+   Sits on a slightly deeper navy than the page so it reads as a panel. */
 .code-block {
   border: 1px solid var(--color-line);
-  background: var(--color-bg);
+  background: var(--color-bg-deep);
   padding: 12px 16px;
   font-family: var(--font-mono);
   font-size: 12px;
@@ -105,30 +109,12 @@ a:hover {
   padding: 6px 16px;
   font-size: 11px;
   color: var(--color-fg-muted);
-  background: var(--color-bg);
-}
-
-/* "Cursor" block — the blinking █ next to the company name. */
-@keyframes hyper-blink {
-  0%, 49% {
-    opacity: 1;
-  }
-  50%, 100% {
-    opacity: 0;
-  }
-}
-.caret {
-  display: inline-block;
-  width: 0.6em;
-  height: 1em;
-  background: var(--color-fg);
-  vertical-align: text-bottom;
-  margin-left: 0.25em;
-  animation: hyper-blink 1.1s steps(1, end) infinite;
+  background: var(--color-bg-deep);
 }
 
 /* Inline `<code>` — slightly inverted highlight. */
 .ic {
   background: var(--color-line-soft);
+  color: var(--color-fg);
   padding: 0 4px;
 }

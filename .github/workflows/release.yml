@@ -1,0 +1,131 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Pack only (no npm publish)"
+        type: boolean
+        default: true
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+env:
+  BUN_VERSION: 1.3.11
+
+jobs:
+  validate:
+    name: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - run: bun install --frozen-lockfile
+      - run: bun run lint
+      - run: bun run typecheck
+      - run: bun test
+      - run: bun run native-only
+      - run: bun run registry:check
+
+  pack:
+    name: pack (dry run)
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - run: bun install --frozen-lockfile
+      - name: regenerate snapshots
+        run: bun run build:snapshots
+      - name: pack create-hyper
+        run: bun pm pack --destination ../../release-artifacts
+        working-directory: packages/create-hyper
+      - name: pack @usehyper/cli
+        run: bun pm pack --destination ../../release-artifacts
+        working-directory: packages/cli
+      - name: list tarball contents
+        run: |
+          set -euxo pipefail
+          for tgz in release-artifacts/*.tgz; do
+            echo "==> $tgz"
+            tar -tzf "$tgz" | sort
+            echo "--- size: $(du -h "$tgz" | cut -f1)"
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tarballs
+          path: release-artifacts/*.tgz
+          if-no-files-found: error
+
+  publish:
+    name: publish to npm
+    needs: pack
+    if: github.event_name == 'push' || github.event.inputs.dry_run == 'false'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # OIDC for npm trusted publishing + provenance
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+      - run: bun install --frozen-lockfile
+      - name: regenerate snapshots
+        run: bun run build:snapshots
+      - name: publish create-hyper
+        run: bun publish --provenance --access public
+        working-directory: packages/create-hyper
+        env:
+          NPM_CONFIG_PROVENANCE: "true"
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: publish @usehyper/cli
+        run: bun publish --provenance --access public
+        working-directory: packages/cli
+        env:
+          NPM_CONFIG_PROVENANCE: "true"
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  smoke:
+    name: smoke test (install from npm)
+    needs: publish
+    if: github.event_name == 'push' || github.event.inputs.dry_run == 'false'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - name: scaffold + dev (with npm propagation retry)
+        run: |
+          set -euxo pipefail
+          tmp="$(mktemp -d)"
+          cd "$tmp"
+          # npm CDN propagation: poll for up to ~2 min before giving up.
+          for i in $(seq 1 24); do
+            if bun create hyper smoke-app --template api 2>&1 | tee scaffold.log; then
+              break
+            fi
+            echo "create-hyper not ready yet, retrying in 5s ($i/24)…"
+            sleep 5
+          done
+          test -d smoke-app
+          cd smoke-app
+          test -d src/hyper/core
+          test -f hyper.config.json
+          test -f hyper.lock.json
+          # Boot the dev server briefly; exit code 124 from `timeout` means
+          # it was running healthily when we killed it.
+          timeout 10 bun run dev || test $? -eq 124
+          bunx hyper test --json | head -n 20 || true

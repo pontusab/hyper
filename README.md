@@ -6,10 +6,14 @@ owned and editable.
 
 ```bash
 bun create hyper my-app
-cd my-app
-bun install
 bun run dev
 ```
+
+Two packages on npm: `create-hyper` (the scaffolder) and `@usehyper/cli`
+(installed as a devDependency by the scaffold, exposed as `hyper`). The
+framework itself — router, plugins, helpers — is copied as source into
+`src/hyper/`; nothing imports `@hyper/core` from `node_modules` at
+runtime.
 
 ## Why
 

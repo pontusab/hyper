@@ -17,6 +17,7 @@
     "native-only": "bun run ./tools/native-only-check.ts",
     "registry:check": "bun run ./tools/build-registry.ts",
     "build:snapshots": "bun run ./tools/build-snapshots.ts",
+    "release:smoke": "bun run ./tools/smoke-release.ts",
     "postinstall": "bun run ./tools/build-snapshots.ts"
   },
   "devDependencies": {
